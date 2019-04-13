@@ -32,20 +32,43 @@ MonoBehaviour:
     List: []
   BankWwu:
   - Guid: '{44FBF719-14C9-4635-B1B7-CBAE9E1D46A1}'
-    m_lastTimePart2: -1999192018
-    m_lastTimePsrt1: -727836100
+    m_lastTimePart2: -1999191989
+    m_lastTimePsrt1: -1658283112
     ParentPhysicalPath: 
     PhysicalPath: SoundBanks\Default Work Unit.wwu
-    List: []
+    List:
+    - Guid: 7f87b7c8610422428f84aa895f4b80cf
+      ID: 460350457
+      Name: SBK
+      Path: Default Work Unit\SBK
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: SBK
+        ObjectType: 7
   EventWwu:
   - Guid: '{2949B062-6EE6-4570-85ED-F95646EBC3D5}'
-    m_lastTimePart2: -1999192018
-    m_lastTimePsrt1: -728384617
+    m_lastTimePart2: -1999191989
+    m_lastTimePsrt1: -1854374728
     ParentPhysicalPath: 
     PhysicalPath: Events\Default Work Unit.wwu
-    List: []
+    List:
+    - Guid: a115f20740701b479ff85b7ba6a860e0
+      ID: 1810912708
+      Name: Play_bite
+      Path: Default Work Unit\Play_bite
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: Play_bite
+        ObjectType: 3
+      maxAttenuation: 0
+      maxDuration: 0
+      minDuration: 0
   ExpandedItems:
   - /Gacha2019_WwiseProject
+  - /Gacha2019_WwiseProject/Events
+  - /Gacha2019_WwiseProject/Events/Default Work Unit
   RtpcWwu:
   - Guid: '{6DCC8D88-77E9-45F3-BE78-63CA5729AC4C}'
     m_lastTimePart2: -1999192018

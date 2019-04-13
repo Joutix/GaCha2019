@@ -1,0 +1,6 @@
+Event	ID	Name			Wwise Object Path	Notes
+	1810912708	Play_bite			\Default Work Unit\Play_bite	
+
+Source plug-ins	ID	Name	Type		Wwise Object Path	Notes
+	546559586	Wwise Sine	Wwise Sine		\Actor-Mixer Hierarchy\Default Work Unit\bite\Wwise Sine	
+
