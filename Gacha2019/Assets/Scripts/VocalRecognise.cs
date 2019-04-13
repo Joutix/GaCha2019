@@ -13,7 +13,7 @@ public class VocalRecognise : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-		actions.Add("avance", Forward);
+		actions.Add("Bonjour je m'appelle sabri", Forward);
 		actions.Add("up", Up);
 		actions.Add("down", Down);
 		actions.Add("back", Back);
