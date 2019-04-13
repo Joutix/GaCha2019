@@ -2,19 +2,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class SecondController : Player
 {
-
-
+    //this player controls the shooting "orbital" around the character
     #region  Attributes
-    
+
     #region  public
     #endregion
-       
+
     #region protected  
 
-    #endregion
+    [SerializeField] KeyCode m_Up;
+    [SerializeField] KeyCode m_Down;
+    [SerializeField] KeyCode m_Left;
+    [SerializeField] KeyCode m_Right;
 
+    [SerializeField] KeyCode m_Shoot;
+    [SerializeField] KeyCode m_SecondaryShoot;
+
+
+   
+
+    #endregion
     #endregion
 
 
@@ -28,15 +37,19 @@ public class Player : MonoBehaviour
 
 
 
+
+
+
+
     // Start is called before the first frame update
     void Start()
     {
-
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        
     }
 }

@@ -16,7 +16,7 @@ public class VocalRecognise : MonoBehaviour
 		actions.Add("Bonjour je m'appelle sabri", Forward);
 		actions.Add("up", Up);
 		actions.Add("down", Down);
-		actions.Add("back", Back);
+		actions.Add("Shazam", Back);
 
 		keywordRecognizer = new KeywordRecognizer(actions.Keys.ToArray());
 		keywordRecognizer.OnPhraseRecognized += RecognizedSpeech;
@@ -29,6 +29,8 @@ public class VocalRecognise : MonoBehaviour
 		Debug.Log(speech.text);
 		actions[speech.text].Invoke();
 	}
+
+	// Ultime avec la voix (Mot) 
 
     private void Forward()
 	{
