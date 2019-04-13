@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 2636046196416230559}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 2.4494505, y: 4.239988, z: -3.786931}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -119,5 +119,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_DistanceToBody: 1.45
-  m_OrbitalPrefab: {fileID: 2909954196202660253, guid: 761d087f098a1e840a7dfaac6f3ab753,
-    type: 3}
+  m_PrefabOrbital: {fileID: 0}
+  m_PrefabBullet: {fileID: 0}
+  m_BulletSpawnOffset: 2

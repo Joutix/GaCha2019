@@ -20,26 +20,27 @@ public class Character : MonoBehaviour
     #endregion
 
     #region Private Methods
-    private bool IsValidDestination(int _RowDestination, int _ColumnDest)
+    private bool IsValidDestination(int _RowDestination, int _ColumnDestination)
     {
         //get grid
         GameGrid grid = GameManager.Instance.GameGrid;
 
         //check if the destination isn't out of grid
-        bool cellExists = grid.IsValidDestination(_RowDestination, _ColumnDest);
+        bool cellExists = grid.IsValidDestination(_RowDestination, _ColumnDestination);
 
         //if it doesn't return false + debug error
         if (!cellExists)
         {
-            Debug.LogError("Cell doesn't exist/ destination not valid");
+            //Debug.LogError("Cell doesn't exist/ destination not valid");
             return false;
         }
 
         //check if the cell is empty, and if it's not, check if the enemy is small
         else
         {
-            bool cellIsEmpty = grid.IsEmptyAt(_RowDestination, _ColumnDest);
-            Entity entity = grid.GetGridCellAt(_RowDestination, _ColumnDest).Entity;//.IsSmall;
+            bool cellIsEmpty = grid.IsEmptyAt(_RowDestination, _ColumnDestination);
+            bool cellIsCrossable = grid.GetGridCellAt(_RowDestination, _ColumnDestination).IsCrossable;
+            Entity entity = grid.GetGridCellAt(_RowDestination, _ColumnDestination).Entity;//.IsSmall;
             bool enemyInCellIsSmall = false;
 
             Enemy enemy = entity as Enemy;
@@ -49,7 +50,7 @@ public class Character : MonoBehaviour
                 //////////////////   enemyInCellIsSmall = enemy.IsSmall;
             }
 
-            return (cellIsEmpty || enemyInCellIsSmall);
+            return (cellIsEmpty && cellIsCrossable || enemyInCellIsSmall);
         }
     }
 
@@ -78,21 +79,19 @@ public class Character : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            TryMove(0, 1);
+            TryMove(1, 0);
         }
-
         else if (Input.GetKeyDown(KeyCode.S))
-        {
-            TryMove(0, -1);
-        }
-
-        else if(Input.GetKeyDown(KeyCode.Q))
         {
             TryMove(-1, 0);
         }
+        else if(Input.GetKeyDown(KeyCode.Q))
+        {
+            TryMove(0, -1);
+        }
         else if (Input.GetKeyDown(KeyCode.D))
         {
-            TryMove(1, 0);
+            TryMove(0, 1);
         }
     }
 

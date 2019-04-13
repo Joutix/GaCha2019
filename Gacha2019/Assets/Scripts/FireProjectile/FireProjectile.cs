@@ -41,7 +41,7 @@ public class FireProjectile : MonoBehaviour
 
 		pos += direction * m_bulletSpawnOffset;
 		GameObject bulletClone = Instantiate(m_bullet, pos, Quaternion.identity);
-		bulletClone.GetComponent<Rigidbody>().velocity = direction * m_bullet.GetComponent<Bullet>().Damage;
+		bulletClone.GetComponent<Rigidbody>().velocity = direction * m_bullet.GetComponent<Bullet>().Speed;
 	}
 
 
