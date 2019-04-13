@@ -20,30 +20,14 @@ public class MenuUIManager : MonoBehaviour
         m_CreditsUI.SetActive(false);
     }
 
-    public void HandleMenuButtonClick(string btnName)
+    public void Play()
     {
-        switch (btnName)
-        {
-            case "play":
-                Debug.Log("Playing...");
-                break;
-            case "options":
-                m_OptionsUI.SetActive(true);
-                m_MenuUI.SetActive(false);
-                break;
-            case "credits":
-                m_CreditsUI.SetActive(true);
-                m_MenuUI.SetActive(false);
-                break;
-            case "back":
-                m_MenuUI.SetActive(true);
-                m_CreditsUI.SetActive(false);
-                m_OptionsUI.SetActive(false);
-                break;
-            case "quit":
-                Debug.Log("Quitting");
-                Application.Quit();
-                break;
-        }
+        Debug.Log("Play");
+    }
+
+    public void Quit()
+    {
+        Debug.Log("Quitting...");
+        Application.Quit();
     }
 }
