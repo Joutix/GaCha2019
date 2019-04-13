@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class MicrophoneLevel : MonoBehaviour
 {
+	// In commentary, Second Microphone
 	public float m_testSound1;
 	//public float testSound2;
 	public static float s_MicLoudness1;
@@ -15,7 +16,20 @@ public class MicrophoneLevel : MonoBehaviour
 	private int m_sampleWindow = 128;
 	private bool m_isInitialized;
 	private bool m_requestPending;
-	public float m_seuil;
+
+	public float m_thresholdWeak = 0.2f;
+	public float m_thresholdStrong;
+
+	private static MicrophoneLevel s_Instance;
+
+	public static MicrophoneLevel getInstance()
+	{
+		if(s_Instance == null)
+		{
+			s_Instance = GameObject.FindObjectOfType<MicrophoneLevel>();
+		}
+		return s_Instance;
+	}
 
 	void InitMic()
 	{
@@ -71,13 +85,6 @@ public class MicrophoneLevel : MonoBehaviour
 		//MicLoudness2 = LevelMax(_device2, _clipRecord2);
 		m_testSound1 = s_MicLoudness1;
 		//testSound2 = MicLoudness2;
-		if (s_MicLoudness1 > m_seuil) { 
-			Debug.Log("Débit du microphone " + Microphone.devices[0] + " : " + s_MicLoudness1);
-		}
-		//if (MicLoudness2 > seuil)
-		//{
-		//	Debug.Log("Débit du microphone " + Microphone.devices[1] + " : " + MicLoudness2);
-		//}
 
 	}
 

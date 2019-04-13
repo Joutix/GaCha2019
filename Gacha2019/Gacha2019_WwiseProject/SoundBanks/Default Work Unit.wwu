@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WwiseDocument Type="WorkUnit" ID="{44FBF719-14C9-4635-B1B7-CBAE9E1D46A1}" SchemaVersion="89">
+	<SoundBanks>
+		<WorkUnit Name="Default Work Unit" ID="{44FBF719-14C9-4635-B1B7-CBAE9E1D46A1}" PersistMode="Standalone">
+			<ChildrenList>
+				<SoundBank Name="SBK" ID="{C8B7877F-0461-4222-8F84-AA895F4B80CF}">
+					<ObjectInclusionList>
+						<ObjectRef Name="Play_bite" ID="{07F215A1-7040-471B-9FF8-5B7BA6A860E0}" WorkUnitID="{2949B062-6EE6-4570-85ED-F95646EBC3D5}" Filter="7" Origin="Manual"/>
+					</ObjectInclusionList>
+					<ObjectExclusionList/>
+					<GameSyncExclusionList/>
+				</SoundBank>
+			</ChildrenList>
+		</WorkUnit>
+	</SoundBanks>
+</WwiseDocument>

@@ -1,0 +1,99 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5066488d961b3c94395dae367f733548, type: 3}
+  m_Name: AkWwiseProjectData
+  m_EditorClassIdentifier: 
+  autoPopulateEnabled: 1
+  CurrentPluginConfig: 
+  m_lastPopulateTimePart2: 0
+  m_lastPopulateTimePsrt1: 0
+  AcousticTextureWwu:
+  - Guid: '{FE6DDF4C-FE85-493F-98C0-9DA9BE5F89C7}'
+    m_lastTimePart2: -1999192018
+    m_lastTimePsrt1: -728234889
+    ParentPhysicalPath: 
+    PhysicalPath: Virtual Acoustics\Default Work Unit.wwu
+    List: []
+  AuxBusWwu:
+  - Guid: '{5A365A61-537C-4508-B85B-A286FF3F7D14}'
+    m_lastTimePart2: -1999192018
+    m_lastTimePsrt1: -728913201
+    ParentPhysicalPath: 
+    PhysicalPath: Master-Mixer Hierarchy\Default Work Unit.wwu
+    List: []
+  BankWwu:
+  - Guid: '{44FBF719-14C9-4635-B1B7-CBAE9E1D46A1}'
+    m_lastTimePart2: -1999191989
+    m_lastTimePsrt1: -1658283112
+    ParentPhysicalPath: 
+    PhysicalPath: SoundBanks\Default Work Unit.wwu
+    List:
+    - Guid: 7f87b7c8610422428f84aa895f4b80cf
+      ID: 460350457
+      Name: SBK
+      Path: Default Work Unit\SBK
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: SBK
+        ObjectType: 7
+  EventWwu:
+  - Guid: '{2949B062-6EE6-4570-85ED-F95646EBC3D5}'
+    m_lastTimePart2: -1999191989
+    m_lastTimePsrt1: -1854374728
+    ParentPhysicalPath: 
+    PhysicalPath: Events\Default Work Unit.wwu
+    List:
+    - Guid: a115f20740701b479ff85b7ba6a860e0
+      ID: 1810912708
+      Name: Play_bite
+      Path: Default Work Unit\Play_bite
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: Play_bite
+        ObjectType: 3
+      maxAttenuation: 0
+      maxDuration: 0
+      minDuration: 0
+  ExpandedItems:
+  - /Gacha2019_WwiseProject
+  - /Gacha2019_WwiseProject/Events
+  - /Gacha2019_WwiseProject/Events/Default Work Unit
+  RtpcWwu:
+  - Guid: '{6DCC8D88-77E9-45F3-BE78-63CA5729AC4C}'
+    m_lastTimePart2: -1999192018
+    m_lastTimePsrt1: -728344740
+    ParentPhysicalPath: 
+    PhysicalPath: Game Parameters\Default Work Unit.wwu
+    List: []
+  StateWwu:
+  - Guid: '{3CB729DE-0AB6-4847-BC9E-B6753E8D569C}'
+    m_lastTimePart2: -1999192018
+    m_lastTimePsrt1: -727616681
+    ParentPhysicalPath: 
+    PhysicalPath: States\Default Work Unit.wwu
+    List: []
+  SwitchWwu:
+  - Guid: '{AF347523-7056-4555-AD19-D30B42BFEDB9}'
+    m_lastTimePart2: -1999192018
+    m_lastTimePsrt1: -727675889
+    ParentPhysicalPath: 
+    PhysicalPath: Switches\Default Work Unit.wwu
+    List: []
+  TriggerWwu:
+  - Guid: '{4791128A-C31A-4852-A60B-74EAD07977EE}'
+    m_lastTimePart2: -1999192018
+    m_lastTimePsrt1: -728095383
+    ParentPhysicalPath: 
+    PhysicalPath: Triggers\Default Work Unit.wwu
+    List: []

@@ -63,12 +63,38 @@ public class Character : MonoBehaviour
         //DELETE THIS LATER IF PLAYER DOESNT TP TO OTHER CELLS
         m_CurrentRow = _RowDestination;
         m_CurrentColumn = _ColumnDestination;
-
     }
     #endregion
 
     #region Attributes
     private int m_CurrentRow = 0;
     private int m_CurrentColumn = 0;
+    #endregion
+
+
+    #region Mono
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            TryMove(0, 1);
+        }
+
+        else if (Input.GetKeyDown(KeyCode.S))
+        {
+            TryMove(0, -1);
+        }
+
+        else if(Input.GetKeyDown(KeyCode.Q))
+        {
+            TryMove(-1, 0);
+        }
+        else if (Input.GetKeyDown(KeyCode.D))
+        {
+            TryMove(1, 0);
+        }
+    }
+
     #endregion
 }

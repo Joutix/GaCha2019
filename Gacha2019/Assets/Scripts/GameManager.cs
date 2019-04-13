@@ -6,7 +6,7 @@ public class GameManager : Singleton<GameManager>
     #region Public Methods
     public void RegisterGrid(GameGrid _GameGrid)
     {
-
+        m_GameGrid = _GameGrid;
     }
     #endregion
 
