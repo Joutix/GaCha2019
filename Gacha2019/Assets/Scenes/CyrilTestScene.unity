@@ -369,4 +369,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_MaxLifePoint: 3
   m_EnemyColor: 0
+  m_EnemySize: 2
   m_EnemyState: 0
+  m_StunTime: 5
+  m_PhaseLittleInfo:
+    PhaseMesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+    BulletPrefab: {fileID: 0}
+    PhaseMaterialRed: {fileID: 2100000, guid: 382b3c775dea411409cd13e25ba2fb3f, type: 2}
+    PhaseMaterialBlue: {fileID: 0}
+    PhaseMaxHealth: 0
+  m_PhaseMediumInfo:
+    PhaseMesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+    BulletPrefab: {fileID: 0}
+    PhaseMaterialRed: {fileID: 2100000, guid: f12ebfd2ed49bbb48a7743094c3b19fc, type: 2}
+    PhaseMaterialBlue: {fileID: 0}
+    PhaseMaxHealth: 0
+  m_PhaseLargeInfo:
+    PhaseMesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+    BulletPrefab: {fileID: 0}
+    PhaseMaterialRed: {fileID: 2100000, guid: 261a2e4172059334790fb935c3376aa3, type: 2}
+    PhaseMaterialBlue: {fileID: 0}
+    PhaseMaxHealth: 0
+  m_TestMaterial: {fileID: 2100000, guid: a648fad033952c341a698ea7bc2342ce, type: 2}
