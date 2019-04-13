@@ -8,9 +8,9 @@ public class Entity : MonoBehaviour
     #region Members
 
     [SerializeField]
-    private int m_MaxLifePoint = 3;
+    protected int m_MaxLifePoint = 3;
 
-    private int m_CurrentLifePoint = 0;
+    protected int m_CurrentLifePoint = 0;
 
 
     #endregion
@@ -47,6 +47,8 @@ public class Entity : MonoBehaviour
         Destroy(gameObject);
     }
 
+    public virtual void TryMove() { }
+
     #endregion
 
     #region MonoBehavior
@@ -58,10 +60,7 @@ public class Entity : MonoBehaviour
 
     protected virtual void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            TakeDamage(1);
-        }
+
     }
 
     #endregion

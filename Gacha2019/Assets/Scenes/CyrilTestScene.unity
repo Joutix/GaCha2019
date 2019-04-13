@@ -364,7 +364,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1584143507}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f86adf0937c092e49bf47297e07e26c4, type: 3}
+  m_Script: {fileID: 11500000, guid: 39daa92fef6a34743b80fac68ea25451, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_MaxLifePoint: 3
+  m_EnemyColor: 0
+  m_EnemyState: 0
