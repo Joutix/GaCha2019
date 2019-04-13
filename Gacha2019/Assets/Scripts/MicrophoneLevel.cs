@@ -16,6 +16,10 @@ public class MicrophoneLevel : MonoBehaviour
 	void InitMic()
 	{
 		Debug.Log("Nombre de micro : " + Microphone.devices.Length);
+		foreach(var device in Microphone.devices)
+		{
+			Debug.Log(device);
+		}
 		if (_device == null)
 		{
 			_device = Microphone.devices[0];
