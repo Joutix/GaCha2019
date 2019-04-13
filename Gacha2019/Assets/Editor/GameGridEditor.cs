@@ -1,0 +1,122 @@
+﻿using UnityEditor;
+using UnityEngine;
+
+[CustomEditor(typeof(GameGrid))]
+public class GameGridEditor : Editor
+{
+    #region Private Methods
+    public override void OnInspectorGUI()
+    {
+        serializedObject.Update();
+        GridConfiguration();
+        serializedObject.ApplyModifiedProperties();
+    }
+
+    protected virtual void OnEnable()
+    {
+        m_RowsProperty = serializedObject.FindProperty("m_Rows");
+        m_ColumnsProperty = serializedObject.FindProperty("m_Columns");
+        m_PrefabCellProperty = serializedObject.FindProperty("m_PrefabGridCell");
+        m_GridProperty = serializedObject.FindProperty("m_GridCells");
+        m_GridTarget = (GameGrid)target;
+    }
+
+    private void GridConfiguration()
+    {
+        GUILayout.TextField("Grid Configurations", EditorStyles.boldLabel);
+        RowsField();
+        ColumnsField();
+        PrefabField();
+        GridButtons();
+    }
+
+    private void RowsField()
+    {
+        int newValue = Mathf.Max(1, m_RowsProperty.intValue);
+        m_RowsProperty.intValue = EditorGUILayout.IntField("Rows", newValue, GUILayout.ExpandWidth(false));
+    }
+
+    private void ColumnsField()
+    {
+        int newValue = Mathf.Max(1, m_ColumnsProperty.intValue);
+        m_ColumnsProperty.intValue = EditorGUILayout.IntField("Columns", newValue, GUILayout.ExpandWidth(false));
+    }
+
+    private void PrefabField()
+    {
+        //m_PrefabCellProperty.objectReferenceValue = EditorGUILayout.ObjectField()
+        //EditorGUILayout.ObjectField(m_PrefabCellProperty, GUILayout.ExpandWidth(false));
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("Prefab", GUILayout.MaxWidth(50));
+        m_PrefabCellProperty.objectReferenceValue = EditorGUILayout.ObjectField(m_PrefabCellProperty.objectReferenceValue, typeof(GameObject), false, GUILayout.MaxWidth(150));
+        EditorGUILayout.EndHorizontal();
+    }
+
+    private void GridButtons()
+    {
+        Color defaultColor = GUI.color;
+        GUI.color = Color.yellow;
+
+        if (GUILayout.Button("Create"))
+        {
+            CleanGrid();
+            CreateGrid();
+            
+        }
+
+        GUI.color = Color.red;
+        if (GUILayout.Button("Clear"))
+        {
+            CleanGrid();
+        }
+        GUI.color = defaultColor;
+    }
+
+    private void CreateGrid()
+    {
+        int rows = m_RowsProperty.intValue;
+        int columns = m_ColumnsProperty.intValue;
+        m_GridProperty.arraySize = rows * columns;
+
+        string path = AssetDatabase.GetAssetPath(m_PrefabCellProperty.objectReferenceValue);
+        GameObject prefab = AssetDatabase.LoadAssetAtPath(path, typeof(GameObject)) as GameObject;
+
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < columns; j++)
+            {
+                int indexGridCell = i * columns + j;
+                SerializedProperty sp = m_GridProperty.GetArrayElementAtIndex(indexGridCell);
+                GameObject cell = PrefabUtility.InstantiatePrefab(prefab as GameObject) as GameObject;
+                cell.name = "GridCell [" + i + ";" + j + "]";
+                cell.transform.position = new Vector3(j, 0, i);
+                cell.transform.parent = m_GridTarget.transform;
+                sp.objectReferenceValue = cell;
+            }
+        }
+    }
+
+    private void CleanGrid()
+    {
+        int lastIndex = m_GridProperty.arraySize - 1;
+        while (lastIndex >= 0)
+        {
+            if (m_GridProperty.GetArrayElementAtIndex(lastIndex).objectReferenceValue)
+            {
+                GridCell gridCell = m_GridProperty.GetArrayElementAtIndex(lastIndex).objectReferenceValue as GridCell;
+                DestroyImmediate(gridCell.gameObject);
+            }
+            lastIndex--;
+        }
+        m_GridProperty.arraySize = 0;
+    }
+    #endregion
+
+    #region Attributes
+    private SerializedProperty m_RowsProperty = null;
+    private SerializedProperty m_ColumnsProperty = null;
+    private SerializedProperty m_PrefabCellProperty = null;
+    private SerializedProperty m_GridProperty = null;
+    private GameGrid m_GridTarget = null;
+    #endregion
+}

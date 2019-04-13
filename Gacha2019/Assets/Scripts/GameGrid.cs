@@ -12,10 +12,6 @@ public class GameGrid : MonoBehaviour
     public bool IsValidDestination(int _RowDest, int _ColumnDest)
     {
         return GetIndex(_RowDest, _ColumnDest) != -1;
-
-        bool isValid = _RowDest >= 0 && _RowDest < m_Rows;
-        isValid = isValid && _ColumnDest >= 0 && _ColumnDest < m_Columns;
-        return isValid;
     }
 
     public GridCell GetGridCellAt(int _Row, int _Column)
@@ -36,10 +32,14 @@ public class GameGrid : MonoBehaviour
     #endregion
 
     #region Private Methods
-    private void Start()
+    private void Awake()
     {
         GameManager.Instance.RegisterGrid(this);
-        CreateGrid();
+    }
+
+    private void Start()
+    {
+        //CreateGrid();
         //OnCellEntered(m_GridCells[0, 0]);
     }
 

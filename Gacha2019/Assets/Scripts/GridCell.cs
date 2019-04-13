@@ -6,8 +6,8 @@ public class GridCell : MonoBehaviour
     #region Public Methods
     public void PlaceCell(int _Row, int _Depth)
     {
-        m_Row = _Row;
-        m_Depth = _Depth;
+        m_RowPos = _Row;
+        m_ColumnPos = _Depth;
     }
     public void OnCellEntered()
     {
@@ -35,15 +35,15 @@ public class GridCell : MonoBehaviour
     {
         get
         {
-            return m_Row;
+            return m_RowPos;
         }
     }
-
-    public int Depth
+    
+    public int Column
     {
         get
         {
-            return m_Depth;
+            return m_ColumnPos;
         }
     }
 
@@ -52,6 +52,14 @@ public class GridCell : MonoBehaviour
         get
         {
             return m_Entity == null;
+        }
+    }
+
+    public bool IsCrossable
+    {
+        get
+        {
+            return m_IsCrossable;
         }
     }
 
@@ -65,14 +73,16 @@ public class GridCell : MonoBehaviour
     #endregion
 
     #region Attributes
-    [SerializeField] private int m_Row = 0;
-    [SerializeField] private int m_Depth = 0;
+    [Header("Cell State")]
+    [SerializeField] private bool m_IsCrossable = true;
 
     [Header("Events")]
     [SerializeField] private UnityEvent m_OnCellEnterEvents = null;
     [SerializeField] private UnityEvent m_OnCellExitEvents = null;
 
-    [SerializeField] private Entity m_Entity = null;
+    private Entity m_Entity = null;
+    private int m_RowPos = 0;
+    private int m_ColumnPos = 0;
     #endregion
 
 
