@@ -5,19 +5,23 @@ public class GameGrid : MonoBehaviour
     #region Public Methods
     public bool IsEmptyAt(int _Row, int _Column)
     {
-        return m_GridCells[_Row, _Column].IsEmpty;
+        int index = GetIndex(_Row, _Column);
+        return m_GridCells[index].IsEmpty;
     }
 
-    public bool IsValidDestination(int _RowDest, int _DepthDest)
+    public bool IsValidDestination(int _RowDest, int _ColumnDest)
     {
-        bool isValid = _RowDest >= 0 && _RowDest < m_Width;
-        isValid = isValid && _DepthDest >= 0 && _DepthDest < m_Depth;
+        return GetIndex(_RowDest, _ColumnDest) != -1;
+
+        bool isValid = _RowDest >= 0 && _RowDest < m_Rows;
+        isValid = isValid && _ColumnDest >= 0 && _ColumnDest < m_Columns;
         return isValid;
     }
 
-    public GridCell GetGridCellAt(int _Row, int _Depth)
+    public GridCell GetGridCellAt(int _Row, int _Column)
     {
-        return m_GridCells[_Row, _Depth];
+        int index = GetIndex(_Row, _Column);
+        return m_GridCells[index];
     }
 
     //public void OnCellEntered(GridCell _CellDestination)
@@ -61,22 +65,40 @@ public class GameGrid : MonoBehaviour
 
     private void CreateGrid()
     {
-        m_GridCells = new GridCell[m_Width, m_Depth];
-        for (int i = 0; i < m_Width; i++)
+        //m_GridCells = new GridCell[m_Rows, m_Columns];
+        m_GridCells = new GridCell[m_Rows * m_Columns];
+        for (int i = 0; i < m_Rows; i++)
         {
-            for (int k = 0; k < m_Depth; k++)
+            for (int j = 0; j < m_Columns; j++)
             {
-                CreateCell(i, k);
+                CreateCell(i, j);
             }
         }
     }
 
-    private void CreateCell(int _PosX, int _PosZ)
+    private void CreateCell(int _Row, int _Column)
     {
-        GridCell cell = Instantiate<GameObject>(m_PrefabGridCell.gameObject, new Vector3(_PosX, _PosZ), Quaternion.identity).GetComponent<GridCell>();
-        cell.name = "Cell [" + _PosX + ";" + _PosZ + "]";
-        cell.PlaceCell(_PosX, _PosZ);
-        m_GridCells[_PosX, _PosZ] = cell;
+        GridCell cell = Instantiate<GameObject>(m_PrefabGridCell.gameObject, new Vector3(_Row, 0, _Column), Quaternion.identity).GetComponent<GridCell>();
+        cell.name = "Cell [" + _Row + ";" + _Column + "]";
+        cell.PlaceCell(_Row, _Column);
+        //m_GridCells[_Row, _Column] = cell;
+
+        int index = GetIndex(_Row, _Column);
+        m_GridCells[index] = cell;
+    }
+
+    private int GetIndex(int _Row, int _Column)
+    {
+        int index;
+        if (_Row < 0 || _Row >= m_Rows || _Column < 0 || _Column >= m_Columns)
+        {
+            index = -1;
+        }
+        else
+        {
+            index = _Row * m_Rows + _Column;
+        }
+        return index;
     }
 
     //private void TryMove(int _OffsetRow, int _OffsetColumn, int _OffsetDepth)
@@ -93,19 +115,19 @@ public class GameGrid : MonoBehaviour
 
     #region Attributes
     [Header("Grid dimensions")]
-    [SerializeField] private int m_Width = 1;
-    [SerializeField] private int m_Depth = 1;
+    [SerializeField] private int m_Rows = 1;
+    [SerializeField] private int m_Columns = 1;
 
-    private GridCell[,] m_GridCells = null;
-    private GridCell m_CurrentCell = null;
+    [SerializeField] private GridCell[] m_GridCells = null;
+    //private GridCell m_CurrentCell = null;
 
     [Header("Prefab")]
     [SerializeField] private GridCell m_PrefabGridCell = null;
 
-    [Header("Inputs")]
-    [SerializeField] private KeyCode m_Forward = default;
-    [SerializeField] private KeyCode m_Back = default;
-    [SerializeField] private KeyCode m_Left = default;
-    [SerializeField] private KeyCode m_Right = default;
+    //[Header("Inputs")]
+    //[SerializeField] private KeyCode m_Forward = default;
+    //[SerializeField] private KeyCode m_Back = default;
+    //[SerializeField] private KeyCode m_Left = default;
+    //[SerializeField] private KeyCode m_Right = default;
     #endregion
 }
