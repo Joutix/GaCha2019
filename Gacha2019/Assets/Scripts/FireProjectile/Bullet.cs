@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
+	[SerializeField] protected float m_SpeedBullet;
+
+
 	// Start is called before the first frame update
 	void Start()
 	{
@@ -16,6 +19,19 @@ public class Bullet : MonoBehaviour
 
 	}
 
+	public float getBulletSpeed()
+	{
+		return m_SpeedBullet;
+	}
+
+	public float BulletSpeed
+	{
+		get
+		{
+			return m_SpeedBullet;
+		}
+	}
+
 	//Detecte la collision via le TAG de l'objet
 
 	public void OnCollisionEnter(Collision collision)
@@ -23,7 +39,8 @@ public class Bullet : MonoBehaviour
 		if (collision.gameObject.tag == "Enemy")
 		{
 			collision.gameObject.SetActive(false);
-			this.gameObject.SetActive(false);
+			Destroy(this);
+
 		}
 
 		if (collision.gameObject.tag == "Wall")

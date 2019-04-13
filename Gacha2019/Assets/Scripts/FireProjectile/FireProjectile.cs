@@ -4,9 +4,14 @@ using UnityEngine;
 
 public class FireProjectile : MonoBehaviour
 {
-	public Rigidbody Bullet;
-	//public GameObject Bullet;
-	public float BulletSpeed = 50;
+	private float timeBtwAttack;
+	private float reloadTime = 1f;
+
+	[SerializeField] private GameObject m_bullet;
+	private float m_bulletSpawnOffset = 2;
+
+	//[SerializeField] private Transform m_firePoint;
+
 
 	// Start is called before the first frame update
 	void Start()
@@ -17,17 +22,26 @@ public class FireProjectile : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		if (Input.GetKeyDown(KeyCode.A))
+		if (timeBtwAttack <= 0 &&
+			MicrophoneLevel.getInstance().getMicLoudness() > MicrophoneLevel.getInstance().m_thresholdWeak)
 		{
-			Shoot();
+			// Change this with the given shoot direction
+			Shoot(Vector3.right);
+			timeBtwAttack = reloadTime;
+		}
+		else
+		{
+			timeBtwAttack -= Time.deltaTime;
 		}
 	}
 
-	void Shoot()
+	void Shoot(Vector3 direction)
 	{
-		Rigidbody BulletClone = (Rigidbody)Instantiate(Bullet, new Vector3(this.gameObject.transform.position.x + 2, this.gameObject.transform.position.y, this.gameObject.transform.position.z), Quaternion.identity);
+		Vector3 pos = transform.position;
 
-		BulletClone.velocity = transform.right * BulletSpeed;
+		pos += direction * m_bulletSpawnOffset;
+		GameObject bulletClone = Instantiate(m_bullet, pos, Quaternion.identity);
+		bulletClone.GetComponent<Rigidbody>().velocity = direction * m_bullet.GetComponent<Bullet>().getBulletSpeed();
 	}
 
 
