@@ -37,8 +37,4 @@ sysinfo.txt
 
 # Wwise Cache data
 Gacha2019_WwiseProject/.cache/
-Gacha2019_WwiseProject/.wsettings
-Gacha2019_WwiseProject/.validationcache
 Gacha2019_WwiseProject/.akd
-Gacha2019_WwiseProject/.prof
-Assets/Wwise/
