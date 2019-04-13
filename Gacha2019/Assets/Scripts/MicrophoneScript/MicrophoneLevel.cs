@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class MicrophoneLevel : MonoBehaviour
 {
+	// In commentary, Second Microphone
 	public float m_testSound1;
 	//public float testSound2;
 	public static float s_MicLoudness1;
