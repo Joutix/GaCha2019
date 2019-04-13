@@ -5,7 +5,7 @@ using UnityEngine;
 public class SecondCharacter : MonoBehaviour
 {
 
-    public float m_DistanceToBody = 1.2f;
+    [SerializeField] public float m_DistanceToBody = 1.2f;
 
     [SerializeField] private GameObject m_Prefab = null;
 

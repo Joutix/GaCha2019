@@ -118,7 +118,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57843e2cc46267d4c8bf410972186609, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_DistanceToBody: 0.5
+  m_DistanceToBody: 2.83
   m_Prefab: {fileID: 2909954196202660253, guid: 761d087f098a1e840a7dfaac6f3ab753,
     type: 3}
-  m_Root: {fileID: 2636046196416230559}
