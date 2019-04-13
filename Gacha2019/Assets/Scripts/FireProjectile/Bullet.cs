@@ -4,48 +4,19 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-	[SerializeField] protected float m_SpeedBullet;
+    [SerializeField]
+    private float m_Speed;
 
+    [SerializeField]
+    private EEntityColor m_Color = EEntityColor.Red;
 
-	// Start is called before the first frame update
-	void Start()
-	{
+    [SerializeField]
+    private int m_Damage = 1;
 
-	}
+    protected float Speed { get => m_Speed; }
 
-	// Update is called once per frame
-	void Update()
-	{
+    public EEntityColor Color { get => m_Color; }
 
-	}
+    public int Damage { get => m_Damage; }
 
-	public float getBulletSpeed()
-	{
-		return m_SpeedBullet;
-	}
-
-	public float BulletSpeed
-	{
-		get
-		{
-			return m_SpeedBullet;
-		}
-	}
-
-	//Detecte la collision via le TAG de l'objet
-
-	public void OnCollisionEnter(Collision collision)
-	{
-		if (collision.gameObject.tag == "Enemy")
-		{
-			collision.gameObject.SetActive(false);
-			Destroy(this);
-
-		}
-
-		if (collision.gameObject.tag == "Wall")
-		{
-			this.gameObject.SetActive(false);
-		}
-	}
 }

@@ -188,6 +188,8 @@ public class Enemy : Entity
             if (m_CurrentStunTime <= 0)
             {
                 m_IsStunned = false;
+
+                m_CurrentLifePoint = m_MaxLifePoint;
             }
         }
     }
@@ -232,4 +234,21 @@ public class Enemy : Entity
     }
 
     #endregion
+
+    #region MonoBehavior
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Bullet bullet = other.gameObject.GetComponent<Bullet>();
+
+        if (bullet != null && bullet.Color == m_EnemyColor)
+        {
+            TakeDamage(bullet.Damage);
+
+            Destroy(bullet.gameObject);
+        }
+    }
+
+    #endregion
+
 }
