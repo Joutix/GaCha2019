@@ -3,25 +3,32 @@
 public class GameGrid : MonoBehaviour
 {
     #region Public Methods
-    public void IsEmptyAt(int _Row, int _Column)
+    public bool IsEmptyAt(int _Row, int _Column)
     {
-        throw new System.NotImplementedException();
+        return m_GridCells[_Row, _Column].IsEmpty;
     }
 
-    public void OnCellEntered(GridCell _CellDestination)
+    public bool IsValidDestination(int _RowDest, int _DepthDest)
     {
-        if (m_CurrentCell)
-        {
-            m_CurrentCell.OnCellExited();
-        }
-        m_CurrentCell = _CellDestination;
-        m_CurrentCell.OnCellEntered();
+        bool isValid = _RowDest >= 0 && _RowDest < m_Width;
+        isValid = isValid && _DepthDest >= 0 && _DepthDest < m_Depth;
+        return isValid;
     }
 
-    public void PrintValue(int _Value)
+    public GridCell GetGridCellAt(int _Row, int _Depth)
     {
-        Debug.Log(_Value);
+        return m_GridCells[_Row, _Depth];
     }
+
+    //public void OnCellEntered(GridCell _CellDestination)
+    //{
+    //    if (m_CurrentCell)
+    //    {
+    //        m_CurrentCell.OnCellExited();
+    //    }
+    //    m_CurrentCell = _CellDestination;
+    //    m_CurrentCell.OnCellEntered();
+    //}
     #endregion
 
     #region Private Methods
@@ -29,27 +36,27 @@ public class GameGrid : MonoBehaviour
     {
         GameManager.Instance.RegisterGrid(this);
         CreateGrid();
-        OnCellEntered(m_GridCells[0, 0]);
+        //OnCellEntered(m_GridCells[0, 0]);
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(m_Forward))
-        {
-            TryMove(0, 0, 1);
-        }
-        else if (Input.GetKeyDown(m_Back))
-        {
-            TryMove(0, 0, -1);
-        }
-        else if (Input.GetKeyDown(m_Left))
-        {
-            TryMove(-1, 0, 0);
-        }
-        else if (Input.GetKeyDown(m_Right))
-        {
-            TryMove(1, 0, 0);
-        }
+        //if (Input.GetKeyDown(m_Forward))
+        //{
+        //    TryMove(0, 0, 1);
+        //}
+        //else if (Input.GetKeyDown(m_Back))
+        //{
+        //    TryMove(0, 0, -1);
+        //}
+        //else if (Input.GetKeyDown(m_Left))
+        //{
+        //    TryMove(-1, 0, 0);
+        //}
+        //else if (Input.GetKeyDown(m_Right))
+        //{
+        //    TryMove(1, 0, 0);
+        //}
     }
 
     private void CreateGrid()
@@ -72,23 +79,16 @@ public class GameGrid : MonoBehaviour
         m_GridCells[_PosX, _PosZ] = cell;
     }
 
-    private void TryMove(int _OffsetRow, int _OffsetColumn, int _OffsetDepth)
-    {
-        int rowDest = m_CurrentCell.Row + _OffsetRow;
-        int depthDest = m_CurrentCell.Depth + _OffsetDepth;
-        if (IsValidDestination(rowDest, depthDest))
-        {
-            GridCell destination = m_GridCells[rowDest, depthDest];
-            OnCellEntered(destination);
-        }
-    }
-
-    private bool IsValidDestination(int _RowDest, int _DepthDest)
-    {
-        bool isValid = _RowDest >= 0 && _RowDest < m_Width;
-        isValid = isValid && _DepthDest >= 0 && _DepthDest < m_Depth;
-        return isValid;
-    }
+    //private void TryMove(int _OffsetRow, int _OffsetColumn, int _OffsetDepth)
+    //{
+    //    int rowDest = m_CurrentCell.Row + _OffsetRow;
+    //    int depthDest = m_CurrentCell.Depth + _OffsetDepth;
+    //    if (IsValidDestination(rowDest, depthDest))
+    //    {
+    //        GridCell destination = m_GridCells[rowDest, depthDest];
+    //        OnCellEntered(destination);
+    //    }
+    //}
     #endregion
 
     #region Attributes

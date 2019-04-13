@@ -14,7 +14,6 @@ public class GridCell : MonoBehaviour
         /*
          * more code if needed
          */
-        m_MeshRenderer.material = m_OccupiedMaterial;
         m_OnCellEnterEvents.Invoke();
     }
 
@@ -24,7 +23,6 @@ public class GridCell : MonoBehaviour
          * more code if needed
          */
 
-        m_MeshRenderer.material = m_EmptyMaterial;
         m_OnCellExitEvents.Invoke();
     }
     #endregion
@@ -33,14 +31,6 @@ public class GridCell : MonoBehaviour
     #endregion
 
     #region Getters / Setters
-    public GameGrid GameGrid
-    {
-        set
-        {
-            m_GameGrid = value;
-        }
-    }
-
     public int Row
     {
         get
@@ -56,6 +46,22 @@ public class GridCell : MonoBehaviour
             return m_Depth;
         }
     }
+
+    public bool IsEmpty
+    {
+        get
+        {
+            return m_Entity == null;
+        }
+    }
+
+    public Entity Entity
+    {
+        get
+        {
+            return m_Entity;
+        }
+    }
     #endregion
 
     #region Attributes
@@ -66,14 +72,7 @@ public class GridCell : MonoBehaviour
     [SerializeField] private UnityEvent m_OnCellEnterEvents = null;
     [SerializeField] private UnityEvent m_OnCellExitEvents = null;
 
-
-    [Header("Materials")]
-    [SerializeField] private MeshRenderer m_MeshRenderer = null;
-    [SerializeField] private Material m_EmptyMaterial = null;
-    [SerializeField] private Material m_OccupiedMaterial = null;
-
-    [Header("Debug")]
-    [SerializeField] private GameGrid m_GameGrid = null;
+    [SerializeField] private Entity m_Entity = null;
     #endregion
 
 
