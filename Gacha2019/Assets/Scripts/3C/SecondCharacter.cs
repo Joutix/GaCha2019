@@ -26,29 +26,53 @@ public class SecondCharacter : MonoBehaviour
         m_Orbital.transform.position = transform.position + m_OffsetVector * m_DistanceToBody;
     }
 
+    private void ManageInputs()
+    {
+        if (Input.GetKey(KeyCode.O))
+        {
+            if (Input.GetKey(KeyCode.K))
+            {
+                TurnAroundRoot(-1, 1);
+            }
+            else if (Input.GetKey(KeyCode.M))
+            {
+                TurnAroundRoot(1, 1);
+            }
+            else
+                TurnAroundRoot(0, 1);
+        }
+
+        else if (Input.GetKey(KeyCode.L))
+        {
+            if (Input.GetKey(KeyCode.K))
+            {
+                TurnAroundRoot(-1, -1);
+            }
+            else if (Input.GetKey(KeyCode.M))
+            {
+                TurnAroundRoot(1, -1);
+            }
+            else
+                TurnAroundRoot(0, -1);
+        }
+
+        else if (Input.GetKey(KeyCode.K))
+        {
+            TurnAroundRoot(-1, 0);
+        }
+        else if (Input.GetKey(KeyCode.M))
+        {
+            TurnAroundRoot(1, 0);
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
         //update position of the orbital
         m_Orbital.transform.position = transform.position + m_OffsetVector * m_DistanceToBody;
 
-        if (Input.GetKeyDown(KeyCode.O))
-        {
-            TurnAroundRoot(0, 1);
-        }
+        ManageInputs();
 
-        else if (Input.GetKeyDown(KeyCode.L))
-        {
-            TurnAroundRoot(0, -1);
-        }
-
-        else if (Input.GetKeyDown(KeyCode.K))
-        {
-            TurnAroundRoot(-1, 0);
-        }
-        else if (Input.GetKeyDown(KeyCode.M))
-        {
-            TurnAroundRoot(1, 0);
-        }
     }
 }
