@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MicrophoneLevel : MonoBehaviour
 {
@@ -16,6 +17,8 @@ public class MicrophoneLevel : MonoBehaviour
 	private int m_sampleWindow = 128;
 	private bool m_isInitialized;
 	private bool m_requestPending;
+
+	public GameObject texte;
 
 	public float m_thresholdWeak = 0.2f;
 	public float m_thresholdStrong;
@@ -33,20 +36,16 @@ public class MicrophoneLevel : MonoBehaviour
 
 	void InitMic()
 	{
-		Debug.Log("Nombre de micro : " + Microphone.devices.Length);
-		foreach(var device in Microphone.devices)
+		foreach (string device in Microphone.devices)
 		{
-			Debug.Log(device);
+			if (m_device1 == null /*&& _device2 == null*/)
+			{
+				m_device1 = device;
+				//_device2 = Microphone.devices[1];
+			}
 		}
-		if (m_device1 == null /*&& _device2 == null*/)
-		{
-			m_device1 = Microphone.devices[0];
-			//_device2 = Microphone.devices[1];
-			m_clipRecord1 = Microphone.Start(m_device1, true, 999, 44100);
-			//_clipRecord2 = Microphone.Start(_device2, true, 999, 44100);
-			Debug.Log("Microphone Start : " + m_clipRecord1);
-			//Debug.Log("Microphone Start : " + _clipRecord2);
-		}
+		m_clipRecord1 = Microphone.Start(m_device1, true, 999, 44100);
+		//_clipRecord2 = Microphone.Start(_device2, true, 999, 44100);
 	}
 
 	void StopMicrophone()
@@ -85,6 +84,7 @@ public class MicrophoneLevel : MonoBehaviour
 		//MicLoudness2 = LevelMax(_device2, _clipRecord2);
 		m_testSound1 = s_MicLoudness1;
 		//testSound2 = MicLoudness2;
+		texte.GetComponent<Text>().text = "" + Microphone.devices.Length;
 
 	}
 
