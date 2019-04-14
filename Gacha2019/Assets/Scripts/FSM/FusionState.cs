@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class ChaseState : State 
+public class FusionState : State 
 {
     #region Attributs
 
@@ -12,13 +12,15 @@ public class ChaseState : State
 
     private float m_TimeTillNextMovement = 0;
 
+    private Enemy m_FusionTarget = null;
+
     private GameGrid m_Grid = null;
 
-	#endregion
-	
-	#region Constructor
-	
-    public ChaseState(Enemy _ControlledEnemy, float _MovementSpeed)
+    #endregion
+
+    #region Constructor
+
+    public FusionState(Enemy _ControlledEnemy, float _MovementSpeed)
     {
         m_ControlledEnemy = _ControlledEnemy;
         m_MovementCooldown = _MovementSpeed;
@@ -29,14 +31,19 @@ public class ChaseState : State
 
     #region Accessor
 
-    #endregion
-
-    #region Public Methods
-
     public void SetTimeBetweeMovement(float _TimeBetweenMovement)
     {
         m_MovementCooldown = _TimeBetweenMovement;
     }
+
+    public void SetEnemyToFusionWith(Enemy _OtherEnemy)
+    {
+        m_FusionTarget = _OtherEnemy;
+    }
+
+    #endregion
+
+    #region Public Methods
 
     #endregion
 
@@ -55,19 +62,20 @@ public class ChaseState : State
     protected override void OnUpdate()
     {
         m_TimeTillNextMovement -= Time.deltaTime;
-
+        
         if (m_TimeTillNextMovement <= 0)
         {
-            Character player = GameManager.Instance.Character;
-
-            if (player != null)
+            if (m_FusionTarget == null)
             {
-                List<GridCell> path = Dijkstra.ComputeEnemyDijkstraPath(m_Grid, m_ControlledEnemy.Row, m_ControlledEnemy.Column, player.Row, player.Column);
+                Debug.LogError("Fusion target was null for fusion state");
+                return;
+            }
 
-                if (path != null && path.Count > 1)
-                {
-                    m_ControlledEnemy.MoveTo(path[1].Row, path[1].Column);
-                }
+            List<GridCell> path = Dijkstra.ComputeEnemyDijkstraPath(m_Grid, m_ControlledEnemy.Row, m_ControlledEnemy.Column, m_FusionTarget.Row, m_FusionTarget.Column);
+
+            if (path != null && path.Count > 1)
+            {
+                m_ControlledEnemy.MoveTo(path[1].Row, path[1].Column);
             }
 
             m_TimeTillNextMovement = m_MovementCooldown;
@@ -79,4 +87,5 @@ public class ChaseState : State
     #region Private Methods
 
     #endregion
+
 }
