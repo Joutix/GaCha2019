@@ -87,10 +87,10 @@ public class SecondController : Player
         }
 
 
-        if (MicrophoneLevel.getInstance().getMicLoudness() > MicrophoneLevel.getInstance().m_thresholdStrong)
+        else if (MicrophoneLevel.getInstance().getMicLoudness() > MicrophoneLevel.getInstance().m_thresholdStrong)
         {
             //todo here shoot strong/secondary shoot
-           // m_SecondCharacter.ShootCall();
+            m_SecondCharacter.SecondaryShootCall();
         }
     }
 
