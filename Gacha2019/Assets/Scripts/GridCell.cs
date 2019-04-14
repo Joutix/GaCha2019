@@ -27,6 +27,10 @@ public class GridCell : MonoBehaviour
         /*
          * more code if needed
          */
+        if (_ExitedEntity == m_CurrentEntity)
+        {
+            m_CurrentEntity = null;
+        }
 
         m_OnCellExitEvents.Invoke();
     }
