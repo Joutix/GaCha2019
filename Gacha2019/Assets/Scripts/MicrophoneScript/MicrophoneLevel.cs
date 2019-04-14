@@ -53,10 +53,17 @@ public class MicrophoneLevel : MonoBehaviour
 	{
 		float levelMax1 = 0;
 		float[] waveData1 = new float[m_sampleWindow];
-		while (!(Microphone.GetPosition(_device) > 0) && timer < 1000)
+		if(!(Microphone.GetPosition(_device) > 0))
+		{
+			return 0;
+		}
+		/*while (!(Microphone.GetPosition(_device) > 0) && timer < 1000)
 		{
 			//timer += Time.deltaTime;
 		} // Wait until the recording has started. 
+		
+	
+	*/
 
 		if (timer >= 1000)
 		{
