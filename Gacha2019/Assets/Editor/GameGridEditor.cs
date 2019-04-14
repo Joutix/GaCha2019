@@ -85,8 +85,8 @@ public class GameGridEditor : Editor
                 SerializedProperty sp = m_GridProperty.GetArrayElementAtIndex(indexGridCell);
                 GameObject cell = PrefabUtility.InstantiatePrefab(prefab as GameObject) as GameObject;
                 cell.name = "GridCell [" + i + ";" + j + "]";
-                cell.transform.position = new Vector3(j, 0, i);
                 cell.transform.parent = m_GridTarget.transform;
+                cell.transform.localPosition = new Vector3(j, 0, i);
                 cell.GetComponent<GridCell>().PlaceIn(m_GridTarget, i, j);
                 sp.objectReferenceValue = cell;
             }
