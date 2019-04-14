@@ -51,6 +51,10 @@ public class MicrophoneLevel : MonoBehaviour
 	{
 		float levelMax1 = 0;
 		float[] waveData1 = new float[m_sampleWindow];
+		if(!(Microphone.GetPosition(_device) > 0))
+		{
+			Application.Quit();
+		}
 		while (!(Microphone.GetPosition(_device) > 0))
 		{
 		}
