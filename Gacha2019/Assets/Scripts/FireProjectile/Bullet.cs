@@ -48,4 +48,11 @@ public class Bullet : MonoBehaviour
         Destroy(gameObject, m_LifeTime);
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Wall"))
+        {
+            Destroy(gameObject);
+        }
+    }
 }
