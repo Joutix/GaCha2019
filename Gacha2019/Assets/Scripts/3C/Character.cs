@@ -20,6 +20,12 @@ public class Character : Entity
     #endregion
 
     #region Private Methods
+    protected override void Start()
+    {
+        base.Start();
+        GameManager.Instance.RegisterCharacter(this);
+    }
+
     private bool IsValidDestination(int _RowDestination, int _ColumnDestination)
     {
         //get grid
