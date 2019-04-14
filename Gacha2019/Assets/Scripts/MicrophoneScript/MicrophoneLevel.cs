@@ -12,6 +12,8 @@ public class MicrophoneLevel : MonoBehaviour
 	private bool m_isInitialized;
 	private bool m_requestPending;
 
+	private float timer = 0;
+
 	private List<string> options = new List<string>();
 
 	public float m_thresholdWeak = 0.2f;
@@ -51,12 +53,14 @@ public class MicrophoneLevel : MonoBehaviour
 	{
 		float levelMax1 = 0;
 		float[] waveData1 = new float[m_sampleWindow];
-		if(!(Microphone.GetPosition(_device) > 0))
+		while (!(Microphone.GetPosition(_device) > 0) && timer < 1000)
 		{
-			Application.Quit();
-		}
-		while (!(Microphone.GetPosition(_device) > 0))
+			timer += Time.deltaTime;
+		} // Wait until the recording has started. 
+
+		if (timer >= 1000)
 		{
+			Debug.LogError("Failed to play from mic....");
 		}
 		int micPosition1 = Microphone.GetPosition(_device) - (m_sampleWindow + 1);
 		if (micPosition1 < 0)

@@ -23,6 +23,8 @@ public class MicrophoneInput : MonoBehaviour
 	public float m_thresholdWeak;
 	public float m_thresholdStrong;
 
+	private float timer = 0; 
+
 	private static MicrophoneInput s_Instance;
 
 	public static MicrophoneInput getInstance()
@@ -78,9 +80,16 @@ public class MicrophoneInput : MonoBehaviour
 
 		if (Microphone.IsRecording(microphone))
 		{ //check that the mic is recording, otherwise you'll get stuck in an infinite loop waiting for it to start
-			while (!(Microphone.GetPosition(microphone) > 0))
+			while (!(Microphone.GetPosition(microphone) > 0) && timer < 1000)
 			{
+				timer += Time.deltaTime;
 			} // Wait until the recording has started. 
+
+			if (timer >= 1000)
+			{
+				Debug.logerror("Failed to play from mic....");
+			}
+
 			Debug.Log("s_MicLoudness1 : " + s_MicLoudness1);
 			Debug.Log("recording started with " + microphone);
 
