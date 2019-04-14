@@ -114,13 +114,20 @@ public class Enemy : Entity
 
     #endregion
 
+    #region Accessor
+
+    public int Row { get => m_CurrentRow; }
+    public int Column { get => m_CurrentColumn; }
+
+
+    #endregion
+
     #region Public Methods
 
     public void Stomp()
     {
         Die();
     }
-
 
     public /*override*/ void TryMove(int _DeltaRow, int _DeltaColumn)
     {
@@ -146,7 +153,7 @@ public class Enemy : Entity
 
             Entity entity = m_Grid.GetGridCellAt(_RowDestination, _ColumnDestination).Entity;
             Enemy enemy = entity as Enemy;
-            if (enemy != null && IsEnemySameSizeAndNotTooBig(enemy))
+            if (enemy != null && CanMerge(enemy))
             {
                 enemy.Merge(this);
             }
@@ -238,17 +245,14 @@ public class Enemy : Entity
         }
     }
 
-
     #endregion
 
     #region Protected Methods
 
-    protected bool IsEnemySameSizeAndNotTooBig(Enemy _enemy)
+    protected bool CanMerge(Enemy _enemy)
     {
         return m_EnemySize != EEnemySize.Large && m_EnemySize == _enemy.m_EnemySize;
     }
-
-    
 
     protected bool IsValidDestination(int _RowDestination, int _ColumnDestination)
     {
@@ -273,7 +277,7 @@ public class Enemy : Entity
                 Enemy enemy = entity as Enemy;
                 if (enemy != null)
                 {
-                    canMergeWithCellEnemy = IsEnemySameSizeAndNotTooBig(enemy);
+                    canMergeWithCellEnemy = CanMerge(enemy);
                 }
 
                 return ((cellIsEmpty && cellIsCrossable) || (cellIsCrossable && canMergeWithCellEnemy));
@@ -508,7 +512,7 @@ public class Enemy : Entity
                         Enemy spawnedEnemy = Instantiate(gameObject, Vector3.zero, transform.rotation).GetComponent<Enemy>();
                         spawnedEnemy.m_CurrentRow = testedX;
                         spawnedEnemy.m_CurrentColumn = testedY;
-                        spawnedEnemy.MoveTo(0, 0);
+                        spawnedEnemy.MoveTo(0, 0); // FUCKING MAGIC
 
                         return true;
                     }

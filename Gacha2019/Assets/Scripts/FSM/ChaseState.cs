@@ -12,6 +12,8 @@ public class ChaseState : State
 
     private float m_TimeTillNextMovement = 0;
 
+    private GameGrid m_Grid = null;
+
 	#endregion
 	
 	#region Constructor
@@ -30,13 +32,45 @@ public class ChaseState : State
     #endregion
 
     #region Public Methods
+
     public void SetTimeBetweeMovement(float _TimeBetweenMovement)
     {
         m_MovementCooldown = _TimeBetweenMovement;
     }
+
     #endregion
 
     #region Protected Methods
+
+    protected override void OnFirstEnter()
+    {
+        m_Grid = GameManager.Instance.GameGrid;
+    }
+
+    protected override void OnEnter()
+    {
+        m_TimeTillNextMovement = m_MovementCooldown;
+    }
+
+    protected override void OnUpdate()
+    {
+        m_TimeTillNextMovement -= Time.deltaTime;
+
+        if (m_TimeTillNextMovement <= 0)
+        {
+            Character player = GameManager.Instance.Character;
+
+            if (player != null)
+            {
+                //List<GridCell> path = Dijkstra.ComputeEnemyDijkstraPath(m_Grid, m_ControlledEnemy.Row, m_ControlledEnemy.Column,)
+            }
+
+
+           
+
+
+        }
+    }
 
     #endregion
 
