@@ -274,7 +274,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_MaxLifePoint: 3
-  m_TimeNeededToMoveAgain: 1
+  m_TimeNeededToMoveAgain: 0.25
   m_DebugInputsKeyboard: 1
 --- !u!114 &4747745795576207580
 MonoBehaviour:
@@ -296,7 +296,7 @@ MonoBehaviour:
     type: 3}
   m_BulletSpawnOffset: 0.5
   timeBtwAttack: 0
-  reloadTime: 1
+  reloadTime: 0.25
   m_OffsetVector: {x: 1, y: 0, z: 0}
 --- !u!114 &4747745795576207571
 MonoBehaviour:
