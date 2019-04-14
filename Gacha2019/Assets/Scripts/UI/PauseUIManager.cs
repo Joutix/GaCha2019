@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using XInputDotNetPure;
 
 public class PauseUIManager : MonoBehaviour
 {
@@ -12,12 +14,19 @@ public class PauseUIManager : MonoBehaviour
     [SerializeField]
     private GameObject m_OptionsUI;
 
+    [SerializeField] private PlayerIndex m_ControllerInpause;
+    private GamePadState m_PreviousState;
+    private GamePadState m_CurrentState;
+
     public enum Page { None, Pause, Options };
 
     public Page e_Page;
 
     void Start()
     {
+        m_PreviousState = GamePad.GetState(m_ControllerInpause);
+        m_CurrentState = GamePad.GetState(m_ControllerInpause);
+
         m_PausePanel.SetActive(false);
         e_Page = Page.None;
     }
@@ -32,6 +41,16 @@ public class PauseUIManager : MonoBehaviour
             else if (e_Page.Equals(Page.Pause))
                 Resume();
         }
+
+        //UpdateControllerState();
+        //if (IsStartPressed())
+        //{
+        //    if (e_Page.Equals(Page.None) || e_Page.Equals(Page.Options))
+        //        Pause();
+        //    else if (e_Page.Equals(Page.Pause))
+        //        Resume();
+        //}
+        //ManageMenuNavigation();
     }
 
     private void Pause()
@@ -42,6 +61,23 @@ public class PauseUIManager : MonoBehaviour
         m_PauseUI.SetActive(true);
         m_OptionsUI.SetActive(false);
         e_Page = Page.Pause;
+    }
+
+    private void UpdateControllerState()
+    {
+        Debug.Log("firjeo");
+        m_PreviousState = m_CurrentState;
+        m_CurrentState = GamePad.GetState(m_ControllerInpause);
+    }
+
+    private bool IsStartPressed()
+    {
+        return m_PreviousState.Buttons.Start == ButtonState.Released && m_CurrentState.Buttons.Start == ButtonState.Pressed;
+    }
+
+    private void ManageMenuNavigation()
+    {
+
     }
     
     public void Resume()
@@ -70,6 +106,6 @@ public class PauseUIManager : MonoBehaviour
     public void Quit()
     {
         Debug.Log("Quitting...");
-        Application.Quit();
+        SceneManager.LoadScene("MenuScene");
     }
 }

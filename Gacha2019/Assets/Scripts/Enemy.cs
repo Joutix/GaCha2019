@@ -34,7 +34,6 @@ public struct PhaseInfo
     public Material PhaseMaterialRed;
     public Material PhaseMaterialBlue;
     public int PhaseMaxHealth;
-    //... for later stats ?
 }
 
 public class Enemy : Entity
@@ -80,6 +79,29 @@ public class Enemy : Entity
 
     private GameGrid m_Grid = null;
 
+    [Header("AI")]
+    [SerializeField]
+    [Tooltip("The number of cells at which the AI will start the attack mode")]
+    private int m_AttackDetectionRange = 10;
+
+    [SerializeField]
+    [Tooltip("The number of cells at which the AI will stop shooting and will start it's movement towards the player")]
+    private int m_AttackMaxRange = 15;
+
+    [SerializeField]
+    [Tooltip("The time between the AI movement")]
+    private float m_Speed = 0.2f;
+
+    [SerializeField]
+    [Tooltip("The speed of the bullet that will be shot")]
+    private float m_ShootForce = 20;
+
+    private float m_TimeTillNextMovement = 0;
+
+    private GridCell m_NextCell = null;
+
+    FiniteStateMachine m_FSM = null;
+
     #endregion
 
     #region Public Methods
@@ -106,17 +128,7 @@ public class Enemy : Entity
         MoveTo(rowDest, columnDest);
     }
 
-
-    #endregion
-
-    #region Protected Methods
-
-    protected bool IsEnemySameSizeAndNotTooBig(Enemy _enemy)
-    {
-        return m_EnemySize != EEnemySize.Large && m_EnemySize == _enemy.m_EnemySize;
-    }
-
-    protected void MoveTo(int _RowDestination, int _ColumnDestination)
+    public void MoveTo(int _RowDestination, int _ColumnDestination)
     {
         if (IsValidDestination(_RowDestination, _ColumnDestination))
         {
@@ -139,6 +151,92 @@ public class Enemy : Entity
             }
         }
     }
+
+    public GridCell GetWanderingNextPos()
+    {
+        GridCell nextCell = null;
+
+        List<GridCell> cells = new List<GridCell>();
+
+        if (m_Grid.IsValidDestination(m_CurrentRow + 1, m_CurrentColumn))
+        {
+            cells.Add(m_Grid.GetGridCellAt(m_CurrentRow + 1, m_CurrentColumn));
+        }
+        if (m_Grid.IsValidDestination(m_CurrentRow - 1, m_CurrentColumn))
+        {
+            cells.Add(m_Grid.GetGridCellAt(m_CurrentRow - 1, m_CurrentColumn));
+        }
+        if (m_Grid.IsValidDestination(m_CurrentRow, m_CurrentColumn + 1))
+        {
+            cells.Add(m_Grid.GetGridCellAt(m_CurrentRow, m_CurrentColumn + 1));
+        }
+        if (m_Grid.IsValidDestination(m_CurrentRow, m_CurrentColumn - 1))
+        {
+            cells.Add(m_Grid.GetGridCellAt(m_CurrentRow, m_CurrentColumn - 1));
+        }
+
+        bool hasFoundNextDestination = false;
+
+        System.Random rd = new System.Random(System.DateTime.Now.Millisecond);
+
+        do
+        {
+            nextCell = cells[rd.Next() % cells.Count];
+
+            if (IsValidDestination(nextCell.Row, nextCell.Column))
+            {
+                hasFoundNextDestination = true;
+            }
+            else
+            {
+                cells.Remove(m_NextCell);
+            }
+
+        } while (cells.Count <= 0 && !hasFoundNextDestination);
+
+        if (!hasFoundNextDestination)
+        {
+            nextCell = m_Grid.GetGridCellAt(m_CurrentRow, m_CurrentColumn);
+        }
+
+
+        return nextCell;
+    }
+
+    public void ShootPlayer()
+    {
+        if (m_CurrentBulletPrefab == null)
+        {
+            Debug.LogError("The current bullet prefab was null");
+            return;
+        }
+
+        Vector3 toPlayer = GameManager.Instance.Character.transform.position - transform.position;
+        toPlayer.Normalize();
+
+        Bullet bullet = Instantiate<GameObject>(m_CurrentBulletPrefab).GetComponent<Bullet>();
+
+        if (bullet == null)
+        {
+            Debug.LogError("THE CURRENT BULLET PREFAB WAS NOT A BULLET");
+        }
+        else
+        {
+            bullet.Shoot(toPlayer, this);
+        }
+    }
+
+
+    #endregion
+
+    #region Protected Methods
+
+    protected bool IsEnemySameSizeAndNotTooBig(Enemy _enemy)
+    {
+        return m_EnemySize != EEnemySize.Large && m_EnemySize == _enemy.m_EnemySize;
+    }
+
+    
 
     protected bool IsValidDestination(int _RowDestination, int _ColumnDestination)
     {
@@ -241,9 +339,22 @@ public class Enemy : Entity
     {
         base.Start();
 
+        m_FSM = new FiniteStateMachine(null);
+
+        // Wander state
+        m_FSM.AddState(new WanderState(this, m_Speed));
+
+        // Shoot state
+
+        // Chase state
+
+        // Fusion state
+
         MoveTo(m_CurrentRow, m_CurrentColumn);
 
         SetVariablesForCurrentState();
+
+        m_TimeTillNextMovement = m_Speed;
     }
 
     // Update is called once per frame
@@ -253,10 +364,14 @@ public class Enemy : Entity
 
         ManageStunTimer();
 
-        if (Input.GetKeyDown(KeyCode.KeypadEnter))
-        {
-            TryMove(1, 1);
-        }
+        m_FSM.UpdateStep();
+
+       
+
+        //if (Input.GetKeyDown(KeyCode.KeypadEnter))
+        //{
+        //    TryMove(1, 0);
+        //}
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -348,7 +463,7 @@ public class Enemy : Entity
                 if (x != 0 || y != 0)
                 {
                     int testedX = _CurrentX + x;
-                    int testedY = _CurrentX + y;
+                    int testedY = _CurrentY + y;
 
                     if (m_Grid.IsValidDestination(testedX, testedY) && m_Grid.IsEmptyAt(testedX, testedY) && m_Grid.GetGridCellAt(testedX, testedY).IsEnemyCrossable)
                     {
@@ -367,6 +482,100 @@ public class Enemy : Entity
         return false;
     }
 
+    protected void ManageMovement()
+    {
+        m_TimeTillNextMovement -= Time.deltaTime;
+
+        if (m_TimeTillNextMovement <= 0)
+        {
+            SelectNextDestination();
+
+            MoveTo(m_NextCell.Row, m_NextCell.Column);
+
+            m_TimeTillNextMovement = m_Speed;
+        }
+    }
+
+    protected void SelectNextDestination()
+    {
+        switch (m_EnemyState)
+        {
+            case EEnemyState.Wandering:
+                List<GridCell> cells = new List<GridCell>();
+
+                if (m_Grid.IsValidDestination(m_CurrentRow + 1, m_CurrentColumn))
+                {
+                    cells.Add(m_Grid.GetGridCellAt(m_CurrentRow + 1, m_CurrentColumn));
+                }
+                if (m_Grid.IsValidDestination(m_CurrentRow - 1, m_CurrentColumn))
+                {
+                    cells.Add(m_Grid.GetGridCellAt(m_CurrentRow - 1, m_CurrentColumn));
+                }
+                if (m_Grid.IsValidDestination(m_CurrentRow, m_CurrentColumn + 1))
+                {
+                    cells.Add(m_Grid.GetGridCellAt(m_CurrentRow, m_CurrentColumn + 1));
+                }
+                if (m_Grid.IsValidDestination(m_CurrentRow, m_CurrentColumn - 1))
+                {
+                    cells.Add(m_Grid.GetGridCellAt(m_CurrentRow, m_CurrentColumn - 1));
+                }
+
+                bool hasFoundNextDestination = false;
+
+                System.Random rd = new System.Random(System.DateTime.Now.Millisecond);
+
+                do
+                {
+                    m_NextCell = cells[rd.Next() % cells.Count];
+
+                    if (IsValidDestination(m_NextCell.Row, m_NextCell.Column))
+                    {
+                        hasFoundNextDestination = true;
+                    }
+                    else
+                    {
+                        cells.Remove(m_NextCell);
+                    }
+
+                } while (cells.Count <= 0 && !hasFoundNextDestination);
+
+                if (!hasFoundNextDestination)
+                {
+                    m_NextCell = m_Grid.GetGridCellAt(m_CurrentRow, m_CurrentColumn);
+                }
+
+                break;
+            case EEnemyState.Fleeing:
+                break;
+            case EEnemyState.Attacking:
+                break;
+            case EEnemyState.Fusioning:
+                break;
+            default:
+                break;
+        }
+    }
+
+    protected void ManageAIStates()
+    {
+        ManageMovement();
+
+        switch (m_EnemyState)
+        {
+            case EEnemyState.Wandering:
+
+                break;
+            case EEnemyState.Fleeing:
+                break;
+            case EEnemyState.Attacking:
+                break;
+            case EEnemyState.Fusioning:
+                break;
+            default:
+                break;
+        }
+    }
+
     #endregion
 
     #region MonoBehavior
@@ -375,7 +584,7 @@ public class Enemy : Entity
     {
         Bullet bullet = other.gameObject.GetComponent<Bullet>();
 
-        if (bullet != null && bullet.Color == m_EnemyColor)
+        if (bullet != null && bullet.Color == m_EnemyColor && bullet.Shooter != this)
         {
             TakeDamage(bullet.Damage);
 

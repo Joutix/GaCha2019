@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using XInputDotNetPure;
 using UnityEngine;
 
 public class FirstController : Player
@@ -9,33 +10,65 @@ public class FirstController : Player
 
     #region  Attributes
 
+    #region private
+    [SerializeField] private float m_JoyStickDeadZone = 0.2f;
+    [SerializeField] private PlayerIndex m_PlayerIndex = 0;
+    [SerializeField] private Character m_Character;
+
+    private GamePadState m_CurrentState;
+    private GamePadState m_PreviousState;
+    #endregion
+
     #region  public
-
-
 
     #endregion
 
     #region protected  
 
-    [SerializeField] KeyCode m_Up;
-    [SerializeField] KeyCode m_Down;
-    [SerializeField] KeyCode m_Left;
-    [SerializeField] KeyCode m_Right;
+    void MovementInputs()
+    {
+        if (m_CurrentState.ThumbSticks.Left.X < -m_JoyStickDeadZone)
+        {
+            m_Character.TryMove(0, -1);
+        }
+        else if (m_CurrentState.ThumbSticks.Left.X > m_JoyStickDeadZone)
+        {
+            m_Character.TryMove(0, 1);
+        }
 
-    //last valid forward the player had => last direction he could move along onto the next tile
-    Vector2 m_LastValidForward;
+        if (m_CurrentState.ThumbSticks.Left.Y < -m_JoyStickDeadZone)
+        {
+            m_Character.TryMove(-1, 0);
+
+        }
+        else if (m_CurrentState.ThumbSticks.Left.Y > m_JoyStickDeadZone)
+        {
+            m_Character.TryMove(1, 0);
+
+        }
+    }
+
+    void PressedPause()
+    {
+
+    }
+
+    void PauseInputs()
+    {
+
+    }
 
 
     // [SerializeField] KeyCode m_Shoot;
 
     #endregion
+
     #endregion
+
 
 
     #region function
     #region public functions
-
-
 
 
     #endregion
@@ -46,12 +79,15 @@ public class FirstController : Player
     // Start is called before the first frame update
     void Start()
     {
-
+        m_CurrentState = GamePad.GetState(m_PlayerIndex);
     }
 
     // Update is called once per frame
     void Update()
     {
+        m_PreviousState = m_CurrentState;
+        m_CurrentState = GamePad.GetState(m_PlayerIndex);
 
+        MovementInputs();
     }
 }

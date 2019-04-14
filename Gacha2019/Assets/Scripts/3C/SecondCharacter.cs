@@ -8,8 +8,10 @@ public class SecondCharacter : MonoBehaviour
     [SerializeField] private GameObject m_PrefabOrbital = null;
     [SerializeField] private Bullet m_PrefabBullet = null;
     [SerializeField] private float m_BulletSpawnOffset = 2;
+	[SerializeField] private float timeBtwAttack;
+	[SerializeField] private float reloadTime = 1f;
 
-    private GameObject m_Orbital = null;
+	private GameObject m_Orbital = null;
 
 
     private Vector3 m_OffsetVector = new Vector3(1, 0, 0);
@@ -18,6 +20,11 @@ public class SecondCharacter : MonoBehaviour
     {
         m_OffsetVector = (_Right * Vector3.right + _Up * Vector3.forward).normalized;
         m_Orbital.transform.position = transform.position + m_OffsetVector * m_DistanceToBody;
+    }
+
+    public void ShootCall()
+    {
+        Shoot(m_OffsetVector);
     }
 
     // Start is called before the first frame update
@@ -68,7 +75,17 @@ public class SecondCharacter : MonoBehaviour
         {
             Shoot(m_OffsetVector);
         }
-    }
+
+		if(timeBtwAttack <= 0 && (MicrophoneLevel.getInstance().getMicLoudness() > MicrophoneLevel.getInstance().m_thresholdWeak))
+		{
+			Shoot(m_OffsetVector);
+			timeBtwAttack = reloadTime;
+		}
+		else
+		{
+			timeBtwAttack -= Time.deltaTime;
+		}
+	}
 
     // Update is called once per frame
     void Update()
@@ -78,6 +95,7 @@ public class SecondCharacter : MonoBehaviour
 
         ManageInputs();
     }
+   
 
     private void Shoot(Vector3 _ShootDirection)
     {
