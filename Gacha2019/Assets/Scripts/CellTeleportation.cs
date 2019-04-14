@@ -18,12 +18,8 @@ public class CellTeleportation : MonoBehaviour
         
     }
 
-	public void teleportation(GameObject m_DirToCell)
+	public void teleportation(Grid gridCell,GameObject dirToCell)
 	{
-		Vector3 pos = new Vector3();
-		pos.x = m_DirToCell.transform.position.x;
-		pos.z = m_DirToCell.transform.position.z;
-		pos.y = GameManager.Instance.Character.transform.localPosition.y;
-		GameManager.Instance.Character.transform.localPosition = pos;
+		GameManager.Instance.Character.Teleport(gridCell, (int)dirToCell.transform.position.z, (int)dirToCell.transform.position.x);
 	}
 }

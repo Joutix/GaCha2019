@@ -17,6 +17,12 @@ public class Character : Entity
     {
 
     }
+
+	public void Teleport(Grid grid, int _DeltaRow, int _DeltaColumn)
+	{
+
+	}
+
     #endregion
 
     #region Private Methods
