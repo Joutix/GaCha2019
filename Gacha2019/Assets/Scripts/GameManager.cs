@@ -41,6 +41,27 @@ public class GameManager : Singleton<GameManager>
             else { Debug.LogWarning("enemy to remove isn't in the list yet"); }
         }
     }
+    
+    public GridCell ReturnClosestEnemy(Enemy _enemyToIgnore, int _maxManhattanDist, bool _careAboutWalls)
+    {
+        //GridCell cell = _enemyToIgnore.GetCell();
+        //GameGrid grid = cell.GameGrid;
+
+
+
+        //foreach (Enemy enemy in m_DictionnaryOfEnemies[grid])
+        //{
+
+        //}
+
+
+        return null;
+    }
+
+    public int ManhattanDistance(int _x1, int _y1, int _x2, int _y2)
+    {
+        return Mathf.Abs(_x1 - _x2) + Mathf.Abs(_y1 - _y2);
+    }
 
     #endregion
 
