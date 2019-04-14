@@ -256,7 +256,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4747745795576207575}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1.7022824, z: 1}
@@ -288,7 +288,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57843e2cc46267d4c8bf410972186609, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_DistanceToBody: 1
+  m_DistanceToBody: 0.5
   m_PrefabOrbital: {fileID: 3306758526404532666, guid: a5245bc75be757048a8bf3d6a6e7c055,
     type: 3}
   m_AnchorDrone: {fileID: 4747745795619036617}
@@ -352,7 +352,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4747745795619036616}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.957, z: 0}
+  m_LocalPosition: {x: 0, y: 1.221, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4747745795576207568}

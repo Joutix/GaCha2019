@@ -27,7 +27,9 @@ public class Character : Entity
 
     void UpdateTimer()
     {
-        m_CanMove = (Time.time - m_MovementTimer) > m_TimeNeededToMoveAgain;
+        //m_CanMove = (Time.time - m_MovementTimer) > m_TimeNeededToMoveAgain;
+        m_MovementTimer += Time.deltaTime;
+        m_CanMove = m_MovementTimer >= m_TimeNeededToMoveAgain;
     }
 
     private bool IsValidDestination(int _RowDestination, int _ColumnDestination)
@@ -81,8 +83,9 @@ public class Character : Entity
         //m_CurrentRow = _RowDestination;
         //m_CurrentColumn = _ColumnDestination;
 
-        m_CanMove = false;
-        m_MovementTimer = Time.time;
+        //m_CanMove = false;
+        //m_MovementTimer = Time.time;
+        m_MovementTimer = 0.0f;
 
         //currentGrid.GetGridCellAt(m_CurrentRow, m_CurrentColumn).OnCellExited(this);
         if (previousGridCell)
@@ -142,6 +145,7 @@ public class Character : Entity
     protected override void Start()
     {
         base.Start();
+        m_MovementTimer = m_TimeNeededToMoveAgain;
     }
 
     protected override void Update()
