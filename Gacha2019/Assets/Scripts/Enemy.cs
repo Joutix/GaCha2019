@@ -135,7 +135,7 @@ public class Enemy : Entity
             Enemy enemy = entity as Enemy;
             if (enemy != null && IsEnemySameSizeAndNotTooBig(enemy))
             {
-                Merge(enemy);
+                enemy.Merge(this);
             }
         }
     }
@@ -221,7 +221,10 @@ public class Enemy : Entity
                     m_CurrentLifePoint = m_MaxLifePoint; //heal
                     SetVariablesForCurrentState();
                     Destroy(_enemy.gameObject);
-                    m_Grid.GetGridCellAt(m_CurrentRow, m_CurrentColumn).OnCellEntered(this);
+                    if (m_Grid.IsValidDestination(m_CurrentRow, m_CurrentColumn))
+                    {
+                        m_Grid.GetGridCellAt(m_CurrentRow, m_CurrentColumn).OnCellEntered(this);
+                    }
                     break;
                 case EEnemySize.Large:
                     break;
@@ -347,10 +350,12 @@ public class Enemy : Entity
                     int testedX = _CurrentX + x;
                     int testedY = _CurrentX + y;
 
-                    if (m_Grid.IsValidDestination(testedX, testedY) && m_Grid.IsEmptyAt(testedX, testedY) && m_Grid.GetGridCellAt(testedX, testedY).IsCrossable)
+                    if (m_Grid.IsValidDestination(testedX, testedY) && m_Grid.IsEmptyAt(testedX, testedY) && m_Grid.GetGridCellAt(testedX, testedY).IsEnemyCrossable)
                     {
                         GridCell currentCell = m_Grid.GetGridCellAt(testedX, testedY);
                         Enemy spawnedEnemy = Instantiate(gameObject, Vector3.zero, transform.rotation).GetComponent<Enemy>();
+                        spawnedEnemy.m_CurrentRow = -1;
+                        spawnedEnemy.m_CurrentColumn = -1;
                         spawnedEnemy.MoveTo(testedX, testedY);
 
                         return true;
