@@ -159,14 +159,9 @@ public class Enemy : Entity
             bool canMergeWithCellEnemy = false;
 
             Enemy enemy = entity as Enemy;
-            if (enemy)
+            if (enemy != null)
             {
                 canMergeWithCellEnemy = IsEnemySameSizeAndNotTooBig(enemy);
-
-                //if (canMergeWithCellEnemy)
-                //{
-                //    Merge(enemy);
-                //}
             }
 
             return ((cellIsEmpty && cellIsCrossable) || (cellIsCrossable && canMergeWithCellEnemy));
@@ -214,11 +209,16 @@ public class Enemy : Entity
                 case EEnemySize.Little:
                     m_EnemySize = EEnemySize.Medium;
                     SetVariablesForCurrentState();
+                    m_CurrentLifePoint = m_MaxLifePoint; //heal
                     Destroy(_enemy.gameObject);
-                    m_Grid.GetGridCellAt(m_CurrentRow, m_CurrentColumn).OnCellEntered(this);
+                    if (m_Grid.IsValidDestination(m_CurrentRow, m_CurrentColumn))
+                    {
+                        m_Grid.GetGridCellAt(m_CurrentRow, m_CurrentColumn).OnCellEntered(this);
+                    }
                     break;
                 case EEnemySize.Medium:
                     m_EnemySize = EEnemySize.Large;
+                    m_CurrentLifePoint = m_MaxLifePoint; //heal
                     SetVariablesForCurrentState();
                     Destroy(_enemy.gameObject);
                     m_Grid.GetGridCellAt(m_CurrentRow, m_CurrentColumn).OnCellEntered(this);

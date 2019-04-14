@@ -15,7 +15,7 @@ public class GridCell : MonoBehaviour
         /*
          * more code if needed
          */
-        if (Entity == null)
+        if (m_CurrentEntity == null)
         {
             m_CurrentEntity = _EnteredEntity;
         }
