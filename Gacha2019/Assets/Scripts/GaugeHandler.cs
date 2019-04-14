@@ -10,6 +10,8 @@ public class GaugeHandler : MonoBehaviour
     [SerializeField]
     private Name e_Type;
     [SerializeField]
+    private Sprite m_volumeBar;
+    [SerializeField]
     private List<GameObject> m_Boxes;
 
     private int m_currentIndex;
@@ -57,7 +59,8 @@ public class GaugeHandler : MonoBehaviour
     {
         for (int i = 0; i <= index; i++)
         {
-            m_Boxes[i].GetComponent<Image>().color = Color.red;
+            //m_Boxes[i].GetComponent<Image>().color = Color.red;
+            m_Boxes[i].GetComponent<Image>().sprite = m_volumeBar;
         }
     }
 
@@ -66,7 +69,8 @@ public class GaugeHandler : MonoBehaviour
     {
         for (int i = index + 1; i < m_Boxes.Count; i++)
         {
-            m_Boxes[i].GetComponent<Image>().color = Color.white;
+            //m_Boxes[i].GetComponent<Image>().color = Color.white;
+            m_Boxes[i].GetComponent<Image>().sprite = null;
         }
     }
 
