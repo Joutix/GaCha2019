@@ -41,15 +41,17 @@ public class Character : Entity
             bool cellIsEmpty = grid.IsEmptyAt(_RowDestination, _ColumnDestination);
             bool cellIsCrossable = grid.GetGridCellAt(_RowDestination, _ColumnDestination).IsCrossable;
             Entity entity = grid.GetGridCellAt(_RowDestination, _ColumnDestination).Entity;//.IsSmall;
-            bool enemyInCellIsSmall = false;
+            bool enemyInCellIsSmallAndCanBeStomped = false;
 
             Enemy enemy = entity as Enemy;
             if (enemy != null)
             {
-                enemyInCellIsSmall = enemy.CanBeStomped();
+                enemyInCellIsSmallAndCanBeStomped = enemy.CanBeStomped();
+                if (enemyInCellIsSmallAndCanBeStomped)
+                    enemy.Stomp();
             }
 
-            return ((cellIsEmpty && cellIsCrossable) || enemyInCellIsSmall);
+            return ((cellIsEmpty && cellIsCrossable) || enemyInCellIsSmallAndCanBeStomped);
         }
     }
 
@@ -62,7 +64,9 @@ public class Character : Entity
         //works for now  as this is a teleport and it's instantaneous
         //DELETE THIS LATER IF PLAYER DOESNT TP TO OTHER CELLS
 
-        // grid.GetGridCellAt(_RowDestination, _ColumnDestination).OnCellEntered(this);
+        grid.GetGridCellAt(m_CurrentRow, m_CurrentColumn).OnCellExited(this);
+        grid.GetGridCellAt(_RowDestination, _ColumnDestination).OnCellEntered(this);
+
         m_CurrentRow = _RowDestination;
         m_CurrentColumn = _ColumnDestination;
     }
@@ -76,12 +80,12 @@ public class Character : Entity
 
     #region Mono
 
-    protected override void Update() 
+    protected override void Update()
     {
         if (Input.GetKeyDown(KeyCode.Z))
         {
             TryMove(1, 0);
-}
+        }
         else if (Input.GetKeyDown(KeyCode.S))
         {
             TryMove(-1, 0);
