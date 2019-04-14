@@ -47,12 +47,12 @@ public class GaugeHandler : MonoBehaviour
         switch (e_Type)
         {
             case Name.SFX:
-                AudioManager.s_playSFX = (m_currentIndex + 1)/10f;
-                Debug.Log("Changed SFX volume to " + AudioManager.s_playSFX);
+                AudioManager.Instance.s_playSFX = (m_currentIndex + 1)/10f;
+                Debug.Log("Changed SFX volume to " + AudioManager.Instance.s_playSFX);
                 break;
             case Name.MUSIC:
-                AudioManager.s_playMusic = (m_currentIndex + 1) / 10f;
-                Debug.Log("Changed Music volume to " + AudioManager.s_playMusic);
+				AudioManager.Instance.s_playMusic = (m_currentIndex + 1) / 10f;
+                Debug.Log("Changed Music volume to " + AudioManager.Instance.s_playMusic);
                 break;
         }
     }
@@ -84,10 +84,10 @@ public class GaugeHandler : MonoBehaviour
         switch (e_Type)
         {
             case Name.SFX:
-                AudioManager.s_playSFX = 0f;
+				AudioManager.Instance.s_playSFX = 0f;
                 break;
             case Name.MUSIC:
-                AudioManager.s_playMusic = 0f;
+				AudioManager.Instance.s_playMusic = 0f;
                 break;
         }
     }

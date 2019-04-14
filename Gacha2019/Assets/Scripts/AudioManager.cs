@@ -1,13 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MyUtilities.DesignPatterns;
 
-public class AudioManager : MonoBehaviour
+public class AudioManager : Singleton<AudioManager>
 {
-    public static float s_playSFX = 1f;
-    public static float s_playMusic = 1f;
-    
-    /*
+    public float s_playSFX = 1f;
+    public float s_playMusic = 1f;
+
+	/*
     void Update()
     {
         Debug.Log("Play SFX: " + s_playSFX);

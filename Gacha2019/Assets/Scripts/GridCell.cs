@@ -12,25 +12,25 @@ public class GridCell : MonoBehaviour
     }
     public void OnCellEntered(Entity _EnteredEntity)
     {
-        /*
+		/*
          * more code if needed
          */
-        if (Entity == null)
-        {
-            m_CurrentEntity = _EnteredEntity;
-        }
+		if (Entity == null)
+		{
+			m_CurrentEntity = _EnteredEntity;
+		}
 
-        m_OnCellEnterEvents.Invoke();
+		m_OnCellEnterEvents.Invoke();
     }
 
     public void OnCellExited(Entity _ExitedEntity)
     {
-        if (_ExitedEntity == m_CurrentEntity)
-        {
-            m_CurrentEntity = null;
-        }
+		if (_ExitedEntity == m_CurrentEntity)
+		{
+			m_CurrentEntity = null;
+		}
 
-        m_OnCellExitEvents.Invoke();
+		m_OnCellExitEvents.Invoke();
     }
     #endregion
 
@@ -100,6 +100,10 @@ public class GridCell : MonoBehaviour
         {
             return m_CurrentEntity;
         }
+		set
+		{
+			m_CurrentEntity = value;
+		}
     }
     #endregion
 
