@@ -51,7 +51,7 @@ public class Character : Entity
         else
         {
             bool cellIsEmpty = grid.IsEmptyAt(_RowDestination, _ColumnDestination);
-            bool cellIsCrossable = grid.GetGridCellAt(_RowDestination, _ColumnDestination).IsCrossable;
+            bool cellIsCrossable = grid.GetGridCellAt(_RowDestination, _ColumnDestination).IsCharacterCrossable;
             Entity entity = grid.GetGridCellAt(_RowDestination, _ColumnDestination).Entity;//.IsSmall;
             bool enemyInCellIsSmallAndCanBeStomped = false;
 

@@ -66,7 +66,7 @@ public class GameGrid : MonoBehaviour
         }
         else
         {
-            index = _Row * m_Rows + _Column;
+            index = _Row * m_Columns + _Column;
         }
         return index;
     }

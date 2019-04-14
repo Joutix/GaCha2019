@@ -20,11 +20,19 @@ public class GridCellConfig : ScriptableObject
         }
     }
 
-    public bool CellCrossable
+    public bool CharacterCrossable
     {
         get
         {
-            return m_CellCrossable;
+            return m_CharacterCrossable;
+        }
+    }
+
+    public bool EnemyCrossable
+    {
+        get
+        {
+            return m_EnemyCrossable;
         }
     }
     #endregion
@@ -32,6 +40,7 @@ public class GridCellConfig : ScriptableObject
     #region Attributes
     [SerializeField] private Mesh m_CellMesh = null;
     [SerializeField] private Material m_CellMaterial = null;
-    [SerializeField] private bool m_CellCrossable = true;
+    [SerializeField] private bool m_CharacterCrossable = true;
+    [SerializeField] private bool m_EnemyCrossable = true;
     #endregion
 }

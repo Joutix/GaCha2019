@@ -64,11 +64,27 @@ public class GridCell : MonoBehaviour
         }
     }
 
-    public bool IsCrossable
+    public bool IsCharacterCrossable
     {
         get
         {
-            return m_IsCrossable;
+            return m_CharacterCrossable;
+        }
+        set
+        {
+            m_CharacterCrossable = value;
+        }
+    }
+
+    public bool IsEnemyCrossable
+    {
+        get
+        {
+            return m_EnemyCrossable;
+        }
+        set
+        {
+            m_EnemyCrossable = value;
         }
     }
 
@@ -83,7 +99,8 @@ public class GridCell : MonoBehaviour
 
     #region Attributes
     [Header("Cell State")]
-    [SerializeField] private bool m_IsCrossable = true;
+    [SerializeField] private bool m_CharacterCrossable = true;
+    [SerializeField] private bool m_EnemyCrossable = true;
 
     [Header("Cell Config")]
     [SerializeField] private GridCellConfig m_CellConfig = null;
@@ -92,6 +109,7 @@ public class GridCell : MonoBehaviour
     [SerializeField] private UnityEvent m_OnCellEnterEvents = null;
     [SerializeField] private UnityEvent m_OnCellExitEvents = null;
 
+    private GameGrid m_GameGrid = null;
     private Entity m_CurrentEntity = null;
     private int m_RowPos = 0;
     private int m_ColumnPos = 0;
