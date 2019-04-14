@@ -5,21 +5,24 @@ public class Character : Entity
     #region Public Methods
     public /*override*/ void TryMove(int _DeltaRow, int _DeltaColumn)
     {
-        int rowDest = m_CurrentRow + _DeltaRow;
-        int columnDest = m_CurrentColumn + _DeltaColumn;
+        //int rowDest = m_CurrentRow + _DeltaRow;
+        //int columnDest = m_CurrentColumn + _DeltaColumn;
+
+        int rowDest = m_CurrentCell.Row + _DeltaRow;
+        int columnDest = m_CurrentCell.Column + _DeltaColumn;
+
         if (m_CanMove && IsValidDestination(rowDest, columnDest))
         {
-            MoveTo(rowDest, columnDest);
+            MoveTo(m_CurrentCell.GameGrid, rowDest, columnDest);
         }
     }
 
     public void Teleport(GameGrid grid, int _DeltaRow, int _DeltaColumn)
     {
-        MoveTo(_DeltaRow, _DeltaColumn);
+        MoveTo(grid, _DeltaRow, _DeltaColumn);
     }
 
     #endregion
-
     #region Private Methods
 
     void UpdateTimer()
@@ -30,10 +33,11 @@ public class Character : Entity
     private bool IsValidDestination(int _RowDestination, int _ColumnDestination)
     {
         //get grid
-        GameGrid grid = GameManager.Instance.GameGrid;
+        //GameGrid currentGrid = GameManager.Instance.GameGrid;
+        GameGrid currentGrid = m_CurrentCell.GameGrid;
 
         //check if the destination isn't out of grid
-        bool cellExists = grid.IsValidDestination(_RowDestination, _ColumnDestination);
+        bool cellExists = currentGrid.IsValidDestination(_RowDestination, _ColumnDestination);
 
         //if it doesn't return false + debug error
         if (!cellExists)
@@ -45,9 +49,9 @@ public class Character : Entity
         //check if the cell is empty, and if it's not, check if the enemy is small
         else
         {
-            bool cellIsEmpty = grid.IsEmptyAt(_RowDestination, _ColumnDestination);
-            bool cellIsCrossable = grid.GetGridCellAt(_RowDestination, _ColumnDestination).IsCharacterCrossable;
-            Entity entity = grid.GetGridCellAt(_RowDestination, _ColumnDestination).Entity;//.IsSmall;
+            bool cellIsEmpty = currentGrid.IsEmptyAt(_RowDestination, _ColumnDestination);
+            bool cellIsCrossable = currentGrid.GetGridCellAt(_RowDestination, _ColumnDestination).IsCharacterCrossable;
+            Entity entity = currentGrid.GetGridCellAt(_RowDestination, _ColumnDestination).Entity;//.IsSmall;
             bool enemyInCellIsSmallAndCanBeStomped = false;
 
             Enemy enemy = entity as Enemy;
@@ -62,22 +66,29 @@ public class Character : Entity
         }
     }
 
-    private void MoveTo(int _RowDestination, int _ColumnDestination)
+    private void MoveTo(GameGrid _GridDestination, int _RowDestination, int _ColumnDestination)
     {
-        GameGrid grid = GameManager.Instance.GameGrid;
+        //GameGrid currentGrid = GameManager.Instance.GameGrid;
+        //GameGrid currentGrid = m_CurrentCell.GameGrid;
 
-        transform.position = (grid.GetGridCellAt(_RowDestination, _ColumnDestination).transform.position + new Vector3(0, 0, 0));
-        //maybe put next lines in a function called on entering a new cell
-        //works for now  as this is a teleport and it's instantaneous
-        //DELETE THIS LATER IF PLAYER DOESNT TP TO OTHER CELLS
+        GridCell previousGridCell = m_CurrentCell;
+        m_CurrentCell = _GridDestination.GetGridCellAt(_RowDestination, _ColumnDestination);
+        transform.position = (m_CurrentCell.transform.position + new Vector3(0, 0, 0));
 
-        grid.GetGridCellAt(_RowDestination, _ColumnDestination).OnCellEntered(this);
+        //currentGrid.GetGridCellAt(_RowDestination, _ColumnDestination).OnCellEntered(this);
+        m_CurrentCell.OnCellEntered(this);
 
-        m_CurrentRow = _RowDestination;
-        m_CurrentColumn = _ColumnDestination;
+        //m_CurrentRow = _RowDestination;
+        //m_CurrentColumn = _ColumnDestination;
+
         m_CanMove = false;
         m_MovementTimer = Time.time;
-        grid.GetGridCellAt(m_CurrentRow, m_CurrentColumn).OnCellExited(this);
+
+        //currentGrid.GetGridCellAt(m_CurrentRow, m_CurrentColumn).OnCellExited(this);
+        if (previousGridCell)
+        {
+            previousGridCell.OnCellExited(this);
+        }
     }
     #endregion
 
@@ -88,8 +99,10 @@ public class Character : Entity
     [SerializeField] private bool m_DebugInputsKeyboard = false;
     private bool m_CanMove = false;
 
-    private int m_CurrentRow = 0;
-    private int m_CurrentColumn = 0;
+    private GridCell m_CurrentCell = null;
+
+    //private int m_CurrentRow = 0;
+    //private int m_CurrentColumn = 0;
     #endregion
 
     #region accessors
@@ -97,7 +110,8 @@ public class Character : Entity
     {
         get
         {
-            return m_CurrentRow;
+            //return m_CurrentRow;
+            return m_CurrentCell.Row;
         }
     }
 
@@ -105,7 +119,16 @@ public class Character : Entity
     {
         get
         {
-            return m_CurrentColumn;
+            //return m_CurrentColumn;
+            return m_CurrentCell.Column;
+        }
+    }
+
+    public GridCell CurrentCell
+    {
+        get
+        {
+            return m_CurrentCell;
         }
     }
     #endregion
