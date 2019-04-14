@@ -153,12 +153,8 @@ public class GameGridEditor : Editor
             gridCell.IsEnemyCrossable = configEnemyCrossable.boolValue;
             //(_CellProperty.objectReferenceValue as GridCell).IsCharacterCrossable = configCharacterCrossable.boolValue;
             //(_CellProperty.objectReferenceValue as GridCell).IsEnemyCrossable = configCharacterCrossable.boolValue;
+            EditorUtility.SetDirty(gridCell.GetComponent<GridCell>());
             EditorUtility.SetDirty(gridCell);
-
-            //SerializedObject cellObj = new SerializedObject(_CellProperty.objectReferenceValue);
-            //cellObj.FindProperty("m_IsCrossable").boolValue = configCrossable.boolValue;
-            //SerializedProperty crossableProperty = cellObj.FindProperty("m_IsCrossable");
-            //crossableProperty.boolValue = configCrossable.boolValue;
 
         }
     }

@@ -14,12 +14,12 @@ public class PauseUIManager : MonoBehaviour
 
     public enum Page { None, Pause, Options };
 
-    public Page e_page;
+    public Page e_Page;
 
     void Start()
     {
         m_PausePanel.SetActive(false);
-        e_page = Page.None;
+        e_Page = Page.None;
     }
 
     void Update()
@@ -27,9 +27,9 @@ public class PauseUIManager : MonoBehaviour
         // Change the key to match a controller input
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (e_page.Equals(Page.None) || e_page.Equals(Page.Options))
+            if (e_Page.Equals(Page.None) || e_Page.Equals(Page.Options))
                 Pause();
-            else if (e_page.Equals(Page.Pause))
+            else if (e_Page.Equals(Page.Pause))
                 Resume();
         }
     }
@@ -41,7 +41,7 @@ public class PauseUIManager : MonoBehaviour
         m_PausePanel.SetActive(true);
         m_PauseUI.SetActive(true);
         m_OptionsUI.SetActive(false);
-        e_page = Page.Pause;
+        e_Page = Page.Pause;
     }
     
     public void Resume()
@@ -50,21 +50,21 @@ public class PauseUIManager : MonoBehaviour
         m_PauseUI.SetActive(false);
         m_PausePanel.SetActive(false);
         Time.timeScale = 1f;
-        e_page = Page.None;
+        e_Page = Page.None;
     }
 
     public void Options()
     {
         m_OptionsUI.SetActive(true);
         m_PauseUI.SetActive(false);
-        e_page = Page.Options;
+        e_Page = Page.Options;
     }
 
     public void Back()
     {
         m_PauseUI.SetActive(true);
         m_OptionsUI.SetActive(false);
-        e_page = Page.Pause;
+        e_Page = Page.Pause;
     }
 
     public void Quit()
