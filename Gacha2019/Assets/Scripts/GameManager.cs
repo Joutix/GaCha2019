@@ -8,6 +8,11 @@ public class GameManager : Singleton<GameManager>
     {
         m_GameGrid = _GameGrid;
     }
+
+    public void RegisterCharacter(Character _Character)
+    {
+        m_Character = _Character;
+    }
     #endregion
 
     #region Getters / Setters
@@ -18,9 +23,18 @@ public class GameManager : Singleton<GameManager>
             return m_GameGrid;
         }
     }
+
+    public Character Character
+    {
+        get
+        {
+            return m_Character;
+        }
+    }
     #endregion
 
     #region Attributes
     private GameGrid m_GameGrid = null;
+    private Character m_Character = null;
     #endregion
 }
