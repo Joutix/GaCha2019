@@ -10,15 +10,12 @@ public class MicrophoneLevel : MonoBehaviour
 	//public float testSound2;
 	public static float s_MicLoudness1;
 	//public static float MicLoudness2;
-	private string m_device1;
-	//private string _device2;
+	private string m_Microphone;
 	private AudioClip m_clipRecord1 = null;
 	//private AudioClip _clipRecord2 = null;
 	private int m_sampleWindow = 128;
 	private bool m_isInitialized;
 	private bool m_requestPending;
-
-	public GameObject texte;
 
 	public float m_thresholdWeak = 0.2f;
 	public float m_thresholdStrong;
@@ -34,24 +31,18 @@ public class MicrophoneLevel : MonoBehaviour
 		return s_Instance;
 	}
 
-	void InitMic()
+	void Start()
 	{
 		foreach (string device in Microphone.devices)
 		{
-			if (m_device1 == null /*&& _device2 == null*/)
+			if (m_Microphone == null /*&& _device2 == null*/)
 			{
-				m_device1 = device;
+				m_Microphone = device;
 				//_device2 = Microphone.devices[1];
 			}
 		}
-		m_clipRecord1 = Microphone.Start(m_device1, true, 999, 44100);
+		m_clipRecord1 = Microphone.Start(m_Microphone, true, 999, 44100);
 		//_clipRecord2 = Microphone.Start(_device2, true, 999, 44100);
-	}
-
-	void StopMicrophone()
-	{
-		Microphone.End(m_device1);
-		//Microphone.End(_device2);
 	}
 
 	float LevelMax(string _device, AudioClip _clipRecord)
@@ -80,51 +71,13 @@ public class MicrophoneLevel : MonoBehaviour
 
 	void Update()
 	{
-		s_MicLoudness1 = LevelMax(m_device1, m_clipRecord1);
-		//MicLoudness2 = LevelMax(_device2, _clipRecord2);
-		m_testSound1 = s_MicLoudness1;
-		//testSound2 = MicLoudness2;
-		texte.GetComponent<Text>().text = "" + Microphone.devices.Length;
+		s_MicLoudness1 = LevelMax(m_Microphone, m_clipRecord1);
 
 	}
 
 	public float getMicLoudness()
 	{
 		return s_MicLoudness1;
-	}
-
-	void OnEnable()
-	{
-		InitMic();
-		m_isInitialized = true;
-	}
-
-	void OnDisable()
-	{
-		StopMicrophone();
-	}
-
-	void OnDestroy()
-	{
-		StopMicrophone();
-	}
-
-	void OnApplicationFocus(bool focus)
-	{
-		if (focus)
-		{
-			if (!m_isInitialized)
-			{
-				InitMic();
-				m_isInitialized = true;
-			}
-		}
-
-		if (!focus)
-		{
-			StopMicrophone();
-			m_isInitialized = false;
-		}
 	}
 
 }
