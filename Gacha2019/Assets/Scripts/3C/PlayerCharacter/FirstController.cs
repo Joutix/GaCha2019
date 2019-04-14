@@ -25,6 +25,20 @@ public class FirstController : Player
 
     #region protected  
 
+
+
+
+    // [SerializeField] KeyCode m_Shoot;
+
+    #endregion
+
+    #endregion
+
+
+
+    #region function
+    #region private functions
+
     void MovementInputs()
     {
         if (m_CurrentState.ThumbSticks.Left.X < -m_JoyStickDeadZone)
@@ -36,9 +50,10 @@ public class FirstController : Player
             m_Character.TryMove(0, 1);
         }
 
-        if (m_CurrentState.ThumbSticks.Left.Y < -m_JoyStickDeadZone)
+        else if (m_CurrentState.ThumbSticks.Left.Y < -m_JoyStickDeadZone)
         {
             m_Character.TryMove(-1, 0);
+
 
         }
         else if (m_CurrentState.ThumbSticks.Left.Y > m_JoyStickDeadZone)
@@ -57,20 +72,6 @@ public class FirstController : Player
     {
 
     }
-
-
-    // [SerializeField] KeyCode m_Shoot;
-
-    #endregion
-
-    #endregion
-
-
-
-    #region function
-    #region public functions
-
-
     #endregion
     #endregion
 
