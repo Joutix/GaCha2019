@@ -1,21 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class MicrophoneLevel : MonoBehaviour
 {
-	// In commentary, Second Microphone
 	public float m_testSound1;
-	//public float testSound2;
 	public static float s_MicLoudness1;
-	//public static float MicLoudness2;
-	private string m_Microphone;
+	public string m_device1;
 	private AudioClip m_clipRecord1 = null;
-	//private AudioClip _clipRecord2 = null;
 	private int m_sampleWindow = 128;
 	private bool m_isInitialized;
 	private bool m_requestPending;
+
+	private List<string> options = new List<string>();
 
 	public float m_thresholdWeak = 0.2f;
 	public float m_thresholdStrong;
@@ -24,7 +21,7 @@ public class MicrophoneLevel : MonoBehaviour
 
 	public static MicrophoneLevel getInstance()
 	{
-		if(s_Instance == null)
+		if (s_Instance == null)
 		{
 			s_Instance = GameObject.FindObjectOfType<MicrophoneLevel>();
 		}
@@ -33,28 +30,37 @@ public class MicrophoneLevel : MonoBehaviour
 
 	void Start()
 	{
+		Debug.Log("Nombre de micro : " + Microphone.devices.Length);
+
 		foreach (string device in Microphone.devices)
 		{
-			if (m_Microphone == null /*&& _device2 == null*/)
+			if (m_device1 == null)
 			{
-				m_Microphone = device;
-				//_device2 = Microphone.devices[1];
+				//set default mic to first mic found.
+				m_device1 = device;
 			}
+			options.Add(device);
 		}
-		m_clipRecord1 = Microphone.Start(m_Microphone, true, 999, 44100);
-		//_clipRecord2 = Microphone.Start(_device2, true, 999, 44100);
+		m_device1 = options[PlayerPrefsManager.GetMicrophone()];
+		m_clipRecord1 = Microphone.Start(m_device1, true, 1, 4400);
 	}
+
+
 
 	float LevelMax(string _device, AudioClip _clipRecord)
 	{
 		float levelMax1 = 0;
 		float[] waveData1 = new float[m_sampleWindow];
+		while (!(Microphone.GetPosition(_device) > 0))
+		{
+		}
 		int micPosition1 = Microphone.GetPosition(_device) - (m_sampleWindow + 1);
 		if (micPosition1 < 0)
 		{
 			return 0;
 		}
-		else { 
+		else
+		{
 			_clipRecord.GetData(waveData1, micPosition1);
 			for (int i = 0; i < m_sampleWindow; ++i)
 			{
@@ -66,12 +72,15 @@ public class MicrophoneLevel : MonoBehaviour
 
 			}
 		}
-		return levelMax1;
+		return levelMax1*100f;
 	}
 
 	void Update()
 	{
-		s_MicLoudness1 = LevelMax(m_Microphone, m_clipRecord1);
+		Debug.Log(Microphone.IsRecording(m_device1).ToString());
+		s_MicLoudness1 = LevelMax(m_device1, m_clipRecord1);
+		m_testSound1 = s_MicLoudness1;
+
 
 	}
 
@@ -80,4 +89,5 @@ public class MicrophoneLevel : MonoBehaviour
 		return s_MicLoudness1;
 	}
 
+	
 }

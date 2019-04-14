@@ -6,10 +6,10 @@ using UnityEngine;
 public class MicrophoneInput : MonoBehaviour
 {
 
-	public static float s_MicLoudness1;
+	public float s_MicLoudness1;
 	public float minThreshold = 0;
 	public float frequency = 0.0f;
-	public int audioSampleRate = 44100;
+	public int audioSampleRate = 4400;
 	private int m_sampleWindow = 128;
 	public string microphone;
 	public FFTWindow fftWindow;
@@ -19,6 +19,20 @@ public class MicrophoneInput : MonoBehaviour
 	private List<string> options = new List<string>();
 	private int samples = 8192;
 	private AudioSource audioSource;
+
+	public float m_thresholdWeak;
+	public float m_thresholdStrong;
+
+	private static MicrophoneInput s_Instance;
+
+	public static MicrophoneInput getInstance()
+	{
+		if (s_Instance == null)
+		{
+			s_Instance = GameObject.FindObjectOfType<MicrophoneInput>();
+		}
+		return s_Instance;
+	}
 
 	void Start()
 	{
@@ -57,7 +71,7 @@ public class MicrophoneInput : MonoBehaviour
 	{
 		audioSource.Stop();
 		//Start recording to audioclip from the mic
-		audioSource.clip = Microphone.Start(microphone, true, 10, audioSampleRate);
+		audioSource.clip = Microphone.Start(microphone, true, 1, audioSampleRate);
 		audioSource.loop = true;
 		// Mute the sound with an Audio Mixer group becuase we don't want the player to hear it
 		Debug.Log(Microphone.IsRecording(microphone).ToString());
@@ -67,7 +81,6 @@ public class MicrophoneInput : MonoBehaviour
 			while (!(Microphone.GetPosition(microphone) > 0))
 			{
 			} // Wait until the recording has started. 
-			s_MicLoudness1 = LevelMax(microphone, audioSource.clip);
 			Debug.Log("s_MicLoudness1 : " + s_MicLoudness1);
 			Debug.Log("recording started with " + microphone);
 
@@ -80,31 +93,6 @@ public class MicrophoneInput : MonoBehaviour
 
 			Debug.Log(microphone + " doesn't work!");
 		}
-	}
-
-	float LevelMax(string _device, AudioClip _clipRecord)
-	{
-		float levelMax1 = 0;
-		float[] waveData1 = new float[m_sampleWindow];
-		int micPosition1 = Microphone.GetPosition(_device) - (m_sampleWindow + 1);
-		if (micPosition1 < 0)
-		{
-			return 0;
-		}
-		else
-		{
-			_clipRecord.GetData(waveData1, micPosition1);
-			for (int i = 0; i < m_sampleWindow; ++i)
-			{
-				float wavePeak1 = waveData1[i] * waveData1[i];
-				if (levelMax1 < wavePeak1)
-				{
-					levelMax1 = wavePeak1;
-				}
-
-			}
-		}
-		return levelMax1;
 	}
 
 
