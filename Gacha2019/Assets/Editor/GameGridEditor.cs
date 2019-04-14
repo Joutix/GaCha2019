@@ -87,6 +87,7 @@ public class GameGridEditor : Editor
                 cell.name = "GridCell [" + i + ";" + j + "]";
                 cell.transform.position = new Vector3(j, 0, i);
                 cell.transform.parent = m_GridTarget.transform;
+                cell.GetComponent<GridCell>().PlaceIn(m_GridTarget, i, j);
                 sp.objectReferenceValue = cell;
             }
         }
@@ -110,7 +111,6 @@ public class GameGridEditor : Editor
     private void CellsConfigs()
     {
         RefreshCellsConfigs();
-        CellsConfigButtons();
     }
 
     private void RefreshCellsConfigs()
@@ -126,16 +126,13 @@ public class GameGridEditor : Editor
                 SerializedObject gridCellObj = new SerializedObject(gridCellProperty.objectReferenceValue);
                 SerializedProperty cellConfigProperty = gridCellObj.FindProperty("m_CellConfig");
 
+                //SerializedProperty relativeProperty = gridCellProperty.FindPropertyRelative("m_CellConfig");
+                //Debug.Log("value : " + relativeProperty.objectReferenceValue.ToString());
 
                 ApplyChangesOn(gridCellProperty, cellConfigProperty.objectReferenceValue as GridCellConfig);
             }
         }
         GUI.color = defaultColor;
-    }
-
-    private void CellsConfigButtons()
-    {
-
     }
 
     private void ApplyChangesOn(SerializedProperty _CellProperty, GridCellConfig _GridCellConfig)
@@ -146,13 +143,23 @@ public class GameGridEditor : Editor
 
             SerializedProperty configMesh = configPropertyObj.FindProperty("m_CellMesh");
             SerializedProperty configMaterial = configPropertyObj.FindProperty("m_CellMaterial");
-            SerializedProperty configCrossable = configPropertyObj.FindProperty("m_CellCrossable");
+            SerializedProperty configCharacterCrossable = configPropertyObj.FindProperty("m_CharacterCrossable");
+            SerializedProperty configEnemyCrossable = configPropertyObj.FindProperty("m_EnemyCrossable");
 
             GridCell gridCell = _CellProperty.objectReferenceValue as GridCell;
             gridCell.GetComponent<MeshFilter>().mesh = configMesh.objectReferenceValue as Mesh;
             gridCell.GetComponent<MeshRenderer>().material = configMaterial.objectReferenceValue as Material;
-            SerializedObject cellObj = new SerializedObject(_CellProperty.objectReferenceValue);
-            cellObj.FindProperty("m_IsCrossable").boolValue = configCrossable.boolValue;
+            gridCell.IsCharacterCrossable = configCharacterCrossable.boolValue;
+            gridCell.IsEnemyCrossable = configEnemyCrossable.boolValue;
+            //(_CellProperty.objectReferenceValue as GridCell).IsCharacterCrossable = configCharacterCrossable.boolValue;
+            //(_CellProperty.objectReferenceValue as GridCell).IsEnemyCrossable = configCharacterCrossable.boolValue;
+            EditorUtility.SetDirty(gridCell);
+
+            //SerializedObject cellObj = new SerializedObject(_CellProperty.objectReferenceValue);
+            //cellObj.FindProperty("m_IsCrossable").boolValue = configCrossable.boolValue;
+            //SerializedProperty crossableProperty = cellObj.FindProperty("m_IsCrossable");
+            //crossableProperty.boolValue = configCrossable.boolValue;
+
         }
     }
     #endregion

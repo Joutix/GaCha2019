@@ -154,7 +154,7 @@ public class Enemy : Entity
         else
         {
             bool cellIsEmpty = m_Grid.IsEmptyAt(_RowDestination, _ColumnDestination);
-            bool cellIsCrossable = m_Grid.GetGridCellAt(_RowDestination, _ColumnDestination).IsCrossable;
+            bool cellIsCrossable = m_Grid.GetGridCellAt(_RowDestination, _ColumnDestination).IsEnemyCrossable;
             Entity entity = m_Grid.GetGridCellAt(_RowDestination, _ColumnDestination).Entity;
             bool canMergeWithCellEnemy = false;
 

@@ -20,6 +20,17 @@ public class MenuUIManager : MonoBehaviour
         m_CreditsUI.SetActive(false);
     }
 
+    void Update()
+    {
+        // Change the key to match a controller input
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            m_MenuUI.SetActive(true);
+            m_OptionsUI.SetActive(false);
+            m_CreditsUI.SetActive(false);
+        }
+    }
+
     public void Play()
     {
         Debug.Log("Play");
