@@ -18,9 +18,11 @@ public class Character : Entity
 
     }
 
-	public void Teleport(Grid grid, int _DeltaRow, int _DeltaColumn)
+	public void Teleport(GameGrid grid, int _DeltaRow, int _DeltaColumn)
 	{
-
+		//m_CurrentRow = _DeltaRow;
+		//m_CurrentColumn = _DeltaColumn;
+		MoveTo(_DeltaRow, _DeltaColumn);
 	}
 
     #endregion
@@ -72,16 +74,20 @@ public class Character : Entity
         GameGrid grid = GameManager.Instance.GameGrid;
 
         transform.position = (grid.GetGridCellAt(_RowDestination, _ColumnDestination).transform.position + new Vector3(0, 2, 0));
-        //maybe put next lines in a function called on entering a new cell
-        //works for now  as this is a teleport and it's instantaneous
-        //DELETE THIS LATER IF PLAYER DOESNT TP TO OTHER CELLS
+		//maybe put next lines in a function called on entering a new cell
+		//works for now  as this is a teleport and it's instantaneous
+		//DELETE THIS LATER IF PLAYER DOESNT TP TO OTHER CELLS
+		
 
-        grid.GetGridCellAt(m_CurrentRow, m_CurrentColumn).OnCellExited(this);
-        grid.GetGridCellAt(_RowDestination, _ColumnDestination).OnCellEntered(this);
+		grid.GetGridCellAt(m_CurrentRow, m_CurrentColumn).OnCellExited(this);
 
-        m_CurrentRow = _RowDestination;
-        m_CurrentColumn = _ColumnDestination;
-    }
+		m_CurrentRow = _RowDestination;
+		m_CurrentColumn = _ColumnDestination;
+
+		grid.GetGridCellAt(_RowDestination, _ColumnDestination).OnCellEntered(this);
+
+
+	}
     #endregion
 
     #region Attributes

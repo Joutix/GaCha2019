@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class CellTeleportation : MonoBehaviour
 {
-	//[SerializeField]
-	//private GameObject m_DirToCell;
+	[SerializeField] private GridCell m_CellDestination = null;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -18,8 +18,8 @@ public class CellTeleportation : MonoBehaviour
         
     }
 
-	public void teleportation(Grid gridCell,GameObject dirToCell)
+	public void Teleportation()
 	{
-		GameManager.Instance.Character.Teleport(gridCell, (int)dirToCell.transform.position.z, (int)dirToCell.transform.position.x);
+		GameManager.Instance.Character.Teleport(m_CellDestination.GameGrid, m_CellDestination.Row, m_CellDestination.Column);
 	}
 }
