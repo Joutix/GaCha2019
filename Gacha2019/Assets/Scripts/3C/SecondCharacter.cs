@@ -20,6 +20,11 @@ public class SecondCharacter : MonoBehaviour
         m_Orbital.transform.position = transform.position + m_OffsetVector * m_DistanceToBody;
     }
 
+    public void ShootCall()
+    {
+        Shoot(m_OffsetVector);
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -78,6 +83,7 @@ public class SecondCharacter : MonoBehaviour
 
         ManageInputs();
     }
+   
 
     private void Shoot(Vector3 _ShootDirection)
     {
