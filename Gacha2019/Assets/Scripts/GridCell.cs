@@ -9,15 +9,16 @@ public class GridCell : MonoBehaviour
         m_RowPos = _Row;
         m_ColumnPos = _Depth;
     }
-    public void OnCellEntered()
+    public void OnCellEntered(Entity _EnteredEntity)
     {
         /*
          * more code if needed
          */
+        
         m_OnCellEnterEvents.Invoke();
     }
 
-    public void OnCellExited()
+    public void OnCellExited(Entity _ExitedEntity)
     {
         /*
          * more code if needed
@@ -38,7 +39,7 @@ public class GridCell : MonoBehaviour
             return m_RowPos;
         }
     }
-    
+
     public int Column
     {
         get
@@ -51,7 +52,7 @@ public class GridCell : MonoBehaviour
     {
         get
         {
-            return m_Entity == null;
+            return m_CurrentEntity == null;
         }
     }
 
@@ -67,7 +68,7 @@ public class GridCell : MonoBehaviour
     {
         get
         {
-            return m_Entity;
+            return m_CurrentEntity;
         }
     }
     #endregion
@@ -76,11 +77,14 @@ public class GridCell : MonoBehaviour
     [Header("Cell State")]
     [SerializeField] private bool m_IsCrossable = true;
 
+    [Header("Cell Config")]
+    [SerializeField] private GridCellConfig m_CellConfig = null;
+
     [Header("Events")]
     [SerializeField] private UnityEvent m_OnCellEnterEvents = null;
     [SerializeField] private UnityEvent m_OnCellExitEvents = null;
 
-    private Entity m_Entity = null;
+    private Entity m_CurrentEntity = null;
     private int m_RowPos = 0;
     private int m_ColumnPos = 0;
     #endregion

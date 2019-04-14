@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 [CustomEditor(typeof(GameGrid))]
@@ -27,7 +28,8 @@ public class GameGridEditor : Editor
         RowsField();
         ColumnsField();
         PrefabField();
-        GridButtons();
+        CreateAndCleanButtons();
+        CellsConfigs();
     }
 
     private void RowsField()
@@ -44,15 +46,10 @@ public class GameGridEditor : Editor
 
     private void PrefabField()
     {
-        //m_PrefabCellProperty.objectReferenceValue = EditorGUILayout.ObjectField()
-        //EditorGUILayout.ObjectField(m_PrefabCellProperty, GUILayout.ExpandWidth(false));
-        EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField("Prefab", GUILayout.MaxWidth(50));
-        m_PrefabCellProperty.objectReferenceValue = EditorGUILayout.ObjectField(m_PrefabCellProperty.objectReferenceValue, typeof(GameObject), false, GUILayout.MaxWidth(150));
-        EditorGUILayout.EndHorizontal();
+        EditorGUILayout.ObjectField(m_PrefabCellProperty, GUILayout.ExpandWidth(true));
     }
 
-    private void GridButtons()
+    private void CreateAndCleanButtons()
     {
         Color defaultColor = GUI.color;
         GUI.color = Color.yellow;
@@ -61,7 +58,6 @@ public class GameGridEditor : Editor
         {
             CleanGrid();
             CreateGrid();
-            
         }
 
         GUI.color = Color.red;
@@ -109,6 +105,55 @@ public class GameGridEditor : Editor
             lastIndex--;
         }
         m_GridProperty.arraySize = 0;
+    }
+
+    private void CellsConfigs()
+    {
+        RefreshCellsConfigs();
+        CellsConfigButtons();
+    }
+
+    private void RefreshCellsConfigs()
+    {
+        Color defaultColor = GUI.color;
+        GUI.color = Color.cyan;
+        if (GUILayout.Button("Refresh Meshs"))
+        {
+            /* FIRST Method */
+            for (int i = 0; i < m_GridProperty.arraySize; i++)
+            {
+                SerializedProperty gridCellProperty = m_GridProperty.GetArrayElementAtIndex(i);
+                SerializedObject gridCellObj = new SerializedObject(gridCellProperty.objectReferenceValue);
+                SerializedProperty cellConfigProperty = gridCellObj.FindProperty("m_CellConfig");
+
+
+                ApplyChangesOn(gridCellProperty, cellConfigProperty.objectReferenceValue as GridCellConfig);
+            }
+        }
+        GUI.color = defaultColor;
+    }
+
+    private void CellsConfigButtons()
+    {
+
+    }
+
+    private void ApplyChangesOn(SerializedProperty _CellProperty, GridCellConfig _GridCellConfig)
+    {
+        if (_GridCellConfig != null)
+        {
+            SerializedObject configPropertyObj = new SerializedObject(_GridCellConfig);
+
+            SerializedProperty configMesh = configPropertyObj.FindProperty("m_CellMesh");
+            SerializedProperty configMaterial = configPropertyObj.FindProperty("m_CellMaterial");
+            SerializedProperty configCrossable = configPropertyObj.FindProperty("m_CellCrossable");
+
+            GridCell gridCell = _CellProperty.objectReferenceValue as GridCell;
+            gridCell.GetComponent<MeshFilter>().mesh = configMesh.objectReferenceValue as Mesh;
+            gridCell.GetComponent<MeshRenderer>().material = configMaterial.objectReferenceValue as Material;
+            SerializedObject cellObj = new SerializedObject(_CellProperty.objectReferenceValue);
+            cellObj.FindProperty("m_IsCrossable").boolValue = configCrossable.boolValue;
+        }
     }
     #endregion
 

@@ -105,6 +105,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_IsCrossable: 1
+  m_CellConfig: {fileID: 11400000, guid: 5e82e69392b7d8940ae43c6dfbb81c8a, type: 2}
   m_OnCellEnterEvents:
     m_PersistentCalls:
       m_Calls: []
