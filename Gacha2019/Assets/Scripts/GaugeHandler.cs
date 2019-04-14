@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,7 +11,9 @@ public class GaugeHandler : MonoBehaviour
     [SerializeField]
     private Name e_Type;
     [SerializeField]
-    private Sprite m_volumeBar;
+    private Color m_FillColor;
+    [SerializeField]
+    private Sprite m_VolumeBar;
     [SerializeField]
     private List<GameObject> m_Boxes;
 
@@ -58,9 +61,9 @@ public class GaugeHandler : MonoBehaviour
     private void FillBoxes(int index)
     {
         for (int i = 0; i <= index; i++)
-        {
-            //m_Boxes[i].GetComponent<Image>().color = Color.red;
-            m_Boxes[i].GetComponent<Image>().sprite = m_volumeBar;
+        {            
+            m_Boxes[i].GetComponent<Image>().color = m_FillColor;
+            //m_Boxes[i].GetComponent<Image>().sprite = m_volumeBar;
         }
     }
 
@@ -69,8 +72,8 @@ public class GaugeHandler : MonoBehaviour
     {
         for (int i = index + 1; i < m_Boxes.Count; i++)
         {
-            //m_Boxes[i].GetComponent<Image>().color = Color.white;
-            m_Boxes[i].GetComponent<Image>().sprite = null;
+            m_Boxes[i].GetComponent<Image>().color = Color.white;
+            //m_Boxes[i].GetComponent<Image>().sprite = null;
         }
     }
 
