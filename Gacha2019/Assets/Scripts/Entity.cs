@@ -47,7 +47,10 @@ public class Entity : MonoBehaviour
         Destroy(gameObject);
     }
 
-    public virtual void TryMove() { }
+    public /*virtual*/ void TryMove(/*int _DeltaRow, int _DeltaColumn*/) { }
+
+    // protected virtual bool IsValidDestination(int _RowDestination, int _ColumnDestination) { return false; }
+    // protected void MoveTo(int _RowDestination, int _ColumnDestination){};
 
     #endregion
 

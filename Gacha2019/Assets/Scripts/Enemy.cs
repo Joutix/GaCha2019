@@ -77,6 +77,9 @@ public class Enemy : Entity
     [SerializeField]
     private Material m_TestMaterial = null;
 
+    private int m_CurrentColumn;
+    private int m_CurrentRow;
+
     #endregion
 
     #region Public Methods
@@ -85,6 +88,11 @@ public class Enemy : Entity
     {
         return m_IsStunned;
     }
+
+    //public bool IsSmall()
+    //{
+    //    return m_EnemySize == EEnemySize.Little;
+    //}
 
     #endregion
 
@@ -95,10 +103,90 @@ public class Enemy : Entity
         Die();
     }
 
+
+    public /*override*/ void TryMove(int _DeltaRow, int _DeltaColumn)
+    {
+        int rowDest = m_CurrentRow + _DeltaRow;
+        int columnDest = m_CurrentColumn + _DeltaColumn;
+        if (IsValidDestination(rowDest, columnDest))
+        {
+            MoveTo(rowDest, columnDest);
+        }
+    }
+
+
     #endregion
 
     #region Protected Methods
 
+    protected bool IsEnemySameSizeAndNotTooBig(Enemy _enemy)
+    {
+        switch (_enemy.m_EnemySize)
+        {
+            case EEnemySize.Little:
+                if (m_EnemySize == EEnemySize.Little) //if enemy and this are both small
+                    return true;
+                else return false;
+
+            case EEnemySize.Medium:
+                if (m_EnemySize == EEnemySize.Medium)//if enemy and this are both medium
+                    return true;
+                else return false;
+
+            case EEnemySize.Large: //doesn't matter, too big, return false
+                return false;
+            default:
+                return false;
+        }
+    }
+
+    protected void MoveTo(int _RowDestination, int _ColumnDestination)
+    {
+        GameGrid grid = GameManager.Instance.GameGrid;
+
+        transform.position = (grid.GetGridCellAt(_RowDestination, _ColumnDestination).transform.position + new Vector3(0, 2, 0));
+        //maybe put next lines in a function called on entering a new cell
+        //works for now  as this is a teleport and it's instantaneous
+        //DELETE THIS LATER IF PLAYER DOESNT TP TO OTHER CELLS
+
+
+        grid.GetGridCellAt(_RowDestination, _ColumnDestination).OnCellEntered(this);
+        // grid.GetGridCellAt(_RowDestination, _ColumnDestination).OnCellEntered(this);
+        m_CurrentRow = _RowDestination;
+        m_CurrentColumn = _ColumnDestination;
+    }
+
+    protected bool IsValidDestination(int _RowDestination, int _ColumnDestination)
+    {
+        //get grid
+        GameGrid grid = GameManager.Instance.GameGrid;
+
+        //check if the destination isn't out of grid
+        bool cellExists = grid.IsValidDestination(_RowDestination, _ColumnDestination);
+
+        //if it doesn't return false + debug error
+        if (!cellExists)
+        {
+            //Debug.LogError("Cell doesn't exist/ destination not valid");
+            return false;
+        }
+        else
+        {
+            bool cellIsEmpty = grid.IsEmptyAt(_RowDestination, _ColumnDestination);
+            bool cellIsCrossable = grid.GetGridCellAt(_RowDestination, _ColumnDestination).IsCrossable;
+            Entity entity = grid.GetGridCellAt(_RowDestination, _ColumnDestination).Entity;
+            bool canMergeWithCellEnemy = false;
+
+            Enemy enemy = entity as Enemy;
+            if (enemy)
+            {
+                canMergeWithCellEnemy = IsEnemySameSizeAndNotTooBig(enemy);
+            }
+            Merge(enemy);
+
+            return ((cellIsEmpty && cellIsCrossable) || (cellIsCrossable && canMergeWithCellEnemy));
+        }
+    }
     protected void DecreaseSize()
     {
         switch (m_EnemySize)
@@ -122,6 +210,33 @@ public class Enemy : Entity
                 break;
         }
     }
+
+    //pretty much the opposite of the decrease size function
+    protected void Merge(Enemy _enemy)
+    {
+        if(_enemy)
+        {
+            switch (m_EnemySize)
+            {
+                case EEnemySize.Little:
+                    m_EnemySize = EEnemySize.Medium;
+                    SetVariablesForCurrentState();
+                    Destroy(_enemy.gameObject);
+                    break;
+                case EEnemySize.Medium:
+                    m_EnemySize = EEnemySize.Large;
+                    SetVariablesForCurrentState();
+                    Destroy(_enemy.gameObject);
+                    break;
+                case EEnemySize.Large:
+                    break;
+                default:
+                    break;
+            }
+        }
+        
+    }
+
 
     // Start is called before the first frame update
     override protected void Start()
@@ -151,6 +266,11 @@ public class Enemy : Entity
         base.Update();
 
         ManageStunTimer();
+
+        if (Input.GetKeyDown(KeyCode.KeypadEnter))
+        {
+            TryMove(1, 1);
+        }
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -193,7 +313,7 @@ public class Enemy : Entity
             }
         }
     }
-    
+
     protected void SetVariablesForCurrentState()
     {
         switch (m_EnemySize)
