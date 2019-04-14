@@ -193,10 +193,10 @@ public class MenuUIManager : MonoBehaviour
                 {
                     m_OptionsMenuSelectables[m_OptionSelectableIndex].GetComponent<Image>().color = Color.red;
                     // THIS IS DISGUSTING BUT OH WELL... CHANGE THAT LATER IF WE HAVE TIME!!!
-                    if (m_OptionsMenuSelectables[1].GetComponent<GaugeHandler>().e_Type.Equals(GaugeHandler.Name.MUSIC))
-                        m_OptionsMenuSelectables[1].GetComponent<GaugeHandler>().Select(false);
-                    else
-                        Debug.LogError("Codé en dur, faite gaffe hihi x) MUSIC GAUGE NOT FOUND");
+                    //if (m_OptionsMenuSelectables[1].GetComponent<GaugeHandler>().e_Type.Equals(GaugeHandler.Name.MUSIC))
+                    //    m_OptionsMenuSelectables[1].GetComponent<GaugeHandler>().Select(false);
+					//else
+                    //    Debug.LogError("Codé en dur, faite gaffe hihi x) MUSIC GAUGE NOT FOUND");
                 }
                 // One of the two gauges
                 else if (m_OptionsMenuSelectables[m_OptionSelectableIndex].GetComponent<GaugeHandler>() != null)

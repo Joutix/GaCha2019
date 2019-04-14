@@ -11,10 +11,13 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/MenuScene.unity
     guid: dd090cbe30628cc48b100f9c9c44b46e
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/TestGridAndMovement.unity
     guid: 6f36a51c7d73abb41a76a732039c8908
   - enabled: 0
-    path: Assets/Scenes/MenuSceneSabri.unity
-    guid: 507b32633a7599f489d04841162998ed
+    path: Assets/Scenes/EndGame.unity
+    guid: e62c1c3c3ca6bf4449f136a1b5d66fab
+  - enabled: 1
+    path: Assets/Scenes/TestIntegrationCharacter.unity
+    guid: f2e80e1caf72c4b46b3c27d3c7f09ed9
   m_configObjects: {}

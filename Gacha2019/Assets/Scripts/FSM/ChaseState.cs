@@ -44,7 +44,7 @@ public class ChaseState : State
 
     protected override void OnFirstEnter()
     {
-        m_Grid = GameManager.Instance.GameGrid;
+        m_Grid = m_ControlledEnemy.CurrentCell.GameGrid;
     }
 
     protected override void OnEnter()
