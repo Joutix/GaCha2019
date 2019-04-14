@@ -60,7 +60,7 @@ public class GameManager : Singleton<GameManager>
 
     public int ManhattanDistance(int _x1, int _y1, int _x2, int _y2)
     {
-        return Mathf.Abs(_x1 - _x2) + Mathf.Abs(_y1 - _y2);
+        return Mathf.Abs(_x2 - _x1) + Mathf.Abs(_y2 - _y1);
     }
 
     #endregion
