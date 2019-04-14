@@ -251,6 +251,8 @@ public class PauseUIManager : MonoBehaviour
         e_Page = Page.Options;
         m_OptionSelectableIndex = 0;
         // DISGUSTING
+        m_OptionsMenuSelectables[0].GetComponent<GaugeHandler>().Init();
+        m_OptionsMenuSelectables[1].GetComponent<GaugeHandler>().Init();
         m_OptionsMenuSelectables[0].GetComponent<GaugeHandler>().Select(true);
         m_OptionsMenuSelectables[1].GetComponent<GaugeHandler>().Select(false);
         m_OptionsMenuSelectables[2].GetComponent<Image>().color = Color.white;

@@ -21,7 +21,7 @@ public class GaugeHandler : MonoBehaviour
     private GamePadState m_PreviousState;
     private GamePadState m_CurrentState;
 
-    private int m_currentIndex;
+    private int m_CurrentIndex;
 
     private Color m_UnselectedColor;
     private bool m_IsSelected = false;
@@ -29,11 +29,12 @@ public class GaugeHandler : MonoBehaviour
 
     void Start()
     {
-        // At the start of the game the volume is to the max
-        m_currentIndex = 9;
         m_Timer = 0f;
+        if (m_FillColor == default)
+            Debug.Log(e_Type.ToString() + " has default fill color");
+        Debug.Log(e_Type.ToString()+ " fill color: " + m_FillColor);
         m_UnselectedColor = m_FillColor;
-        FillBoxes(m_currentIndex, m_FillColor);
+        Debug.Log(e_Type.ToString() + " unselected color: " + m_UnselectedColor);
     }
 
     void Update()
@@ -47,31 +48,31 @@ public class GaugeHandler : MonoBehaviour
                 // Right
                 if(m_CurrentState.ThumbSticks.Left.X > 0.8f)
                 {
-                    m_currentIndex += 1;
-                    if (m_currentIndex >= m_Boxes.Count)
-                        m_currentIndex = m_Boxes.Count - 1;
+                    m_CurrentIndex += 1;
+                    if (m_CurrentIndex >= m_Boxes.Count)
+                        m_CurrentIndex = m_Boxes.Count - 1;
                 }
                 // Left
                 else
                 {
-                    m_currentIndex -= 1;
-                    if (m_currentIndex < 0)
+                    m_CurrentIndex -= 1;
+                    if (m_CurrentIndex < 0)
                     {
                         Mute();
                         return;
                     }
                 }
-                FillBoxes(m_currentIndex, m_FillColor);
-                EmptyBoxes(m_currentIndex);
+                FillBoxes(m_CurrentIndex, m_FillColor);
+                EmptyBoxes(m_CurrentIndex);
                 m_Timer = 0f;
                 switch (e_Type)
                 {
                     case Name.SFX:
-                        AudioManager.Instance.s_playSFX = (m_currentIndex + 1) / 10f;
+                        AudioManager.Instance.s_playSFX = (m_CurrentIndex + 1) / 10f;
                         Debug.Log("Changed SFX volume to " + AudioManager.Instance.s_playSFX);
                         break;
                     case Name.MUSIC:
-                        AudioManager.Instance.s_playMusic = (m_currentIndex + 1) / 10f;
+                        AudioManager.Instance.s_playMusic = (m_CurrentIndex + 1) / 10f;
                         Debug.Log("Changed Music volume to " + AudioManager.Instance.s_playMusic);
                         break;
                 }
@@ -79,7 +80,26 @@ public class GaugeHandler : MonoBehaviour
         }
     }
 
-    // If reset == true we are coming from the Pause Menu and need to reset the focus
+    // Init values
+    public void Init()
+    {        
+        if (e_Type.Equals(Name.SFX))
+        {
+            if (AudioManager.Instance.s_playSFX < 1f)
+                m_CurrentIndex = (int)(AudioManager.Instance.s_playSFX * 10);
+            else
+                m_CurrentIndex = 9;
+        }
+        else if (e_Type.Equals(Name.MUSIC))
+        {
+            if (AudioManager.Instance.s_playMusic < 1f)
+                m_CurrentIndex = (int)(AudioManager.Instance.s_playMusic * 10);
+            else
+                m_CurrentIndex = 9;
+        }
+        Debug.Log(e_Type.ToString() + " gauge with index at " + m_CurrentIndex);
+    }
+    
     public void Select(bool val)
     {
         Color newColor;
@@ -97,7 +117,8 @@ public class GaugeHandler : MonoBehaviour
             newColor = m_UnselectedColor;
         }
         m_FillColor = newColor;
-        FillBoxes(m_currentIndex, m_FillColor);
+        FillBoxes(m_CurrentIndex, m_FillColor);
+        EmptyBoxes(m_CurrentIndex);
         m_IsSelected = val;
     }
 
@@ -112,31 +133,31 @@ public class GaugeHandler : MonoBehaviour
     public void OnPointerEnter(GameObject box)
     {
         int index = m_Boxes.IndexOf(box);
-        if (index < m_currentIndex)
-            index = m_currentIndex;
+        if (index < m_CurrentIndex)
+            index = m_CurrentIndex;
         FillBoxes(index, m_FillColor);
     }
 
     // With keyboard controls
     public void OnPointerExit(GameObject box)
     {
-        EmptyBoxes(m_currentIndex);
+        EmptyBoxes(m_CurrentIndex);
     }
 
     // With keyboard controls
     public void OnPointerClick(GameObject box)
     {
-        m_currentIndex = m_Boxes.IndexOf(box);
-        FillBoxes(m_currentIndex, m_FillColor);
-        EmptyBoxes(m_currentIndex);
+        m_CurrentIndex = m_Boxes.IndexOf(box);
+        FillBoxes(m_CurrentIndex, m_FillColor);
+        EmptyBoxes(m_CurrentIndex);
         switch (e_Type)
         {
             case Name.SFX:
-                AudioManager.Instance.s_playSFX = (m_currentIndex + 1)/10f;
+                AudioManager.Instance.s_playSFX = (m_CurrentIndex + 1)/10f;
                 Debug.Log("Changed SFX volume to " + AudioManager.Instance.s_playSFX);
                 break;
             case Name.MUSIC:
-				AudioManager.Instance.s_playMusic = (m_currentIndex + 1) / 10f;
+				AudioManager.Instance.s_playMusic = (m_CurrentIndex + 1) / 10f;
                 Debug.Log("Changed Music volume to " + AudioManager.Instance.s_playMusic);
                 break;
         }
@@ -145,6 +166,7 @@ public class GaugeHandler : MonoBehaviour
     // Fills all the boxes that have an index lower or equal to the given index
     private void FillBoxes(int index, Color color)
     {
+        //Debug.Log("Filling "+e_Type.ToString()+" with index: " + index);
         for (int i = 0; i <= index; i++)
         {            
             m_Boxes[i].GetComponent<Image>().color = color;
@@ -164,8 +186,8 @@ public class GaugeHandler : MonoBehaviour
 
     public void Mute()
     {
-        m_currentIndex = -1;
-        EmptyBoxes(m_currentIndex);
+        m_CurrentIndex = -1;
+        EmptyBoxes(m_CurrentIndex);
         switch (e_Type)
         {
             case Name.SFX:
