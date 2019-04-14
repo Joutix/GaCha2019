@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 014b8c7b555b3fe44819d1f6b2a78b6c, type: 3}
   m_Name: Moutain
   m_EditorClassIdentifier: 
-  m_CellMesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  m_CellMesh: {fileID: 4300000, guid: d0805214ef9acb147a1d751b96aca221, type: 3}
   m_CellMaterial: {fileID: 2100000, guid: 4926336977fc83c4c9edfca97823705d, type: 2}
-  m_CellCrossable: 0
+  m_CharacterCrossable: 0
+  m_EnemyCrossable: 0

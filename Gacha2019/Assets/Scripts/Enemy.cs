@@ -49,8 +49,6 @@ public class Enemy : Entity
     [SerializeField]
     private EEnemyState m_EnemyState = EEnemyState.Wandering;
 
-    private Vector2 m_GridPosition;
-
     private bool m_IsStunned = false;
 
     [SerializeField]
@@ -75,10 +73,12 @@ public class Enemy : Entity
     private MeshRenderer m_MeshRender = null;
 
     [SerializeField]
-    private Material m_TestMaterial = null;
+    private int m_CurrentColumn = -1;
 
-    private int m_CurrentColumn;
-    private int m_CurrentRow;
+    [SerializeField]
+    private int m_CurrentRow = -1;
+
+    private GameGrid m_Grid = null;
 
     #endregion
 
@@ -88,11 +88,6 @@ public class Enemy : Entity
     {
         return m_IsStunned;
     }
-
-    //public bool IsSmall()
-    //{
-    //    return m_EnemySize == EEnemySize.Little;
-    //}
 
     #endregion
 
@@ -108,10 +103,7 @@ public class Enemy : Entity
     {
         int rowDest = m_CurrentRow + _DeltaRow;
         int columnDest = m_CurrentColumn + _DeltaColumn;
-        if (IsValidDestination(rowDest, columnDest))
-        {
-            MoveTo(rowDest, columnDest);
-        }
+        MoveTo(rowDest, columnDest);
     }
 
 
@@ -121,48 +113,37 @@ public class Enemy : Entity
 
     protected bool IsEnemySameSizeAndNotTooBig(Enemy _enemy)
     {
-        switch (_enemy.m_EnemySize)
-        {
-            case EEnemySize.Little:
-                if (m_EnemySize == EEnemySize.Little) //if enemy and this are both small
-                    return true;
-                else return false;
-
-            case EEnemySize.Medium:
-                if (m_EnemySize == EEnemySize.Medium)//if enemy and this are both medium
-                    return true;
-                else return false;
-
-            case EEnemySize.Large: //doesn't matter, too big, return false
-                return false;
-            default:
-                return false;
-        }
+        return m_EnemySize != EEnemySize.Large && m_EnemySize == _enemy.m_EnemySize;
     }
 
     protected void MoveTo(int _RowDestination, int _ColumnDestination)
     {
-        GameGrid grid = GameManager.Instance.GameGrid;
+        if (IsValidDestination(_RowDestination, _ColumnDestination))
+        {
+            transform.position = (m_Grid.GetGridCellAt(_RowDestination, _ColumnDestination).transform.position + new Vector3(0, 2, 0));
 
-        transform.position = (grid.GetGridCellAt(_RowDestination, _ColumnDestination).transform.position + new Vector3(0, 2, 0));
-        //maybe put next lines in a function called on entering a new cell
-        //works for now  as this is a teleport and it's instantaneous
-        //DELETE THIS LATER IF PLAYER DOESNT TP TO OTHER CELLS
+            if (m_Grid.IsValidDestination(m_CurrentRow, m_CurrentColumn))
+            {
+                m_Grid.GetGridCellAt(m_CurrentRow, m_CurrentColumn).OnCellExited(this);
+            }
 
+            m_Grid.GetGridCellAt(_RowDestination, _ColumnDestination).OnCellEntered(this);
+            m_CurrentRow = _RowDestination;
+            m_CurrentColumn = _ColumnDestination;
 
-        grid.GetGridCellAt(_RowDestination, _ColumnDestination).OnCellEntered(this);
-        // grid.GetGridCellAt(_RowDestination, _ColumnDestination).OnCellEntered(this);
-        m_CurrentRow = _RowDestination;
-        m_CurrentColumn = _ColumnDestination;
+            Entity entity = m_Grid.GetGridCellAt(_RowDestination, _ColumnDestination).Entity;
+            Enemy enemy = entity as Enemy;
+            if (enemy != null && IsEnemySameSizeAndNotTooBig(enemy))
+            {
+                Merge(enemy);
+            }
+        }
     }
 
     protected bool IsValidDestination(int _RowDestination, int _ColumnDestination)
     {
-        //get grid
-        GameGrid grid = GameManager.Instance.GameGrid;
-
         //check if the destination isn't out of grid
-        bool cellExists = grid.IsValidDestination(_RowDestination, _ColumnDestination);
+        bool cellExists = m_Grid.IsValidDestination(_RowDestination, _ColumnDestination);
 
         //if it doesn't return false + debug error
         if (!cellExists)
@@ -172,17 +153,21 @@ public class Enemy : Entity
         }
         else
         {
-            bool cellIsEmpty = grid.IsEmptyAt(_RowDestination, _ColumnDestination);
-            bool cellIsCrossable = grid.GetGridCellAt(_RowDestination, _ColumnDestination).IsCrossable;
-            Entity entity = grid.GetGridCellAt(_RowDestination, _ColumnDestination).Entity;
+            bool cellIsEmpty = m_Grid.IsEmptyAt(_RowDestination, _ColumnDestination);
+            bool cellIsCrossable = m_Grid.GetGridCellAt(_RowDestination, _ColumnDestination).IsEnemyCrossable;
+            Entity entity = m_Grid.GetGridCellAt(_RowDestination, _ColumnDestination).Entity;
             bool canMergeWithCellEnemy = false;
 
             Enemy enemy = entity as Enemy;
             if (enemy)
             {
                 canMergeWithCellEnemy = IsEnemySameSizeAndNotTooBig(enemy);
+
+                //if (canMergeWithCellEnemy)
+                //{
+                //    Merge(enemy);
+                //}
             }
-            Merge(enemy);
 
             return ((cellIsEmpty && cellIsCrossable) || (cellIsCrossable && canMergeWithCellEnemy));
         }
@@ -195,16 +180,24 @@ public class Enemy : Entity
                 Stun();
                 break;
             case EEnemySize.Medium:
-                Debug.Log("TO DO spawn another little enemy on grid");
+                //Debug.Log("TO DO spawn another little enemy on grid");
                 m_EnemySize = EEnemySize.Little;
                 SetVariablesForCurrentState();
                 m_CurrentLifePoint = m_MaxLifePoint;
+                if (!SpawnEnemyOnAdjacentCell(m_EnemySize, m_EnemyColor, m_CurrentRow, m_CurrentColumn))
+                {
+                    Debug.LogError("Couldn't spawn enemy little");
+                }
                 break;
             case EEnemySize.Large:
-                Debug.Log("TO DO spawn another medium enemy on grid");
+                //Debug.Log("TO DO spawn another medium enemy on grid");
                 m_EnemySize = EEnemySize.Medium;
                 SetVariablesForCurrentState();
                 m_CurrentLifePoint = m_MaxLifePoint;
+                if (!SpawnEnemyOnAdjacentCell(m_EnemySize, m_EnemyColor, m_CurrentRow, m_CurrentColumn))
+                {
+                    Debug.LogError("Couldn't spawn enemy medium");
+                }
                 break;
             default:
                 break;
@@ -214,7 +207,7 @@ public class Enemy : Entity
     //pretty much the opposite of the decrease size function
     protected void Merge(Enemy _enemy)
     {
-        if(_enemy)
+        if (_enemy != null && _enemy != this)
         {
             switch (m_EnemySize)
             {
@@ -222,11 +215,13 @@ public class Enemy : Entity
                     m_EnemySize = EEnemySize.Medium;
                     SetVariablesForCurrentState();
                     Destroy(_enemy.gameObject);
+                    m_Grid.GetGridCellAt(m_CurrentRow, m_CurrentColumn).OnCellEntered(this);
                     break;
                 case EEnemySize.Medium:
                     m_EnemySize = EEnemySize.Large;
                     SetVariablesForCurrentState();
                     Destroy(_enemy.gameObject);
+                    m_Grid.GetGridCellAt(m_CurrentRow, m_CurrentColumn).OnCellEntered(this);
                     break;
                 case EEnemySize.Large:
                     break;
@@ -234,7 +229,7 @@ public class Enemy : Entity
                     break;
             }
         }
-        
+
     }
 
 
@@ -243,19 +238,7 @@ public class Enemy : Entity
     {
         base.Start();
 
-        m_MeshFilter = GetComponent<MeshFilter>();
-
-        if (m_MeshFilter == null)
-        {
-            Debug.LogError("Couldn't get mesh render on enemy make sure it has one");
-        }
-
-        m_MeshRender = GetComponent<MeshRenderer>();
-
-        if (m_MeshRender == null)
-        {
-            Debug.LogError("Couldn't get MeshRenderer on enemy make sure it has one");
-        }
+        MoveTo(m_CurrentRow, m_CurrentColumn);
 
         SetVariablesForCurrentState();
     }
@@ -353,6 +336,32 @@ public class Enemy : Entity
         }
     }
 
+    protected bool SpawnEnemyOnAdjacentCell(EEnemySize _Size, EEntityColor _Color, int _CurrentX, int _CurrentY)
+    {
+        for (int x = -1; x <= 1; x++)
+        {
+            for (int y = -1; y <= 1; y++)
+            {
+                if (x != 0 || y != 0)
+                {
+                    int testedX = _CurrentX + x;
+                    int testedY = _CurrentX + y;
+
+                    if (m_Grid.IsValidDestination(testedX, testedY) && m_Grid.IsEmptyAt(testedX, testedY) && m_Grid.GetGridCellAt(testedX, testedY).IsCrossable)
+                    {
+                        GridCell currentCell = m_Grid.GetGridCellAt(testedX, testedY);
+                        Enemy spawnedEnemy = Instantiate(gameObject, Vector3.zero, transform.rotation).GetComponent<Enemy>();
+                        spawnedEnemy.MoveTo(testedX, testedY);
+
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
     #endregion
 
     #region MonoBehavior
@@ -366,6 +375,38 @@ public class Enemy : Entity
             TakeDamage(bullet.Damage);
 
             Destroy(bullet.gameObject);
+        }
+    }
+
+    private void Awake()
+    {
+        m_Grid = GameManager.Instance.GameGrid;
+
+        if (m_Grid == null)
+        {
+            Debug.LogError("Couldn't get Gird on enemy make sure the game has one");
+        }
+
+        m_MeshFilter = GetComponent<MeshFilter>();
+
+        if (m_MeshFilter == null)
+        {
+            Debug.LogError("Couldn't get mesh render on enemy make sure it has one");
+        }
+
+        m_MeshRender = GetComponent<MeshRenderer>();
+
+        if (m_MeshRender == null)
+        {
+            Debug.LogError("Couldn't get MeshRenderer on enemy make sure it has one");
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (m_Grid.IsValidDestination(m_CurrentRow, m_CurrentColumn))
+        {
+            m_Grid.GetGridCellAt(m_CurrentRow, m_CurrentColumn).OnCellExited(this);
         }
     }
 
