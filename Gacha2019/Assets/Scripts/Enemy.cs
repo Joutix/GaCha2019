@@ -34,6 +34,8 @@ public struct PhaseInfo
     public Material PhaseMaterialRed;
     public Material PhaseMaterialBlue;
     public int PhaseMaxHealth;
+    public float ShootCooldown;
+    public float MovementCoolDown;
 }
 
 public class Enemy : Entity
@@ -92,15 +94,14 @@ public class Enemy : Entity
     [Tooltip("The time between the AI movement")]
     private float m_Speed = 0.2f;
 
-    [SerializeField]
-    [Tooltip("The speed of the bullet that will be shot")]
-    private float m_ShootForce = 20;
-
-    private float m_TimeTillNextMovement = 0;
-
-    private GridCell m_NextCell = null;
+    private float m_CurrentShootCooldown = 0;
+    private float m_CurrentMovementSpeed = 0;
 
     FiniteStateMachine m_FSM = null;
+
+    private WanderState m_WanderState = null;
+    private ShootState m_ShootState = null;
+    private ChaseState m_ChaseState = null;
 
     #endregion
 
@@ -189,7 +190,7 @@ public class Enemy : Entity
             }
             else
             {
-                cells.Remove(m_NextCell);
+                cells.Remove(nextCell);
             }
 
         } while (cells.Count <= 0 && !hasFoundNextDestination);
@@ -342,11 +343,15 @@ public class Enemy : Entity
         m_FSM = new FiniteStateMachine(null);
 
         // Wander state
-        m_FSM.AddState(new WanderState(this, m_Speed));
+        m_WanderState = new WanderState(this, m_CurrentMovementSpeed);
+        m_FSM.AddState(m_WanderState);
 
         // Shoot state
+        m_ShootState = new ShootState(this, m_CurrentShootCooldown);
+        m_FSM.AddState(m_ShootState);
 
         // Chase state
+        m_ChaseState = new ChaseState(this, m_CurrentMovementSpeed);
 
         // Fusion state
 
@@ -354,7 +359,6 @@ public class Enemy : Entity
 
         SetVariablesForCurrentState();
 
-        m_TimeTillNextMovement = m_Speed;
     }
 
     // Update is called once per frame
@@ -364,9 +368,10 @@ public class Enemy : Entity
 
         ManageStunTimer();
 
-        m_FSM.UpdateStep();
-
-       
+        if (!m_IsStunned)
+        {
+            m_FSM.UpdateStep();
+        }
 
         //if (Input.GetKeyDown(KeyCode.KeypadEnter))
         //{
@@ -424,22 +429,32 @@ public class Enemy : Entity
                 m_MeshFilter.mesh = m_PhaseLittleInfo.PhaseMesh;
                 SetMaterialAccordingToColor(m_PhaseLittleInfo);
                 m_MaxLifePoint = m_PhaseLittleInfo.PhaseMaxHealth;
+                m_CurrentShootCooldown = m_PhaseLittleInfo.ShootCooldown;
+                m_CurrentMovementSpeed = m_PhaseLittleInfo.MovementCoolDown;
                 break;
             case EEnemySize.Medium:
                 m_CurrentBulletPrefab = m_PhaseMediumInfo.BulletPrefab;
                 m_MeshFilter.mesh = m_PhaseMediumInfo.PhaseMesh;
                 SetMaterialAccordingToColor(m_PhaseMediumInfo);
                 m_MaxLifePoint = m_PhaseMediumInfo.PhaseMaxHealth;
+                m_CurrentShootCooldown = m_PhaseMediumInfo.ShootCooldown;
+                m_CurrentMovementSpeed = m_PhaseMediumInfo.MovementCoolDown;
                 break;
             case EEnemySize.Large:
                 m_CurrentBulletPrefab = m_PhaseLargeInfo.BulletPrefab;
                 m_MeshFilter.mesh = m_PhaseLargeInfo.PhaseMesh;
                 SetMaterialAccordingToColor(m_PhaseLargeInfo);
                 m_MaxLifePoint = m_PhaseLargeInfo.PhaseMaxHealth;
+                m_CurrentShootCooldown = m_PhaseLargeInfo.ShootCooldown;
+                m_CurrentMovementSpeed = m_PhaseLargeInfo.MovementCoolDown;
                 break;
             default:
                 break;
         }
+
+        m_ShootState.SetShootCooldown(m_CurrentShootCooldown);
+        m_WanderState.SetTimeBetweeMovement(m_CurrentMovementSpeed);
+        m_ChaseState.SetTimeBetweeMovement(m_CurrentMovementSpeed);
     }
 
     protected void SetMaterialAccordingToColor(PhaseInfo _PhaseInfo)
@@ -480,100 +495,6 @@ public class Enemy : Entity
         }
 
         return false;
-    }
-
-    protected void ManageMovement()
-    {
-        m_TimeTillNextMovement -= Time.deltaTime;
-
-        if (m_TimeTillNextMovement <= 0)
-        {
-            SelectNextDestination();
-
-            MoveTo(m_NextCell.Row, m_NextCell.Column);
-
-            m_TimeTillNextMovement = m_Speed;
-        }
-    }
-
-    protected void SelectNextDestination()
-    {
-        switch (m_EnemyState)
-        {
-            case EEnemyState.Wandering:
-                List<GridCell> cells = new List<GridCell>();
-
-                if (m_Grid.IsValidDestination(m_CurrentRow + 1, m_CurrentColumn))
-                {
-                    cells.Add(m_Grid.GetGridCellAt(m_CurrentRow + 1, m_CurrentColumn));
-                }
-                if (m_Grid.IsValidDestination(m_CurrentRow - 1, m_CurrentColumn))
-                {
-                    cells.Add(m_Grid.GetGridCellAt(m_CurrentRow - 1, m_CurrentColumn));
-                }
-                if (m_Grid.IsValidDestination(m_CurrentRow, m_CurrentColumn + 1))
-                {
-                    cells.Add(m_Grid.GetGridCellAt(m_CurrentRow, m_CurrentColumn + 1));
-                }
-                if (m_Grid.IsValidDestination(m_CurrentRow, m_CurrentColumn - 1))
-                {
-                    cells.Add(m_Grid.GetGridCellAt(m_CurrentRow, m_CurrentColumn - 1));
-                }
-
-                bool hasFoundNextDestination = false;
-
-                System.Random rd = new System.Random(System.DateTime.Now.Millisecond);
-
-                do
-                {
-                    m_NextCell = cells[rd.Next() % cells.Count];
-
-                    if (IsValidDestination(m_NextCell.Row, m_NextCell.Column))
-                    {
-                        hasFoundNextDestination = true;
-                    }
-                    else
-                    {
-                        cells.Remove(m_NextCell);
-                    }
-
-                } while (cells.Count <= 0 && !hasFoundNextDestination);
-
-                if (!hasFoundNextDestination)
-                {
-                    m_NextCell = m_Grid.GetGridCellAt(m_CurrentRow, m_CurrentColumn);
-                }
-
-                break;
-            case EEnemyState.Fleeing:
-                break;
-            case EEnemyState.Attacking:
-                break;
-            case EEnemyState.Fusioning:
-                break;
-            default:
-                break;
-        }
-    }
-
-    protected void ManageAIStates()
-    {
-        ManageMovement();
-
-        switch (m_EnemyState)
-        {
-            case EEnemyState.Wandering:
-
-                break;
-            case EEnemyState.Fleeing:
-                break;
-            case EEnemyState.Attacking:
-                break;
-            case EEnemyState.Fusioning:
-                break;
-            default:
-                break;
-        }
     }
 
     #endregion

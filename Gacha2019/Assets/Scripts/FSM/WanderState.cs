@@ -23,6 +23,23 @@ public class WanderState : State
         m_TimeTillNextMovement = m_TimeBetweenTwoMovement;
     }
 
+    #endregion
+
+    #region Accessor
+
+    #endregion
+
+    #region Public Methods
+
+    public void SetTimeBetweeMovement(float _TimeBetweenMovement)
+    {
+        m_TimeBetweenTwoMovement = _TimeBetweenMovement;
+    }
+
+    #endregion
+
+    #region Protected Methods
+
     protected override void OnUpdate()
     {
         m_TimeTillNextMovement -= Time.deltaTime;
@@ -36,17 +53,11 @@ public class WanderState : State
             m_TimeTillNextMovement = m_TimeBetweenTwoMovement;
         }
     }
-    #endregion
 
-    #region Accessor
-
-    #endregion
-
-    #region Public Methods
-
-    #endregion
-
-    #region Protected Methods
+    protected override void OnEnter()
+    {
+        m_TimeTillNextMovement = m_TimeBetweenTwoMovement;
+    }
 
     #endregion
 

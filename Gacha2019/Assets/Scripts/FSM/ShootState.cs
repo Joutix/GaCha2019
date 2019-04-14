@@ -23,17 +23,7 @@ public class ShootState : State
         m_TimeTillNextShoot = m_ShootCoolDown;
     }
 
-    protected override void OnUpdate()
-    {
-        m_TimeTillNextShoot -= Time.deltaTime;
-
-        if (m_TimeTillNextShoot <= 0)
-        {
-            //m_ControlledEnemy.ShootPlayer();
-
-            m_TimeTillNextShoot = m_ShootCoolDown;
-        }
-    }
+    
     #endregion
 
     #region Accessor
@@ -42,9 +32,39 @@ public class ShootState : State
 
     #region Public Methods
 
+    public void SetShootCooldown(float _NewShootCooldown)
+    {
+        if (_NewShootCooldown <= 0)
+        {
+            Debug.LogError("You tried to set shoot cooldown for shoot state to a 0 or negative value will be set to 1");
+            m_ShootCoolDown = 1;
+        }
+        else
+        {
+            m_ShootCoolDown = _NewShootCooldown;
+        }
+    }
+
     #endregion
 
     #region Protected Methods
+
+    protected override void OnEnter()
+    {
+        m_TimeTillNextShoot = m_ShootCoolDown;
+    }
+
+    protected override void OnUpdate()
+    {
+        m_TimeTillNextShoot -= Time.deltaTime;
+
+        if (m_TimeTillNextShoot <= 0)
+        {
+            m_ControlledEnemy.ShootPlayer();
+
+            m_TimeTillNextShoot = m_ShootCoolDown;
+        }
+    }
 
     #endregion
 
