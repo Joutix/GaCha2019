@@ -15,10 +15,10 @@ public class GridCell : MonoBehaviour
 		/*
          * more code if needed
          */
-		if (Entity == null)
-		{
-			m_CurrentEntity = _EnteredEntity;
-		}
+        if (m_CurrentEntity == null)
+        {
+            m_CurrentEntity = _EnteredEntity;
+        }
 
 		m_OnCellEnterEvents.Invoke();
     }

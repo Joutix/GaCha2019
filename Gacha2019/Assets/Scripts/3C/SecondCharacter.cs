@@ -6,6 +6,7 @@ public class SecondCharacter : MonoBehaviour
 {
     [SerializeField] public float m_DistanceToBody = 1.2f;
     [SerializeField] private GameObject m_PrefabOrbital = null;
+    [SerializeField] private Transform m_AnchorDrone = null;
     [SerializeField] private Bullet m_PrefabBullet = null;
     [SerializeField] private float m_BulletSpawnOffset = 2;
 	[SerializeField] private float timeBtwAttack;
@@ -13,13 +14,14 @@ public class SecondCharacter : MonoBehaviour
 
 	private GameObject m_Orbital = null;
 
-
+    [SerializeField]
     private Vector3 m_OffsetVector = new Vector3(1, 0, 0);
 
     public void TurnAroundRoot(float _Right, float _Up)
     {
         m_OffsetVector = (_Right * Vector3.right + _Up * Vector3.forward).normalized;
-        m_Orbital.transform.position = transform.position + m_OffsetVector * m_DistanceToBody;
+        //m_Orbital.transform.position = transform.position + m_OffsetVector * m_DistanceToBody;
+        m_Orbital.transform.position = m_AnchorDrone.position + m_OffsetVector * m_DistanceToBody;
     }
 
     public void ShootCall()
@@ -31,7 +33,8 @@ public class SecondCharacter : MonoBehaviour
     void Start()
     {
         m_Orbital = Instantiate<GameObject>(m_PrefabOrbital.gameObject);
-        m_Orbital.transform.position = transform.position + m_OffsetVector * m_DistanceToBody;
+        //m_Orbital.transform.position = transform.position + m_OffsetVector * m_DistanceToBody;
+        m_Orbital.transform.position = m_AnchorDrone.position + m_OffsetVector * m_DistanceToBody;
     }
 
     private void ManageInputs()
@@ -76,6 +79,7 @@ public class SecondCharacter : MonoBehaviour
             Shoot(m_OffsetVector);
         }
 
+        /*
 		if(timeBtwAttack <= 0 && (MicrophoneLevel.getInstance().getMicLoudness() > MicrophoneLevel.getInstance().m_thresholdWeak))
 		{
 			Shoot(m_OffsetVector);
@@ -85,13 +89,15 @@ public class SecondCharacter : MonoBehaviour
 		{
 			timeBtwAttack -= Time.deltaTime;
 		}
+        */
 	}
 
     // Update is called once per frame
     void Update()
     {
         //update position of the orbital
-        m_Orbital.transform.position = transform.position + m_OffsetVector * m_DistanceToBody;
+        //m_Orbital.transform.position = transform.position + m_OffsetVector * m_DistanceToBody;
+        m_Orbital.transform.position = m_AnchorDrone.position + m_OffsetVector * m_DistanceToBody;
 
         ManageInputs();
     }
@@ -99,7 +105,9 @@ public class SecondCharacter : MonoBehaviour
 
     private void Shoot(Vector3 _ShootDirection)
     {
-        Vector3 pos = transform.position;
+        //Vector3 pos = transform.position;
+        //Vector3 pos = m_AnchorDrone.position;
+        Vector3 pos = m_Orbital.transform.position;
 
         pos += _ShootDirection * m_BulletSpawnOffset;
         GameObject bulletClone = Instantiate(m_PrefabBullet.gameObject, pos, Quaternion.identity);

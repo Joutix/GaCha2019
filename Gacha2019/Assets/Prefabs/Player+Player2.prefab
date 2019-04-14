@@ -14,8 +14,8 @@ GameObject:
   - component: {fileID: 2636046196416230561}
   - component: {fileID: 395437927441224943}
   - component: {fileID: 2636046196416230565}
-  - component: {fileID: 7121962948794902061}
   - component: {fileID: 4232369282838474540}
+  - component: {fileID: 7121962948794902061}
   m_Layer: 0
   m_Name: Player+Player2
   m_TagString: Untagged
@@ -109,6 +109,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_MaxLifePoint: 3
+  m_SpriteRenderer: {fileID: 0}
   m_TimeNeededToMoveAgain: 1
 --- !u!114 &2636046196416230565
 MonoBehaviour:
@@ -126,21 +127,8 @@ MonoBehaviour:
   m_PrefabOrbital: {fileID: 0}
   m_PrefabBullet: {fileID: 0}
   m_BulletSpawnOffset: 2
---- !u!114 &7121962948794902061
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2636046196416230559}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c09a650b7f8a1346841e55dc2481ac9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_JoyStickDeadZone: 0.2
-  m_PlayerIndex: 0
-  m_SecondCharacter: {fileID: 2636046196416230565}
+  timeBtwAttack: 0
+  reloadTime: 1
 --- !u!114 &4232369282838474540
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -156,3 +144,18 @@ MonoBehaviour:
   m_JoyStickDeadZone: 0.2
   m_PlayerIndex: 0
   m_Character: {fileID: 395437927441224943}
+--- !u!114 &7121962948794902061
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2636046196416230559}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c09a650b7f8a1346841e55dc2481ac9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_JoyStickDeadZone: 0.2
+  m_PlayerIndex: 1
+  m_SecondCharacter: {fileID: 2636046196416230565}

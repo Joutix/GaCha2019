@@ -69,21 +69,28 @@ public class SecondController : Player
             m_SecondCharacter.TurnAroundRoot(-1, 0);
         }
 
-        if (m_CurrentState.Buttons.A == ButtonState.Pressed && m_PreviousState.Buttons.A == ButtonState .Released)
-        {
-                m_SecondCharacter.ShootCall();
-        }
-        if (m_CurrentState.Buttons.B == ButtonState.Pressed && m_PreviousState.Buttons.B == ButtonState.Released)
+        if (m_CurrentState.Buttons.A == ButtonState.Pressed && m_PreviousState.Buttons.A == ButtonState.Released)
         {
             m_SecondCharacter.ShootCall();
         }
-        if (m_CurrentState.Buttons.X == ButtonState.Pressed && m_PreviousState.Buttons.X == ButtonState.Released)
+        //if (m_CurrentState.Buttons.B == ButtonState.Pressed && m_PreviousState.Buttons.B == ButtonState.Released)
+        //{
+        //    m_SecondCharacter.ShootCall();
+        //}
+        //if (m_CurrentState.Buttons.X == ButtonState.Pressed && m_PreviousState.Buttons.X == ButtonState.Released)
+        //{
+        //    m_SecondCharacter.ShootCall();
+        //}
+        if (MicrophoneLevel.getInstance().getMicLoudness() > MicrophoneLevel.getInstance().m_thresholdWeak && MicrophoneLevel.getInstance().getMicLoudness() < MicrophoneLevel.getInstance().m_thresholdStrong)
         {
             m_SecondCharacter.ShootCall();
         }
-        if (m_CurrentState.Buttons.Y == ButtonState.Pressed && m_PreviousState.Buttons.Y == ButtonState.Released)
+
+
+        if (MicrophoneLevel.getInstance().getMicLoudness() > MicrophoneLevel.getInstance().m_thresholdStrong)
         {
-            m_SecondCharacter.ShootCall();
+            //todo here shoot strong/secondary shoot
+           // m_SecondCharacter.ShootCall();
         }
     }
 

@@ -34,7 +34,8 @@ public struct PhaseInfo
     public Material PhaseMaterialRed;
     public Material PhaseMaterialBlue;
     public int PhaseMaxHealth;
-    //... for later stats ?
+    public float ShootCooldown;
+    public float MovementCoolDown;
 }
 
 public class Enemy : Entity
@@ -80,6 +81,28 @@ public class Enemy : Entity
 
     private GameGrid m_Grid = null;
 
+    [Header("AI")]
+    [SerializeField]
+    [Tooltip("The number of cells at which the AI will start the attack mode")]
+    private int m_AttackDetectionRange = 10;
+
+    [SerializeField]
+    [Tooltip("The number of cells at which the AI will stop shooting and will start it's movement towards the player")]
+    private int m_AttackMaxRange = 15;
+
+    [SerializeField]
+    [Tooltip("The time between the AI movement")]
+    private float m_Speed = 0.2f;
+
+    private float m_CurrentShootCooldown = 0;
+    private float m_CurrentMovementSpeed = 0;
+
+    FiniteStateMachine m_FSM = null;
+
+    private WanderState m_WanderState = null;
+    private ShootState m_ShootState = null;
+    private ChaseState m_ChaseState = null;
+
     #endregion
 
     #region Public Methods
@@ -91,13 +114,20 @@ public class Enemy : Entity
 
     #endregion
 
+    #region Accessor
+
+    public int Row { get => m_CurrentRow; }
+    public int Column { get => m_CurrentColumn; }
+
+
+    #endregion
+
     #region Public Methods
 
     public void Stomp()
     {
         Die();
     }
-
 
     public /*override*/ void TryMove(int _DeltaRow, int _DeltaColumn)
     {
@@ -106,21 +136,11 @@ public class Enemy : Entity
         MoveTo(rowDest, columnDest);
     }
 
-
-    #endregion
-
-    #region Protected Methods
-
-    protected bool IsEnemySameSizeAndNotTooBig(Enemy _enemy)
-    {
-        return m_EnemySize != EEnemySize.Large && m_EnemySize == _enemy.m_EnemySize;
-    }
-
-    protected void MoveTo(int _RowDestination, int _ColumnDestination)
+    public void MoveTo(int _RowDestination, int _ColumnDestination)
     {
         if (IsValidDestination(_RowDestination, _ColumnDestination))
         {
-            transform.position = (m_Grid.GetGridCellAt(_RowDestination, _ColumnDestination).transform.position + new Vector3(0, 2, 0));
+            transform.position = (m_Grid.GetGridCellAt(_RowDestination, _ColumnDestination).transform.position + new Vector3(0, 1, 0));
 
             if (m_Grid.IsValidDestination(m_CurrentRow, m_CurrentColumn))
             {
@@ -133,44 +153,137 @@ public class Enemy : Entity
 
             Entity entity = m_Grid.GetGridCellAt(_RowDestination, _ColumnDestination).Entity;
             Enemy enemy = entity as Enemy;
-            if (enemy != null && IsEnemySameSizeAndNotTooBig(enemy))
+            if (enemy != null && CanMerge(enemy))
             {
-                Merge(enemy);
+                enemy.Merge(this);
             }
         }
+    }
+
+    public GridCell GetWanderingNextPos()
+    {
+        GridCell nextCell = null;
+
+        List<GridCell> cells = new List<GridCell>();
+
+        if(m_CurrentRow <0 || m_CurrentColumn <0 )
+        {
+            Debug.Log("error negative index");
+            return null;
+        }
+
+        if (m_Grid.IsValidDestination(m_CurrentRow + 1, m_CurrentColumn))
+        {
+            cells.Add(m_Grid.GetGridCellAt(m_CurrentRow + 1, m_CurrentColumn));
+        }
+        if (m_Grid.IsValidDestination(m_CurrentRow - 1, m_CurrentColumn))
+        {
+            cells.Add(m_Grid.GetGridCellAt(m_CurrentRow - 1, m_CurrentColumn));
+        }
+        if (m_Grid.IsValidDestination(m_CurrentRow, m_CurrentColumn + 1))
+        {
+            cells.Add(m_Grid.GetGridCellAt(m_CurrentRow, m_CurrentColumn + 1));
+        }
+        if (m_Grid.IsValidDestination(m_CurrentRow, m_CurrentColumn - 1))
+        {
+            cells.Add(m_Grid.GetGridCellAt(m_CurrentRow, m_CurrentColumn - 1));
+        }
+
+        bool hasFoundNextDestination = false;
+
+        System.Random rd = new System.Random(System.DateTime.Now.Millisecond);
+
+        do
+        {
+            if(cells.Count ==0)
+            {
+                Debug.Log("DIV 0");
+                return null;
+            }
+            nextCell = cells[rd.Next() % cells.Count];
+
+            if (IsValidDestination(nextCell.Row, nextCell.Column))
+            {
+                hasFoundNextDestination = true;
+            }
+            else
+            {
+                cells.Remove(nextCell);
+            }
+
+        } while (cells.Count <= 0 && !hasFoundNextDestination);
+
+        if (!hasFoundNextDestination)
+        {
+            nextCell = m_Grid.GetGridCellAt(m_CurrentRow, m_CurrentColumn);
+        }
+
+
+        return nextCell;
+    }
+
+    public void ShootPlayer()
+    {
+        if (m_CurrentBulletPrefab == null)
+        {
+            Debug.LogError("The current bullet prefab was null");
+            return;
+        }
+
+        Vector3 toPlayer = GameManager.Instance.Character.transform.position - transform.position;
+        toPlayer.Normalize();
+
+        Bullet bullet = Instantiate<GameObject>(m_CurrentBulletPrefab).GetComponent<Bullet>();
+
+        if (bullet == null)
+        {
+            Debug.LogError("THE CURRENT BULLET PREFAB WAS NOT A BULLET");
+        }
+        else
+        {
+            bullet.Shoot(toPlayer, this);
+        }
+    }
+
+    #endregion
+
+    #region Protected Methods
+
+    protected bool CanMerge(Enemy _enemy)
+    {
+        return m_EnemySize != EEnemySize.Large && m_EnemySize == _enemy.m_EnemySize;
     }
 
     protected bool IsValidDestination(int _RowDestination, int _ColumnDestination)
     {
         //check if the destination isn't out of grid
-        bool cellExists = m_Grid.IsValidDestination(_RowDestination, _ColumnDestination);
-
-        //if it doesn't return false + debug error
-        if (!cellExists)
+        if(m_Grid)
         {
-            //Debug.LogError("Cell doesn't exist/ destination not valid");
-            return false;
-        }
-        else
-        {
-            bool cellIsEmpty = m_Grid.IsEmptyAt(_RowDestination, _ColumnDestination);
-            bool cellIsCrossable = m_Grid.GetGridCellAt(_RowDestination, _ColumnDestination).IsEnemyCrossable;
-            Entity entity = m_Grid.GetGridCellAt(_RowDestination, _ColumnDestination).Entity;
-            bool canMergeWithCellEnemy = false;
+            bool cellExists = m_Grid.IsValidDestination(_RowDestination, _ColumnDestination);
 
-            Enemy enemy = entity as Enemy;
-            if (enemy)
+            //if it doesn't return false + debug error
+            if (!cellExists)
             {
-                canMergeWithCellEnemy = IsEnemySameSizeAndNotTooBig(enemy);
-
-                //if (canMergeWithCellEnemy)
-                //{
-                //    Merge(enemy);
-                //}
+                //Debug.LogError("Cell doesn't exist/ destination not valid");
+                return false;
             }
+            else
+            {
+                bool cellIsEmpty = m_Grid.IsEmptyAt(_RowDestination, _ColumnDestination);
+                bool cellIsCrossable = m_Grid.GetGridCellAt(_RowDestination, _ColumnDestination).IsEnemyCrossable;
+                Entity entity = m_Grid.GetGridCellAt(_RowDestination, _ColumnDestination).Entity;
+                bool canMergeWithCellEnemy = false;
 
-            return ((cellIsEmpty && cellIsCrossable) || (cellIsCrossable && canMergeWithCellEnemy));
+                Enemy enemy = entity as Enemy;
+                if (enemy != null)
+                {
+                    canMergeWithCellEnemy = CanMerge(enemy);
+                }
+
+                return ((cellIsEmpty && cellIsCrossable) || (cellIsCrossable && canMergeWithCellEnemy));
+            }
         }
+        return false;
     }
     protected void DecreaseSize()
     {
@@ -214,14 +327,22 @@ public class Enemy : Entity
                 case EEnemySize.Little:
                     m_EnemySize = EEnemySize.Medium;
                     SetVariablesForCurrentState();
+                    m_CurrentLifePoint = m_MaxLifePoint; //heal
                     Destroy(_enemy.gameObject);
-                    m_Grid.GetGridCellAt(m_CurrentRow, m_CurrentColumn).OnCellEntered(this);
+                    if (m_Grid.IsValidDestination(m_CurrentRow, m_CurrentColumn))
+                    {
+                        m_Grid.GetGridCellAt(m_CurrentRow, m_CurrentColumn).OnCellEntered(this);
+                    }
                     break;
                 case EEnemySize.Medium:
                     m_EnemySize = EEnemySize.Large;
+                    m_CurrentLifePoint = m_MaxLifePoint; //heal
                     SetVariablesForCurrentState();
                     Destroy(_enemy.gameObject);
-                    m_Grid.GetGridCellAt(m_CurrentRow, m_CurrentColumn).OnCellEntered(this);
+                    if (m_Grid.IsValidDestination(m_CurrentRow, m_CurrentColumn))
+                    {
+                        m_Grid.GetGridCellAt(m_CurrentRow, m_CurrentColumn).OnCellEntered(this);
+                    }
                     break;
                 case EEnemySize.Large:
                     break;
@@ -238,9 +359,32 @@ public class Enemy : Entity
     {
         base.Start();
 
+        m_Grid = GameManager.Instance.GameGrid;
+
+        if (m_Grid == null)
+        {
+            Debug.LogError("Couldn't get Gird on enemy make sure the game has one");
+        }
+
+        m_FSM = new FiniteStateMachine(null);
+
+        // Wander state
+        m_WanderState = new WanderState(this, m_CurrentMovementSpeed);
+        m_FSM.AddState(m_WanderState);
+
+        // Shoot state
+        m_ShootState = new ShootState(this, m_CurrentShootCooldown);
+        m_FSM.AddState(m_ShootState);
+
+        // Chase state
+        m_ChaseState = new ChaseState(this, m_CurrentMovementSpeed);
+
+        // Fusion state
+
         MoveTo(m_CurrentRow, m_CurrentColumn);
 
         SetVariablesForCurrentState();
+
     }
 
     // Update is called once per frame
@@ -250,10 +394,15 @@ public class Enemy : Entity
 
         ManageStunTimer();
 
-        if (Input.GetKeyDown(KeyCode.KeypadEnter))
+        if (!m_IsStunned)
         {
-            TryMove(1, 1);
+            m_FSM.UpdateStep();
         }
+
+        //if (Input.GetKeyDown(KeyCode.KeypadEnter))
+        //{
+        //    TryMove(1, 0);
+        //}
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -306,22 +455,32 @@ public class Enemy : Entity
                 m_MeshFilter.mesh = m_PhaseLittleInfo.PhaseMesh;
                 SetMaterialAccordingToColor(m_PhaseLittleInfo);
                 m_MaxLifePoint = m_PhaseLittleInfo.PhaseMaxHealth;
+                m_CurrentShootCooldown = m_PhaseLittleInfo.ShootCooldown;
+                m_CurrentMovementSpeed = m_PhaseLittleInfo.MovementCoolDown;
                 break;
             case EEnemySize.Medium:
                 m_CurrentBulletPrefab = m_PhaseMediumInfo.BulletPrefab;
                 m_MeshFilter.mesh = m_PhaseMediumInfo.PhaseMesh;
                 SetMaterialAccordingToColor(m_PhaseMediumInfo);
                 m_MaxLifePoint = m_PhaseMediumInfo.PhaseMaxHealth;
+                m_CurrentShootCooldown = m_PhaseMediumInfo.ShootCooldown;
+                m_CurrentMovementSpeed = m_PhaseMediumInfo.MovementCoolDown;
                 break;
             case EEnemySize.Large:
                 m_CurrentBulletPrefab = m_PhaseLargeInfo.BulletPrefab;
                 m_MeshFilter.mesh = m_PhaseLargeInfo.PhaseMesh;
                 SetMaterialAccordingToColor(m_PhaseLargeInfo);
                 m_MaxLifePoint = m_PhaseLargeInfo.PhaseMaxHealth;
+                m_CurrentShootCooldown = m_PhaseLargeInfo.ShootCooldown;
+                m_CurrentMovementSpeed = m_PhaseLargeInfo.MovementCoolDown;
                 break;
             default:
                 break;
         }
+
+        m_ShootState.SetShootCooldown(m_CurrentShootCooldown);
+        m_WanderState.SetTimeBetweeMovement(m_CurrentMovementSpeed);
+        m_ChaseState.SetTimeBetweeMovement(m_CurrentMovementSpeed);
     }
 
     protected void SetMaterialAccordingToColor(PhaseInfo _PhaseInfo)
@@ -345,13 +504,15 @@ public class Enemy : Entity
                 if (x != 0 || y != 0)
                 {
                     int testedX = _CurrentX + x;
-                    int testedY = _CurrentX + y;
+                    int testedY = _CurrentY + y;
 
                     if (m_Grid.IsValidDestination(testedX, testedY) && m_Grid.IsEmptyAt(testedX, testedY) && m_Grid.GetGridCellAt(testedX, testedY).IsEnemyCrossable)
                     {
                         GridCell currentCell = m_Grid.GetGridCellAt(testedX, testedY);
                         Enemy spawnedEnemy = Instantiate(gameObject, Vector3.zero, transform.rotation).GetComponent<Enemy>();
-                        spawnedEnemy.MoveTo(testedX, testedY);
+                        spawnedEnemy.m_CurrentRow = testedX;
+                        spawnedEnemy.m_CurrentColumn = testedY;
+                        spawnedEnemy.MoveTo(0, 0); // FUCKING MAGIC
 
                         return true;
                     }
@@ -370,7 +531,7 @@ public class Enemy : Entity
     {
         Bullet bullet = other.gameObject.GetComponent<Bullet>();
 
-        if (bullet != null && bullet.Color == m_EnemyColor)
+        if (bullet != null && bullet.Color == m_EnemyColor && bullet.Shooter != this)
         {
             TakeDamage(bullet.Damage);
 
@@ -380,12 +541,7 @@ public class Enemy : Entity
 
     private void Awake()
     {
-        m_Grid = GameManager.Instance.GameGrid;
-
-        if (m_Grid == null)
-        {
-            Debug.LogError("Couldn't get Gird on enemy make sure the game has one");
-        }
+      
 
         m_MeshFilter = GetComponent<MeshFilter>();
 
