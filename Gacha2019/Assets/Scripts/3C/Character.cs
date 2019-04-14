@@ -13,15 +13,10 @@ public class Character : Entity
         }
     }
 
-    public void Shoot()
-    {
-
-    }
-
     public void Teleport(GameGrid grid, int _DeltaRow, int _DeltaColumn)
     {
-		MoveTo(_DeltaRow, _DeltaColumn);
-	}
+        MoveTo(_DeltaRow, _DeltaColumn);
+    }
 
     #endregion
 
@@ -71,7 +66,7 @@ public class Character : Entity
     {
         GameGrid grid = GameManager.Instance.GameGrid;
 
-        transform.position = (grid.GetGridCellAt(_RowDestination, _ColumnDestination).transform.position + new Vector3(0, 1, 0));
+        transform.position = (grid.GetGridCellAt(_RowDestination, _ColumnDestination).transform.position + new Vector3(0, 0, 0));
         //maybe put next lines in a function called on entering a new cell
         //works for now  as this is a teleport and it's instantaneous
         //DELETE THIS LATER IF PLAYER DOESNT TP TO OTHER CELLS
@@ -82,16 +77,15 @@ public class Character : Entity
         m_CurrentColumn = _ColumnDestination;
         m_CanMove = false;
         m_MovementTimer = Time.time;
-		grid.GetGridCellAt(m_CurrentRow, m_CurrentColumn).OnCellExited(this);
-	}
+        grid.GetGridCellAt(m_CurrentRow, m_CurrentColumn).OnCellExited(this);
+    }
     #endregion
 
-
     #region Attributes
-    [SerializeField]
-    private float m_TimeNeededToMoveAgain = 1.0f;
+    [SerializeField] private float m_TimeNeededToMoveAgain = 1.0f;
     private float m_MovementTimer = 0f;
 
+    [SerializeField] private bool m_DebugInputsKeyboard = false;
     private bool m_CanMove = false;
 
     private int m_CurrentRow = 0;
@@ -99,35 +93,56 @@ public class Character : Entity
     #endregion
 
     #region accessors
+    public int Row
+    {
+        get
+        {
+            return m_CurrentRow;
+        }
+    }
+
+    public int Column
+    {
+        get
+        {
+            return m_CurrentColumn;
+        }
+    }
     #endregion
 
-
     #region Mono
-    protected override void Start()
+    private void Awake()
     {
-        base.Start();
         GameManager.Instance.RegisterCharacter(this);
     }
 
+    protected override void Start()
+    {
+        base.Start();
+    }
 
     protected override void Update()
     {
         UpdateTimer();
-        if (Input.GetKeyDown(KeyCode.Z))
+
+        if (m_DebugInputsKeyboard)
         {
-            TryMove(1, 0);
-        }
-        else if (Input.GetKeyDown(KeyCode.S))
-        {
-            TryMove(-1, 0);
-        }
-        else if (Input.GetKeyDown(KeyCode.Q))
-        {
-            TryMove(0, -1);
-        }
-        else if (Input.GetKeyDown(KeyCode.D))
-        {
-            TryMove(0, 1);
+            if (Input.GetKeyDown(KeyCode.Z))
+            {
+                TryMove(1, 0);
+            }
+            else if (Input.GetKeyDown(KeyCode.S))
+            {
+                TryMove(-1, 0);
+            }
+            else if (Input.GetKeyDown(KeyCode.Q))
+            {
+                TryMove(0, -1);
+            }
+            else if (Input.GetKeyDown(KeyCode.D))
+            {
+                TryMove(0, 1);
+            }
         }
     }
 
