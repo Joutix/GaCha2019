@@ -132,7 +132,7 @@ public class Enemy : Entity
     {
         if (IsValidDestination(_RowDestination, _ColumnDestination))
         {
-            transform.position = (m_Grid.GetGridCellAt(_RowDestination, _ColumnDestination).transform.position + new Vector3(0, 2, 0));
+            transform.position = (m_Grid.GetGridCellAt(_RowDestination, _ColumnDestination).transform.position + new Vector3(0, 1, 0));
 
             if (m_Grid.IsValidDestination(m_CurrentRow, m_CurrentColumn))
             {
@@ -158,6 +158,12 @@ public class Enemy : Entity
 
         List<GridCell> cells = new List<GridCell>();
 
+        if(m_CurrentRow <0 || m_CurrentColumn <0 )
+        {
+            Debug.Log("error negative index");
+            return null;
+        }
+
         if (m_Grid.IsValidDestination(m_CurrentRow + 1, m_CurrentColumn))
         {
             cells.Add(m_Grid.GetGridCellAt(m_CurrentRow + 1, m_CurrentColumn));
@@ -181,6 +187,11 @@ public class Enemy : Entity
 
         do
         {
+            if(cells.Count ==0)
+            {
+                Debug.Log("DIV 0");
+                return null;
+            }
             nextCell = cells[rd.Next() % cells.Count];
 
             if (IsValidDestination(nextCell.Row, nextCell.Column))
@@ -241,29 +252,33 @@ public class Enemy : Entity
     protected bool IsValidDestination(int _RowDestination, int _ColumnDestination)
     {
         //check if the destination isn't out of grid
-        bool cellExists = m_Grid.IsValidDestination(_RowDestination, _ColumnDestination);
-
-        //if it doesn't return false + debug error
-        if (!cellExists)
+        if(m_Grid)
         {
-            //Debug.LogError("Cell doesn't exist/ destination not valid");
-            return false;
-        }
-        else
-        {
-            bool cellIsEmpty = m_Grid.IsEmptyAt(_RowDestination, _ColumnDestination);
-            bool cellIsCrossable = m_Grid.GetGridCellAt(_RowDestination, _ColumnDestination).IsEnemyCrossable;
-            Entity entity = m_Grid.GetGridCellAt(_RowDestination, _ColumnDestination).Entity;
-            bool canMergeWithCellEnemy = false;
+            bool cellExists = m_Grid.IsValidDestination(_RowDestination, _ColumnDestination);
 
-            Enemy enemy = entity as Enemy;
-            if (enemy != null)
+            //if it doesn't return false + debug error
+            if (!cellExists)
             {
-                canMergeWithCellEnemy = IsEnemySameSizeAndNotTooBig(enemy);
+                //Debug.LogError("Cell doesn't exist/ destination not valid");
+                return false;
             }
+            else
+            {
+                bool cellIsEmpty = m_Grid.IsEmptyAt(_RowDestination, _ColumnDestination);
+                bool cellIsCrossable = m_Grid.GetGridCellAt(_RowDestination, _ColumnDestination).IsEnemyCrossable;
+                Entity entity = m_Grid.GetGridCellAt(_RowDestination, _ColumnDestination).Entity;
+                bool canMergeWithCellEnemy = false;
 
-            return ((cellIsEmpty && cellIsCrossable) || (cellIsCrossable && canMergeWithCellEnemy));
+                Enemy enemy = entity as Enemy;
+                if (enemy != null)
+                {
+                    canMergeWithCellEnemy = IsEnemySameSizeAndNotTooBig(enemy);
+                }
+
+                return ((cellIsEmpty && cellIsCrossable) || (cellIsCrossable && canMergeWithCellEnemy));
+            }
         }
+        return false;
     }
     protected void DecreaseSize()
     {
@@ -338,6 +353,13 @@ public class Enemy : Entity
     override protected void Start()
     {
         base.Start();
+
+        m_Grid = GameManager.Instance.GameGrid;
+
+        if (m_Grid == null)
+        {
+            Debug.LogError("Couldn't get Gird on enemy make sure the game has one");
+        }
 
         m_FSM = new FiniteStateMachine(null);
 
@@ -469,9 +491,9 @@ public class Enemy : Entity
                     {
                         GridCell currentCell = m_Grid.GetGridCellAt(testedX, testedY);
                         Enemy spawnedEnemy = Instantiate(gameObject, Vector3.zero, transform.rotation).GetComponent<Enemy>();
-                        spawnedEnemy.m_CurrentRow = -1;
-                        spawnedEnemy.m_CurrentColumn = -1;
-                        spawnedEnemy.MoveTo(testedX, testedY);
+                        spawnedEnemy.m_CurrentRow = testedX;
+                        spawnedEnemy.m_CurrentColumn = testedY;
+                        spawnedEnemy.MoveTo(0, 0);
 
                         return true;
                     }
@@ -594,12 +616,7 @@ public class Enemy : Entity
 
     private void Awake()
     {
-        m_Grid = GameManager.Instance.GameGrid;
-
-        if (m_Grid == null)
-        {
-            Debug.LogError("Couldn't get Gird on enemy make sure the game has one");
-        }
+      
 
         m_MeshFilter = GetComponent<MeshFilter>();
 
