@@ -87,7 +87,7 @@ public class MicrophoneInput : MonoBehaviour
 
 			if (timer >= 1000)
 			{
-				Debug.logerror("Failed to play from mic....");
+				Debug.Log("Failed to play from mic....");
 			}
 
 			Debug.Log("s_MicLoudness1 : " + s_MicLoudness1);
