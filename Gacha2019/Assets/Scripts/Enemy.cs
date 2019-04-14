@@ -43,6 +43,11 @@ public class Enemy : Entity
     [SerializeField]
     private float m_StunTime = 5;
 
+    [SerializeField]
+    private float m_MergeCooldown = 3;
+
+    private float m_CurrentMergeCooldown = 0;
+
     private float m_CurrentStunTime = 0;
 
     [SerializeField]
@@ -63,12 +68,6 @@ public class Enemy : Entity
 
     [SerializeField]
     private GridCell m_CurrentCell = null;
-
-    [SerializeField]
-    private int m_CurrentColumn = -1;
-
-    [SerializeField]
-    private int m_CurrentRow = -1;
 
     private GameGrid m_Grid = null;
 
@@ -95,6 +94,13 @@ public class Enemy : Entity
     private FusionState m_FusionState = null;
 
     private bool m_HasBeenMovedOnce = false;
+
+    private Character m_Player = null;
+
+    private Enemy m_MergeTarget = null;
+
+    private List<GridCell> m_CurrentPath = new List<GridCell>();
+
     #endregion
 
     #region Public Methods
@@ -139,7 +145,7 @@ public class Enemy : Entity
                 return;
             }
 
-            m_HasBeenMovedOnce = false;
+            m_HasBeenMovedOnce = true;
 
             transform.position = currentGrid.GetGridCellAt(_RowDestination, _ColumnDestination).transform.position + new Vector3(0, 1, 0);
 
@@ -239,7 +245,7 @@ public class Enemy : Entity
 
     public bool CanMerge(Enemy _enemy)
     {
-        return m_EnemySize != EEnemySize.Large && m_EnemySize == _enemy.m_EnemySize;
+        return m_EnemySize != EEnemySize.Large && m_EnemySize == _enemy.m_EnemySize && m_CurrentMergeCooldown <= 0;
     }
 
     #endregion
@@ -310,21 +316,20 @@ public class Enemy : Entity
             {
                 case EEnemySize.Little:
                     m_EnemySize = EEnemySize.Medium;
-                    SetVariablesForCurrentState();
-                    m_CurrentLifePoint = m_MaxLifePoint; //heal
-                    Destroy(_enemy.gameObject);
                     break;
                 case EEnemySize.Medium:
                     m_EnemySize = EEnemySize.Large;
-                    m_CurrentLifePoint = m_MaxLifePoint; //heal
-                    SetVariablesForCurrentState();
-                    Destroy(_enemy.gameObject);
                     break;
                 case EEnemySize.Large:
                     break;
                 default:
                     break;
             }
+
+            SetVariablesForCurrentState();
+            m_CurrentLifePoint = m_MaxLifePoint; //heal
+            Destroy(_enemy.gameObject);
+            m_CurrentMergeCooldown = m_MergeCooldown; 
         }
 
     }
@@ -339,19 +344,27 @@ public class Enemy : Entity
 
         // Wander state
         m_WanderState = new WanderState(this, m_CurrentMovementSpeed);
+        // Add transition for fusion state
+        m_WanderState.AddTransition(new Transition( () => IsPlayerInShootRange() , typeof(ShootState)));
         m_FSM.AddState(m_WanderState);
 
         // Shoot state
         m_ShootState = new ShootState(this, m_CurrentShootCooldown);
+        // Add transition for fusion state
         m_FSM.AddState(m_ShootState);
 
         // Chase state
         m_ChaseState = new ChaseState(this, m_CurrentMovementSpeed);
+        // Add transition for fusion state
+        m_ChaseState.AddTransition(new Transition(() => IsPlayerInShootRange(), typeof(ShootState)));
         m_FSM.AddState(m_ChaseState);
 
         // Fusion state
         m_FusionState = new FusionState(this, m_CurrentMovementSpeed);
+        m_FusionState.AddTransition(new Transition(() => !IsPlayerInShootMaxRange(), typeof(WanderState)));
         m_FSM.AddState(m_FusionState);
+
+        m_Player = GameManager.Instance.Character;
 
         if (m_CurrentCell == null)
         {
@@ -380,6 +393,8 @@ public class Enemy : Entity
 
         ManageStunTimer();
 
+        ManageMergeCoolDown();
+
         //if (!m_IsStunned)
         //{
         //    m_FSM.UpdateStep();
@@ -394,6 +409,16 @@ public class Enemy : Entity
         {
             TakeDamage(20);
         }
+    }
+
+    protected bool IsPlayerInShootRange()
+    {
+        return GameManager.Instance.ManhattanDistance(m_CurrentCell.Row, m_CurrentCell.Column, m_Player.Row, m_Player.Column) <= m_AttackDetectionRange;
+    }
+
+    protected bool IsPlayerInShootMaxRange()
+    {
+        return GameManager.Instance.ManhattanDistance(m_CurrentCell.Row, m_CurrentCell.Column, m_Player.Row, m_Player.Column) <= m_AttackMaxRange;
     }
 
     override public void TakeDamage(int _Amount)
@@ -429,6 +454,14 @@ public class Enemy : Entity
 
                 m_CurrentLifePoint = m_MaxLifePoint;
             }
+        }
+    }
+
+    protected void ManageMergeCoolDown()
+    {
+        if (m_CurrentMergeCooldown > 0)
+        {
+            m_CurrentMergeCooldown -= Time.deltaTime;
         }
     }
 
