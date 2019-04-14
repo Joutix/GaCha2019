@@ -22,10 +22,16 @@ public class Character : Entity
         MoveTo(grid, _DeltaRow, _DeltaColumn);
     }
 
-    #endregion
-    #region Private Methods
+	public override void Die()
+	{
+		base.Die();
+		panelGameOver.SetActive(true);
+	}
 
-    void UpdateTimer()
+	#endregion
+	#region Private Methods
+
+	void UpdateTimer()
     {
         //m_CanMove = (Time.time - m_MovementTimer) > m_TimeNeededToMoveAgain;
         m_MovementTimer += Time.deltaTime;
@@ -104,6 +110,8 @@ public class Character : Entity
 
     private GridCell m_CurrentCell = null;
 
+	[SerializeField] private GameObject panelGameOver;
+
     //private int m_CurrentRow = 0;
     //private int m_CurrentColumn = 0;
     #endregion
@@ -171,6 +179,10 @@ public class Character : Entity
                 TryMove(0, 1);
             }
         }
+		if (Input.GetKeyDown(KeyCode.KeypadEnter))
+		{
+			TakeDamage(50);
+		}
     }
 
     #endregion
