@@ -17,6 +17,76 @@
 						</Action>
 					</ChildrenList>
 				</Event>
+				<Event Name="Play_Footsteps" ID="{D19A2FEE-CC79-4B17-9613-41A6D5C11D19}">
+					<ChildrenList>
+						<Action Name="" ID="{B1FB060E-B155-493E-AA99-82185149962D}" ShortID="444526178">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Player_Footsteps_BL" ID="{DCD06EB9-0747-4A28-BE18-321915FDF1C1}" WorkUnitID="{5F58F663-DB14-4057-9E23-D39594FF3081}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Stomp" ID="{F98B6236-8325-43EA-9665-50F114293A2F}">
+					<ChildrenList>
+						<Action Name="" ID="{5085AF3F-97D3-45CA-9578-FE797D65A17D}" ShortID="691563412">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Player_Stomp_BL" ID="{407291C0-94F1-454F-9EFA-C8A449ACFC70}" WorkUnitID="{5F58F663-DB14-4057-9E23-D39594FF3081}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Music" ID="{D5F8B72A-A354-4CDE-87BA-16F218082350}">
+					<ChildrenList>
+						<Action Name="" ID="{550A1C76-D111-4609-B07C-01B24E18C7FE}" ShortID="821426637">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+								<Property Name="FadeInCurve" Type="int16" Value="2"/>
+								<Property Name="FadeTime" Type="Real64" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Music_ST" ID="{B8BC22D9-95F4-47DE-AE76-963FD0EFCF7F}" WorkUnitID="{53211A2A-B948-4154-9A78-EB4D4220395D}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Stop_Music" ID="{0D169092-7B5D-4A9A-B09B-87488846A269}">
+					<ChildrenList>
+						<Action Name="" ID="{5AFF122B-2A1F-4B87-9243-65B92511EE0B}" ShortID="297159359">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="22"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="End" ID="{01DE2A0D-B6C4-432D-A4C2-6F46CEACDB7D}" WorkUnitID="{5A48B6CB-FB69-484B-9201-E8CAFDF4E763}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+						<Action Name="" ID="{6928D2D1-4A73-465A-8567-27EB38B3AFC1}" ShortID="202877901">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="2"/>
+								<Property Name="Delay" Type="Real64" Value="6"/>
+								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Music_ST" ID="{B8BC22D9-95F4-47DE-AE76-963FD0EFCF7F}" WorkUnitID="{53211A2A-B948-4154-9A78-EB4D4220395D}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
 			</ChildrenList>
 		</WorkUnit>
 	</Events>

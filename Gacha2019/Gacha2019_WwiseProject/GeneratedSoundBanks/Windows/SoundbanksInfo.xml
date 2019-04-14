@@ -17,7 +17,261 @@
 			<Path>SBK.bnk</Path>
 			<IncludedEvents>
 				<Event Id="1810912708" Name="Play_bite" ObjectPath="\Events\Default Work Unit\Play_bite"/>
+				<Event Id="3854155799" Name="Play_Footsteps" ObjectPath="\Events\Default Work Unit\Play_Footsteps"/>
+				<Event Id="2932040671" Name="Play_Music" ObjectPath="\Events\Default Work Unit\Play_Music"/>
+				<Event Id="2753042117" Name="Play_Stomp" ObjectPath="\Events\Default Work Unit\Play_Stomp"/>
+				<Event Id="2837384057" Name="Stop_Music" ObjectPath="\Events\Default Work Unit\Stop_Music" MaxAttenuation="0.000000"/>
 			</IncludedEvents>
+			<IncludedMemoryFiles>
+				<File Id="9494927" Language="SFX">
+					<ShortName>SFX\GA_Ftps_C_02.wav</ShortName>
+					<Path>SFX\SFX\GA_Ftps_C_02_56D34C19.wem</Path>
+				</File>
+				<File Id="68113101" Language="SFX">
+					<ShortName>SFX\GA_Finish_H_01.wav</ShortName>
+					<Path>SFX\SFX\GA_Finish_H_01_56D34C19.wem</Path>
+				</File>
+				<File Id="79546432" Language="SFX">
+					<ShortName>SFX\GA_Finish_G_01.wav</ShortName>
+					<Path>SFX\SFX\GA_Finish_G_01_56D34C19.wem</Path>
+				</File>
+				<File Id="85453763" Language="SFX">
+					<ShortName>SFX\GA_Ftps_A_04.wav</ShortName>
+					<Path>SFX\SFX\GA_Ftps_A_04_56D34C19.wem</Path>
+				</File>
+				<File Id="126885228" Language="SFX">
+					<ShortName>SFX\GA_Ftps_E_05.wav</ShortName>
+					<Path>SFX\SFX\GA_Ftps_E_05_56D34C19.wem</Path>
+				</File>
+				<File Id="130706462" Language="SFX">
+					<ShortName>SFX\GA_Finish_D_01.wav</ShortName>
+					<Path>SFX\SFX\GA_Finish_D_01_56D34C19.wem</Path>
+				</File>
+				<File Id="139384230" Language="SFX">
+					<ShortName>SFX\GA_Ftps_C_05.wav</ShortName>
+					<Path>SFX\SFX\GA_Ftps_C_05_56D34C19.wem</Path>
+				</File>
+				<File Id="154186701" Language="SFX">
+					<ShortName>SFX\GA_Ftps_F_01.wav</ShortName>
+					<Path>SFX\SFX\GA_Ftps_F_01_56D34C19.wem</Path>
+				</File>
+				<File Id="165931943" Language="SFX">
+					<ShortName>SFX\GA_Ftps_E_01.wav</ShortName>
+					<Path>SFX\SFX\GA_Ftps_E_01_56D34C19.wem</Path>
+				</File>
+				<File Id="181490790" Language="SFX">
+					<ShortName>SFX\GA_Finish_H_03.wav</ShortName>
+					<Path>SFX\SFX\GA_Finish_H_03_56D34C19.wem</Path>
+				</File>
+				<File Id="215039922" Language="SFX">
+					<ShortName>SFX\GA_Ftps_E_06.wav</ShortName>
+					<Path>SFX\SFX\GA_Ftps_E_06_56D34C19.wem</Path>
+				</File>
+				<File Id="228125977" Language="SFX">
+					<ShortName>SFX\GA_finish_A_03.wav</ShortName>
+					<Path>SFX\SFX\GA_finish_A_03_56D34C19.wem</Path>
+				</File>
+				<File Id="231480932" Language="SFX">
+					<ShortName>SFX\GA_Ftps_B_04.wav</ShortName>
+					<Path>SFX\SFX\GA_Ftps_B_04_56D34C19.wem</Path>
+				</File>
+				<File Id="266435111" Language="SFX">
+					<ShortName>SFX\GA_Ftps_D_05.wav</ShortName>
+					<Path>SFX\SFX\GA_Ftps_D_05_56D34C19.wem</Path>
+				</File>
+				<File Id="310962088" Language="SFX">
+					<ShortName>SFX\GA_Finish_C_02.wav</ShortName>
+					<Path>SFX\SFX\GA_Finish_C_02_56D34C19.wem</Path>
+				</File>
+				<File Id="383312528" Language="SFX">
+					<ShortName>SFX\GA_Finish_D_04.wav</ShortName>
+					<Path>SFX\SFX\GA_Finish_D_04_56D34C19.wem</Path>
+				</File>
+				<File Id="398115596" Language="SFX">
+					<ShortName>SFX\GA_finish_A_02.wav</ShortName>
+					<Path>SFX\SFX\GA_finish_A_02_56D34C19.wem</Path>
+				</File>
+				<File Id="400165016" Language="SFX">
+					<ShortName>SFX\GA_Ftps_B_03.wav</ShortName>
+					<Path>SFX\SFX\GA_Ftps_B_03_56D34C19.wem</Path>
+				</File>
+				<File Id="475405942" Language="SFX">
+					<ShortName>MUS\GACHA2019_MUS_Death.wav</ShortName>
+					<Path>SFX\MUS\GACHA2019_MUS_Death_8956FC97.wem</Path>
+				</File>
+				<File Id="485653240" Language="SFX">
+					<ShortName>MUS\GACHA2019_MUS_MidLife.wav</ShortName>
+					<Path>SFX\MUS\GACHA2019_MUS_MidLife_8956FC97.wem</Path>
+				</File>
+				<File Id="499206724" Language="SFX">
+					<ShortName>SFX\GA_Ftps_F_04.wav</ShortName>
+					<Path>SFX\SFX\GA_Ftps_F_04_56D34C19.wem</Path>
+				</File>
+				<File Id="505085736" Language="SFX">
+					<ShortName>SFX\GA_Ftps_E_02.wav</ShortName>
+					<Path>SFX\SFX\GA_Ftps_E_02_56D34C19.wem</Path>
+				</File>
+				<File Id="536987454" Language="SFX">
+					<ShortName>SFX\GA_Ftps_A_03.wav</ShortName>
+					<Path>SFX\SFX\GA_Ftps_A_03_56D34C19.wem</Path>
+				</File>
+				<File Id="558456607" Language="SFX">
+					<ShortName>SFX\GA_Finish_F_04.wav</ShortName>
+					<Path>SFX\SFX\GA_Finish_F_04_56D34C19.wem</Path>
+				</File>
+				<File Id="564488920" Language="SFX">
+					<ShortName>SFX\GA_Finish_F_03.wav</ShortName>
+					<Path>SFX\SFX\GA_Finish_F_03_56D34C19.wem</Path>
+				</File>
+				<File Id="566150564" Language="SFX">
+					<ShortName>SFX\GA_Finish_E_04.wav</ShortName>
+					<Path>SFX\SFX\GA_Finish_E_04_56D34C19.wem</Path>
+				</File>
+				<File Id="585589508" Language="SFX">
+					<ShortName>SFX\GA_Finish_D_03.wav</ShortName>
+					<Path>SFX\SFX\GA_Finish_D_03_56D34C19.wem</Path>
+				</File>
+				<File Id="590105665" Language="SFX">
+					<ShortName>SFX\GA_Ftps_C_01.wav</ShortName>
+					<Path>SFX\SFX\GA_Ftps_C_01_56D34C19.wem</Path>
+				</File>
+				<File Id="605215694" Language="SFX">
+					<ShortName>SFX\GA_Ftps_F_03.wav</ShortName>
+					<Path>SFX\SFX\GA_Ftps_F_03_56D34C19.wem</Path>
+				</File>
+				<File Id="613169448" Language="SFX">
+					<ShortName>SFX\GA_Ftps_A_01.wav</ShortName>
+					<Path>SFX\SFX\GA_Ftps_A_01_56D34C19.wem</Path>
+				</File>
+				<File Id="637161063" Language="SFX">
+					<ShortName>SFX\GA_Ftps_B_02.wav</ShortName>
+					<Path>SFX\SFX\GA_Ftps_B_02_56D34C19.wem</Path>
+				</File>
+				<File Id="641528418" Language="SFX">
+					<ShortName>SFX\GA_Ftps_D_03.wav</ShortName>
+					<Path>SFX\SFX\GA_Ftps_D_03_56D34C19.wem</Path>
+				</File>
+				<File Id="648407519" Language="SFX">
+					<ShortName>SFX\GA_Finish_E_03.wav</ShortName>
+					<Path>SFX\SFX\GA_Finish_E_03_56D34C19.wem</Path>
+				</File>
+				<File Id="677799180" Language="SFX">
+					<ShortName>SFX\GA_Finish_H_04.wav</ShortName>
+					<Path>SFX\SFX\GA_Finish_H_04_56D34C19.wem</Path>
+				</File>
+				<File Id="682394436" Language="SFX">
+					<ShortName>SFX\GA_finish_A_01.wav</ShortName>
+					<Path>SFX\SFX\GA_finish_A_01_56D34C19.wem</Path>
+				</File>
+				<File Id="734388352" Language="SFX">
+					<ShortName>SFX\GA_Ftps_F_02.wav</ShortName>
+					<Path>SFX\SFX\GA_Ftps_F_02_56D34C19.wem</Path>
+				</File>
+				<File Id="745829514" Language="SFX">
+					<ShortName>SFX\GA_Ftps_D_02.wav</ShortName>
+					<Path>SFX\SFX\GA_Ftps_D_02_56D34C19.wem</Path>
+				</File>
+				<File Id="749770200" Language="SFX">
+					<ShortName>SFX\GA_Ftps_D_04.wav</ShortName>
+					<Path>SFX\SFX\GA_Ftps_D_04_56D34C19.wem</Path>
+				</File>
+				<File Id="763114453" Language="SFX">
+					<ShortName>SFX\GA_Finish_F_01.wav</ShortName>
+					<Path>SFX\SFX\GA_Finish_F_01_56D34C19.wem</Path>
+				</File>
+				<File Id="791270526" Language="SFX">
+					<ShortName>MUS\GACHA2019_MUS_LowLife.wav</ShortName>
+					<Path>SFX\MUS\GACHA2019_MUS_LowLife_8956FC97.wem</Path>
+				</File>
+				<File Id="799253081" Language="SFX">
+					<ShortName>SFX\GA_Finish_D_02.wav</ShortName>
+					<Path>SFX\SFX\GA_Finish_D_02_56D34C19.wem</Path>
+				</File>
+				<File Id="802384224" Language="SFX">
+					<ShortName>SFX\GA_Ftps_C_03.wav</ShortName>
+					<Path>SFX\SFX\GA_Ftps_C_03_56D34C19.wem</Path>
+				</File>
+				<File Id="811189758" Language="SFX">
+					<ShortName>SFX\GA_Ftps_A_02.wav</ShortName>
+					<Path>SFX\SFX\GA_Ftps_A_02_56D34C19.wem</Path>
+				</File>
+				<File Id="824886464" Language="SFX">
+					<ShortName>SFX\GA_finish_A_04.wav</ShortName>
+					<Path>SFX\SFX\GA_finish_A_04_56D34C19.wem</Path>
+				</File>
+				<File Id="833851844" Language="SFX">
+					<ShortName>SFX\GA_Ftps_E_04.wav</ShortName>
+					<Path>SFX\SFX\GA_Ftps_E_04_56D34C19.wem</Path>
+				</File>
+				<File Id="837960172" Language="SFX">
+					<ShortName>SFX\GA_Ftps_C_04.wav</ShortName>
+					<Path>SFX\SFX\GA_Ftps_C_04_56D34C19.wem</Path>
+				</File>
+				<File Id="838670489" Language="SFX">
+					<ShortName>SFX\GA_Ftps_C_06.wav</ShortName>
+					<Path>SFX\SFX\GA_Ftps_C_06_56D34C19.wem</Path>
+				</File>
+				<File Id="847693493" Language="SFX">
+					<ShortName>SFX\GA_Finish_G_04.wav</ShortName>
+					<Path>SFX\SFX\GA_Finish_G_04_56D34C19.wem</Path>
+				</File>
+				<File Id="861756135" Language="SFX">
+					<ShortName>SFX\GA_Ftps_D_06.wav</ShortName>
+					<Path>SFX\SFX\GA_Ftps_D_06_56D34C19.wem</Path>
+				</File>
+				<File Id="873166043" Language="SFX">
+					<ShortName>SFX\GA_Finish_C_04.wav</ShortName>
+					<Path>SFX\SFX\GA_Finish_C_04_56D34C19.wem</Path>
+				</File>
+				<File Id="874874641" Language="SFX">
+					<ShortName>SFX\GA_Finish_C_03.wav</ShortName>
+					<Path>SFX\SFX\GA_Finish_C_03_56D34C19.wem</Path>
+				</File>
+				<File Id="885509812" Language="SFX">
+					<ShortName>SFX\GA_Ftps_B_01.wav</ShortName>
+					<Path>SFX\SFX\GA_Ftps_B_01_56D34C19.wem</Path>
+				</File>
+				<File Id="922719822" Language="SFX">
+					<ShortName>MUS\GACHA2019_MUS_FullLife.wav</ShortName>
+					<Path>SFX\MUS\GACHA2019_MUS_FullLife_8956FC97.wem</Path>
+				</File>
+				<File Id="924344389" Language="SFX">
+					<ShortName>SFX\GA_Finish_G_02.wav</ShortName>
+					<Path>SFX\SFX\GA_Finish_G_02_56D34C19.wem</Path>
+				</File>
+				<File Id="938177719" Language="SFX">
+					<ShortName>SFX\GA_Finish_H_02.wav</ShortName>
+					<Path>SFX\SFX\GA_Finish_H_02_56D34C19.wem</Path>
+				</File>
+				<File Id="1002285529" Language="SFX">
+					<ShortName>SFX\GA_Ftps_D_01.wav</ShortName>
+					<Path>SFX\SFX\GA_Ftps_D_01_56D34C19.wem</Path>
+				</File>
+				<File Id="1002429059" Language="SFX">
+					<ShortName>SFX\GA_Finish_E_02.wav</ShortName>
+					<Path>SFX\SFX\GA_Finish_E_02_56D34C19.wem</Path>
+				</File>
+				<File Id="1003881869" Language="SFX">
+					<ShortName>SFX\GA_Finish_F_02.wav</ShortName>
+					<Path>SFX\SFX\GA_Finish_F_02_56D34C19.wem</Path>
+				</File>
+				<File Id="1050423201" Language="SFX">
+					<ShortName>SFX\GA_Finish_E_01.wav</ShortName>
+					<Path>SFX\SFX\GA_Finish_E_01_56D34C19.wem</Path>
+				</File>
+				<File Id="1051942710" Language="SFX">
+					<ShortName>SFX\GA_Finish_G_03.wav</ShortName>
+					<Path>SFX\SFX\GA_Finish_G_03_56D34C19.wem</Path>
+				</File>
+				<File Id="1056823406" Language="SFX">
+					<ShortName>SFX\GA_Finish_C_01.wav</ShortName>
+					<Path>SFX\SFX\GA_Finish_C_01_56D34C19.wem</Path>
+				</File>
+				<File Id="1072720214" Language="SFX">
+					<ShortName>SFX\GA_Ftps_E_03.wav</ShortName>
+					<Path>SFX\SFX\GA_Ftps_E_03_56D34C19.wem</Path>
+				</File>
+			</IncludedMemoryFiles>
 		</SoundBank>
 		<SoundBank Id="1355168291" Language="SFX">
 			<ObjectPath>Init</ObjectPath>
