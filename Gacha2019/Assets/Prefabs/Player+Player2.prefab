@@ -12,8 +12,10 @@ GameObject:
   - component: {fileID: 2636046196416230563}
   - component: {fileID: 2636046196416230560}
   - component: {fileID: 2636046196416230561}
-  - component: {fileID: 2636046196416230558}
+  - component: {fileID: 395437927441224943}
   - component: {fileID: 2636046196416230565}
+  - component: {fileID: 7121962948794902061}
+  - component: {fileID: 4232369282838474540}
   m_Layer: 0
   m_Name: Player+Player2
   m_TagString: Untagged
@@ -94,7 +96,7 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &2636046196416230558
+--- !u!114 &395437927441224943
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -103,9 +105,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 2636046196416230559}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3486f242eb8a7cb48aca4e19545bb55c, type: 3}
+  m_Script: {fileID: 11500000, guid: 133b87bdde3b44941b72636c712022cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_MaxLifePoint: 3
+  m_TimeNeededToMoveAgain: 1
 --- !u!114 &2636046196416230565
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -122,3 +126,33 @@ MonoBehaviour:
   m_PrefabOrbital: {fileID: 0}
   m_PrefabBullet: {fileID: 0}
   m_BulletSpawnOffset: 2
+--- !u!114 &7121962948794902061
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2636046196416230559}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c09a650b7f8a1346841e55dc2481ac9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_JoyStickDeadZone: 0.2
+  m_PlayerIndex: 0
+  m_SecondCharacter: {fileID: 2636046196416230565}
+--- !u!114 &4232369282838474540
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2636046196416230559}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f47cc6d49501524e8b859d7cc35d5f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_JoyStickDeadZone: 0.2
+  m_PlayerIndex: 0
+  m_Character: {fileID: 395437927441224943}

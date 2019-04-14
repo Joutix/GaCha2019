@@ -104,7 +104,7 @@ public class MicrophoneLevel : MonoBehaviour
 		StopMicrophone();
 	}
 
-	void OnDestory()
+	void OnDestroy()
 	{
 		StopMicrophone();
 	}

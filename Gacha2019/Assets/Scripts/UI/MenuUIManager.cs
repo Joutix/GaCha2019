@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class MenuUIManager : MonoBehaviour
 {
@@ -34,6 +35,7 @@ public class MenuUIManager : MonoBehaviour
     public void Play()
     {
         Debug.Log("Play");
+        SceneManager.LoadScene("LevelScene");
     }
 
     public void Quit()
