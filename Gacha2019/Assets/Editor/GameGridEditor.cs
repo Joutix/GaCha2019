@@ -87,6 +87,7 @@ public class GameGridEditor : Editor
                 cell.name = "GridCell [" + i + ";" + j + "]";
                 cell.transform.position = new Vector3(j, 0, i);
                 cell.transform.parent = m_GridTarget.transform;
+                cell.GetComponent<GridCell>().PlaceIn(m_GridTarget, i, j);
                 sp.objectReferenceValue = cell;
             }
         }

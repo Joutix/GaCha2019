@@ -4,8 +4,9 @@ using UnityEngine.Events;
 public class GridCell : MonoBehaviour
 {
     #region Public Methods
-    public void PlaceCell(int _Row, int _Depth)
+    public void PlaceIn(GameGrid _Grid, int _Row, int _Depth)
     {
+        m_GameGrid = _Grid;
         m_RowPos = _Row;
         m_ColumnPos = _Depth;
     }
@@ -40,6 +41,14 @@ public class GridCell : MonoBehaviour
     #endregion
 
     #region Getters / Setters
+    public GameGrid GameGrid
+    {
+        get
+        {
+            return m_GameGrid;
+        }
+    }
+
     public int Row
     {
         get

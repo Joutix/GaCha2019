@@ -35,28 +35,6 @@ public class GameGrid : MonoBehaviour
     {
     }
 
-    private void CreateGrid()
-    {
-        m_GridCells = new GridCell[m_Rows * m_Columns];
-        for (int i = 0; i < m_Rows; i++)
-        {
-            for (int j = 0; j < m_Columns; j++)
-            {
-                CreateCell(i, j);
-            }
-        }
-    }
-
-    private void CreateCell(int _Row, int _Column)
-    {
-        GridCell cell = Instantiate<GameObject>(m_PrefabGridCell.gameObject, new Vector3(_Row, 0, _Column), Quaternion.identity).GetComponent<GridCell>();
-        cell.name = "Cell [" + _Row + ";" + _Column + "]";
-        cell.PlaceCell(_Row, _Column);
-
-        int index = GetIndex(_Row, _Column);
-        m_GridCells[index] = cell;
-    }
-
     private int GetIndex(int _Row, int _Column)
     {
         int index;
