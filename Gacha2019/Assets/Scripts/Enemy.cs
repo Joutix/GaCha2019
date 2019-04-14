@@ -17,15 +17,6 @@ public enum EEnemySize
     Large
 }
 
-// The state of the AI
-public enum EEnemyState
-{
-    Wandering,
-    Fleeing,
-    Attacking,
-    Fusioning
-}
-
 [System.Serializable]
 public struct PhaseInfo
 {
@@ -46,9 +37,6 @@ public class Enemy : Entity
 
     [SerializeField]
     private EEnemySize m_EnemySize = EEnemySize.Little;
-
-    [SerializeField]
-    private EEnemyState m_EnemyState = EEnemyState.Wandering;
 
     private bool m_IsStunned = false;
 
@@ -98,11 +86,12 @@ public class Enemy : Entity
     private float m_CurrentMovementSpeed = 0;
 
     FiniteStateMachine m_FSM = null;
-
     private WanderState m_WanderState = null;
     private ShootState m_ShootState = null;
     private ChaseState m_ChaseState = null;
+    private FusionState m_FusionState = null;
 
+    //private 
     #endregion
 
     #region Public Methods
@@ -118,7 +107,6 @@ public class Enemy : Entity
 
     public int Row { get => m_CurrentRow; }
     public int Column { get => m_CurrentColumn; }
-
 
     #endregion
 
@@ -245,14 +233,14 @@ public class Enemy : Entity
         }
     }
 
-    #endregion
-
-    #region Protected Methods
-
-    protected bool CanMerge(Enemy _enemy)
+    public bool CanMerge(Enemy _enemy)
     {
         return m_EnemySize != EEnemySize.Large && m_EnemySize == _enemy.m_EnemySize;
     }
+
+    #endregion
+
+    #region Protected Methods
 
     protected bool IsValidDestination(int _RowDestination, int _ColumnDestination)
     {
@@ -378,8 +366,12 @@ public class Enemy : Entity
 
         // Chase state
         m_ChaseState = new ChaseState(this, m_CurrentMovementSpeed);
+        m_FSM.AddState(m_ChaseState);
 
         // Fusion state
+        m_FusionState = new FusionState(this, m_CurrentMovementSpeed);
+        m_FSM.AddState(m_FusionState);
+
 
         MoveTo(m_CurrentRow, m_CurrentColumn);
 
