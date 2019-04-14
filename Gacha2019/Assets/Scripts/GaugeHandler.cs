@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using XInputDotNetPure;
 using UnityEngine.UI;
+using XInputDotNetPure;
 
 public class GaugeHandler : MonoBehaviour
 {
     public enum Name { SFX, MUSIC };
-    
+
     public Name e_Type;
     [SerializeField]
     private Color m_FillColor;
@@ -31,9 +29,11 @@ public class GaugeHandler : MonoBehaviour
     {
         m_Timer = 0f;
         if (m_FillColor == default)
+        {
             Debug.Log(e_Type.ToString() + " has default fill color");
-        Debug.Log(e_Type.ToString()+ " fill color: " + m_FillColor);
-        m_UnselectedColor = m_FillColor;
+        }
+        Debug.Log(e_Type.ToString() + " fill color: " + m_FillColor);
+        //m_UnselectedColor = m_FillColor;
         Debug.Log(e_Type.ToString() + " unselected color: " + m_UnselectedColor);
     }
 
@@ -46,7 +46,7 @@ public class GaugeHandler : MonoBehaviour
             if (m_Timer >= 0.2f && (m_CurrentState.ThumbSticks.Left.X > 0.8f || m_CurrentState.ThumbSticks.Left.X < -0.8f))
             {
                 // Right
-                if(m_CurrentState.ThumbSticks.Left.X > 0.8f)
+                if (m_CurrentState.ThumbSticks.Left.X > 0.8f)
                 {
                     m_CurrentIndex += 1;
                     if (m_CurrentIndex >= m_Boxes.Count)
@@ -82,7 +82,7 @@ public class GaugeHandler : MonoBehaviour
 
     // Init values
     public void Init()
-    {        
+    {
         if (e_Type.Equals(Name.SFX))
         {
             if (AudioManager.Instance.s_playSFX < 1f)
@@ -99,15 +99,15 @@ public class GaugeHandler : MonoBehaviour
         }
         Debug.Log(e_Type.ToString() + " gauge with index at " + m_CurrentIndex);
     }
-    
-    public void Select(bool val)
+
+    public void Select(bool _IsSelected)
     {
         Color newColor;
         // We just selected the gauge
-        if (val)
+        if (_IsSelected)
         {
             // We update its color
-            newColor = m_UnselectedColor;
+            newColor = m_FillColor;
             newColor.a = 1;
         }
         // We unselected the gauge
@@ -115,11 +115,12 @@ public class GaugeHandler : MonoBehaviour
         {
             // We update its color
             newColor = m_UnselectedColor;
+            newColor.a = 0.5f;
         }
-        m_FillColor = newColor;
-        FillBoxes(m_CurrentIndex, m_FillColor);
+        //m_FillColor = newColor;
+        FillBoxes(m_CurrentIndex, newColor);
         EmptyBoxes(m_CurrentIndex);
-        m_IsSelected = val;
+        m_IsSelected = _IsSelected;
     }
 
     private void UpdateControllerState()
@@ -153,11 +154,11 @@ public class GaugeHandler : MonoBehaviour
         switch (e_Type)
         {
             case Name.SFX:
-                AudioManager.Instance.s_playSFX = (m_CurrentIndex + 1)/10f;
+                AudioManager.Instance.s_playSFX = (m_CurrentIndex + 1) / 10f;
                 Debug.Log("Changed SFX volume to " + AudioManager.Instance.s_playSFX);
                 break;
             case Name.MUSIC:
-				AudioManager.Instance.s_playMusic = (m_CurrentIndex + 1) / 10f;
+                AudioManager.Instance.s_playMusic = (m_CurrentIndex + 1) / 10f;
                 Debug.Log("Changed Music volume to " + AudioManager.Instance.s_playMusic);
                 break;
         }
@@ -168,7 +169,7 @@ public class GaugeHandler : MonoBehaviour
     {
         //Debug.Log("Filling "+e_Type.ToString()+" with index: " + index);
         for (int i = 0; i <= index; i++)
-        {            
+        {
             m_Boxes[i].GetComponent<Image>().color = color;
             //m_Boxes[i].GetComponent<Image>().sprite = m_volumeBar;
         }
@@ -191,10 +192,10 @@ public class GaugeHandler : MonoBehaviour
         switch (e_Type)
         {
             case Name.SFX:
-				AudioManager.Instance.s_playSFX = 0f;
+                AudioManager.Instance.s_playSFX = 0f;
                 break;
             case Name.MUSIC:
-				AudioManager.Instance.s_playMusic = 0f;
+                AudioManager.Instance.s_playMusic = 0f;
                 break;
         }
     }
