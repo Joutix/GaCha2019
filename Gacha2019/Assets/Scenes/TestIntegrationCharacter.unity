@@ -713,6 +713,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: GridCell [3;7]
       objectReference: {fileID: 0}
+    - target: {fileID: 1307654584897028193, guid: 33dbcf6336a200f4d8a138a42ddcc91f,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: 1307654584897028195, guid: 33dbcf6336a200f4d8a138a42ddcc91f,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1162,6 +1167,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: GridCell [1;0]
+      objectReference: {fileID: 0}
+    - target: {fileID: 1307654584897028193, guid: 33dbcf6336a200f4d8a138a42ddcc91f,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: 1307654584897028195, guid: 33dbcf6336a200f4d8a138a42ddcc91f,
         type: 3}
@@ -1679,6 +1689,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: GridCell [1;4]
+      objectReference: {fileID: 0}
+    - target: {fileID: 1307654584897028193, guid: 33dbcf6336a200f4d8a138a42ddcc91f,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: 1307654584897028195, guid: 33dbcf6336a200f4d8a138a42ddcc91f,
         type: 3}
@@ -3087,6 +3102,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: GridCell [8;4]
       objectReference: {fileID: 0}
+    - target: {fileID: 1307654584897028193, guid: 33dbcf6336a200f4d8a138a42ddcc91f,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: 1307654584897028195, guid: 33dbcf6336a200f4d8a138a42ddcc91f,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3691,6 +3711,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: GridCell [6;1]
       objectReference: {fileID: 0}
+    - target: {fileID: 1307654584897028193, guid: 33dbcf6336a200f4d8a138a42ddcc91f,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: 1307654584897028195, guid: 33dbcf6336a200f4d8a138a42ddcc91f,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3926,6 +3951,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: GridCell [4;9]
+      objectReference: {fileID: 0}
+    - target: {fileID: 1307654584897028193, guid: 33dbcf6336a200f4d8a138a42ddcc91f,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: 1307654584897028195, guid: 33dbcf6336a200f4d8a138a42ddcc91f,
         type: 3}
@@ -4950,6 +4980,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: GridCell [3;1]
+      objectReference: {fileID: 0}
+    - target: {fileID: 1307654584897028193, guid: 33dbcf6336a200f4d8a138a42ddcc91f,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: 1307654584897028195, guid: 33dbcf6336a200f4d8a138a42ddcc91f,
         type: 3}
@@ -7744,6 +7779,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: GridCell [6;7]
       objectReference: {fileID: 0}
+    - target: {fileID: 1307654584897028193, guid: 33dbcf6336a200f4d8a138a42ddcc91f,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: 1307654584897028195, guid: 33dbcf6336a200f4d8a138a42ddcc91f,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -8080,6 +8120,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: GridCell [8;9]
+      objectReference: {fileID: 0}
+    - target: {fileID: 1307654584897028193, guid: 33dbcf6336a200f4d8a138a42ddcc91f,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: 1307654584897028195, guid: 33dbcf6336a200f4d8a138a42ddcc91f,
         type: 3}
@@ -9991,6 +10036,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: GridCell [5;4]
       objectReference: {fileID: 0}
+    - target: {fileID: 1307654584897028193, guid: 33dbcf6336a200f4d8a138a42ddcc91f,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: 1307654584897028195, guid: 33dbcf6336a200f4d8a138a42ddcc91f,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -10219,6 +10269,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: GridCell [3;3]
+      objectReference: {fileID: 0}
+    - target: {fileID: 1307654584897028193, guid: 33dbcf6336a200f4d8a138a42ddcc91f,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: 1307654584897028195, guid: 33dbcf6336a200f4d8a138a42ddcc91f,
         type: 3}
