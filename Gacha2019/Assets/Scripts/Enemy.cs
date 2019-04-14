@@ -347,7 +347,7 @@ public class Enemy : Entity
                     int testedX = _CurrentX + x;
                     int testedY = _CurrentX + y;
 
-                    if (m_Grid.IsValidDestination(testedX, testedY) && m_Grid.IsEmptyAt(testedX, testedY) && m_Grid.GetGridCellAt(testedX, testedY).IsCrossable)
+                    if (m_Grid.IsValidDestination(testedX, testedY) && m_Grid.IsEmptyAt(testedX, testedY) && m_Grid.GetGridCellAt(testedX, testedY).IsEnemyCrossable)
                     {
                         GridCell currentCell = m_Grid.GetGridCellAt(testedX, testedY);
                         Enemy spawnedEnemy = Instantiate(gameObject, Vector3.zero, transform.rotation).GetComponent<Enemy>();

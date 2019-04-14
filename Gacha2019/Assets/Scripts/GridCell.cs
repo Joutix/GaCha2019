@@ -115,10 +115,10 @@ public class GridCell : MonoBehaviour
     [SerializeField] private UnityEvent m_OnCellEnterEvents = null;
     [SerializeField] private UnityEvent m_OnCellExitEvents = null;
 
-    private GameGrid m_GameGrid = null;
-    private Entity m_CurrentEntity = null;
-    private int m_RowPos = 0;
-    private int m_ColumnPos = 0;
+    [SerializeField] private GameGrid m_GameGrid = null;
+    [SerializeField] private Entity m_CurrentEntity = null;
+    [SerializeField] private int m_RowPos = 0;
+    [SerializeField] private int m_ColumnPos = 0;
     #endregion
 
 
