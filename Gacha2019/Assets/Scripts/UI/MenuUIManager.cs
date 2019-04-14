@@ -212,7 +212,7 @@ public class MenuUIManager : MonoBehaviour
                     // If the item before was also a gauge we need to unselect it
                     if (m_OptionSelectableIndex - 1 >= 0 && m_OptionsMenuSelectables[m_OptionSelectableIndex - 1].GetComponent<GaugeHandler>() != null)
                     {
-                        m_OptionsMenuSelectables[m_OptionSelectableIndex - 1].GetComponent<GaugeHandler>().Select(false);
+                       // m_OptionsMenuSelectables[m_OptionSelectableIndex - 1].GetComponent<GaugeHandler>().Select(false);
                     }
                     else if (m_OptionSelectableIndex + 1 < m_OptionsMenuSelectables.Length && m_OptionsMenuSelectables[m_OptionSelectableIndex + 1].GetComponent<GaugeHandler>() != null)
                     {

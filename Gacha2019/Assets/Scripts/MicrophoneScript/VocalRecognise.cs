@@ -13,10 +13,10 @@ public class VocalRecognise : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-		actions.Add("Bonjour je m'appelle sabri", Forward);
-		actions.Add("up", Up);
-		actions.Add("down", Down);
-		actions.Add("Shazam", Back);
+		actions.Add("Avance", Avance);
+		actions.Add("Recule", Recule);
+		actions.Add("Gauche", Gauche);
+		actions.Add("Droite", Droite);
 
 		keywordRecognizer = new KeywordRecognizer(actions.Keys.ToArray());
 		keywordRecognizer.OnPhraseRecognized += RecognizedSpeech;
@@ -32,20 +32,20 @@ public class VocalRecognise : MonoBehaviour
 
 	// Ultime avec la voix (Mot) 
 
-    private void Forward()
+    private void Avance()
 	{
-		transform.Translate(1, 0, 0);
+		GameManager.Instance.Character.TryMove(1, 0);
 	}
-	private void Back()
+	private void Recule()
 	{
-		transform.Translate(-1, 0, 0);
+		GameManager.Instance.Character.TryMove(-1, 0);
 	}
-	private void Up()
+	private void Gauche()
 	{
-		transform.Translate(0, 1, 0);
+		GameManager.Instance.Character.TryMove(0, -1);
 	}
-	private void Down()
+	private void Droite()
 	{
-		transform.Translate(0, -1, 0);
+		GameManager.Instance.Character.TryMove(0, 1);
 	}
 }
