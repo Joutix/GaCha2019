@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using XInputDotNetPure;
 
 public class MenuUIManager : MonoBehaviour
@@ -34,6 +32,7 @@ public class MenuUIManager : MonoBehaviour
 
     private Page e_Page;
 
+    #region Private Methods
     void Start()
     {
         m_PreviousState = GamePad.GetState(m_ControllerInpause);
@@ -49,7 +48,7 @@ public class MenuUIManager : MonoBehaviour
         m_MenuButtons[m_MenuButtonIndex].GetComponent<Image>().color = Color.red;
 
         // We freeze everything
-        Time.timeScale = 0f;
+        //Time.timeScale = 0f; // <== why freeze on MenuUI scene ?
     }
 
     void Update()
@@ -62,7 +61,8 @@ public class MenuUIManager : MonoBehaviour
         //    m_CreditsUI.SetActive(false);
         //}
 
-        m_Timer += Time.unscaledDeltaTime;
+        //m_Timer += Time.unscaledDeltaTime;
+        m_Timer += Time.deltaTime;
 
         UpdateControllerState();
         // Click on the current button
@@ -70,7 +70,7 @@ public class MenuUIManager : MonoBehaviour
         {
             m_MenuButtons[m_MenuButtonIndex].GetComponent<Button>().onClick.Invoke();
         }
-        else if(IsAPressed() && e_Page.Equals(Page.Credits))
+        else if (IsAPressed() && e_Page.Equals(Page.Credits))
         {
             m_CreditsBackButton.GetComponent<Button>().onClick.Invoke();
         }
@@ -80,9 +80,15 @@ public class MenuUIManager : MonoBehaviour
             Back();
         }
         if (e_Page.Equals(Page.Menu))
-            ManageMenuNavigation();
+        {
+            //ManageMenuNavigation();
+            ManageMenuNavigation_V2();
+        }
         else if (e_Page.Equals(Page.Options))
-            ManageOptionNavigation();
+        {
+            //ManageOptionNavigation();
+            ManageOptionNavigation_V2();
+        }
     }
 
     private void UpdateControllerState()
@@ -117,7 +123,7 @@ public class MenuUIManager : MonoBehaviour
     private void ManageMenuNavigation()
     {
         // If we are paused and the delay is overpassed
-        if (Time.timeScale == 0 && m_Timer >= 0.2f)
+        if (/*Time.timeScale == 0 && */m_Timer >= 0.2f)
         {
             // If the user has his left stick in the up or down position
             if (m_CurrentState.ThumbSticks.Left.Y > 0.8f || m_CurrentState.ThumbSticks.Left.Y < -0.8f)
@@ -162,6 +168,29 @@ public class MenuUIManager : MonoBehaviour
         }
     }
 
+    private void ManageMenuNavigation_V2()
+    {
+        if (m_Timer >= 0.2f)
+        {
+            int previousIndex = m_MenuButtonIndex;
+            if (m_CurrentState.ThumbSticks.Left.Y > 0.8f)
+            {
+                m_MenuButtonIndex = Mathf.Clamp(m_MenuButtonIndex - 1, 0, m_MenuButtons.Length - 1);
+                m_Timer = 0f;
+            }
+            else if (m_CurrentState.ThumbSticks.Left.Y < -0.8f)
+            {
+                m_MenuButtonIndex = Mathf.Clamp(m_MenuButtonIndex + 1, 0, m_MenuButtons.Length - 1);
+                m_Timer = 0f;
+            }
+            if (previousIndex != m_MenuButtonIndex)
+            {
+                m_MenuButtons[previousIndex].GetComponent<Image>().color = Color.white;
+                m_MenuButtons[m_MenuButtonIndex].GetComponent<Image>().color = Color.red;
+            }
+        }
+    }
+
     private void ManageOptionNavigation()
     {
         //Debug.Log("ManageOptionNavigation");
@@ -193,10 +222,10 @@ public class MenuUIManager : MonoBehaviour
                 {
                     m_OptionsMenuSelectables[m_OptionSelectableIndex].GetComponent<Image>().color = Color.red;
                     // THIS IS DISGUSTING BUT OH WELL... CHANGE THAT LATER IF WE HAVE TIME!!!
-                    //if (m_OptionsMenuSelectables[1].GetComponent<GaugeHandler>().e_Type.Equals(GaugeHandler.Name.MUSIC))
-                    //    m_OptionsMenuSelectables[1].GetComponent<GaugeHandler>().Select(false);
-					//else
-                    //    Debug.LogError("Codé en dur, faite gaffe hihi x) MUSIC GAUGE NOT FOUND");
+                    if (m_OptionsMenuSelectables[1].GetComponent<GaugeHandler>().e_Type.Equals(GaugeHandler.Name.MUSIC))
+                        m_OptionsMenuSelectables[1].GetComponent<GaugeHandler>().Select(false);
+                    else
+                        Debug.LogError("Codé en dur, faite gaffe hihi x) MUSIC GAUGE NOT FOUND");
                 }
                 // One of the two gauges
                 else if (m_OptionsMenuSelectables[m_OptionSelectableIndex].GetComponent<GaugeHandler>() != null)
@@ -212,7 +241,7 @@ public class MenuUIManager : MonoBehaviour
                     // If the item before was also a gauge we need to unselect it
                     if (m_OptionSelectableIndex - 1 >= 0 && m_OptionsMenuSelectables[m_OptionSelectableIndex - 1].GetComponent<GaugeHandler>() != null)
                     {
-                       // m_OptionsMenuSelectables[m_OptionSelectableIndex - 1].GetComponent<GaugeHandler>().Select(false);
+                        // m_OptionsMenuSelectables[m_OptionSelectableIndex - 1].GetComponent<GaugeHandler>().Select(false);
                     }
                     else if (m_OptionSelectableIndex + 1 < m_OptionsMenuSelectables.Length && m_OptionsMenuSelectables[m_OptionSelectableIndex + 1].GetComponent<GaugeHandler>() != null)
                     {
@@ -229,6 +258,57 @@ public class MenuUIManager : MonoBehaviour
         }
     }
 
+    private void ManageOptionNavigation_V2()
+    {
+        if (m_Timer >= 0.2f)
+        {
+            int previousIndex = m_OptionSelectableIndex;
+            if (m_CurrentState.ThumbSticks.Left.Y > 0.8f)
+            {
+                m_OptionSelectableIndex = Mathf.Clamp(m_OptionSelectableIndex - 1, 0, m_OptionsMenuSelectables.Length - 1);
+                m_Timer = 0f;
+            }
+            else if (m_CurrentState.ThumbSticks.Left.Y < -0.8f)
+            {
+                m_OptionSelectableIndex = Mathf.Clamp(m_OptionSelectableIndex + 1, 0, m_OptionsMenuSelectables.Length - 1);
+                m_Timer = 0f;
+            }
+            DeselectOption(previousIndex);
+            SelectOption(m_OptionSelectableIndex);
+        }
+
+        if (IsAPressed() && m_OptionsMenuSelectables[m_OptionSelectableIndex].GetComponent<Button>() != null)
+        {
+            Back();
+        }
+    }
+
+    private void DeselectOption(int _Index)
+    {
+        if (m_OptionsMenuSelectables[_Index].GetComponent<Button>())
+        {
+            m_OptionsMenuSelectables[_Index].GetComponent<Image>().color = Color.white;
+        }
+        else if (m_OptionsMenuSelectables[_Index].GetComponent<GaugeHandler>())
+        {
+            m_OptionsMenuSelectables[_Index].GetComponent<GaugeHandler>().Select(false);
+        }
+    }
+
+    private void SelectOption(int _Index)
+    {
+        if (m_OptionsMenuSelectables[_Index].GetComponent<Button>())
+        {
+            m_OptionsMenuSelectables[_Index].GetComponent<Image>().color = Color.red;
+        }
+        else if (m_OptionsMenuSelectables[_Index].GetComponent<GaugeHandler>())
+        {
+            m_OptionsMenuSelectables[_Index].GetComponent<GaugeHandler>().Select(true);
+        }
+    }
+    #endregion
+
+    #region Public Methods
     public void Play()
     {
         Debug.Log("Play");
@@ -270,4 +350,5 @@ public class MenuUIManager : MonoBehaviour
         Debug.Log("Quitting...");
         Application.Quit();
     }
+    #endregion
 }

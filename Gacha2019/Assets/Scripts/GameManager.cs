@@ -45,6 +45,7 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
+    //returns the path of the closest enemy present in a range calculated with manhattan distance
     public List<GridCell> ReturnClosestEnemyPath(Enemy _enemyToIgnore, int _maxManhattanDist/*, bool _careAboutWalls*/)
     {
         GridCell startCell = _enemyToIgnore.CurrentCell;
@@ -74,7 +75,7 @@ public class GameManager : Singleton<GameManager>
         {
             List<GridCell> currentDijkstra = Dijkstra.ComputeEnemyDijkstraPath(startCell.GameGrid, startCell.Row, startCell.Column, enemiesInManDist[i].Row, enemiesInManDist[i].Column);
 
-            if (currentDijkstra.Count < bestPath.Count)
+            if (currentDijkstra != null && currentDijkstra.Count < bestPath.Count)
             {
                 bestPath = currentDijkstra;
             }

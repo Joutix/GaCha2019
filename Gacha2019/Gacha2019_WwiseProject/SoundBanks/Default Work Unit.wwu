@@ -5,7 +5,13 @@
 			<ChildrenList>
 				<SoundBank Name="SBK" ID="{C8B7877F-0461-4222-8F84-AA895F4B80CF}">
 					<ObjectInclusionList>
+						<ObjectRef Name="Play_Stomp" ID="{F98B6236-8325-43EA-9665-50F114293A2F}" WorkUnitID="{2949B062-6EE6-4570-85ED-F95646EBC3D5}" Filter="7" Origin="Manual"/>
+						<ObjectRef Name="sfx" ID="{7EE3A0B2-5D88-443C-88D0-3877E9FBC037}" WorkUnitID="{5A365A61-537C-4508-B85B-A286FF3F7D14}" Filter="7" Origin="Manual"/>
 						<ObjectRef Name="Play_bite" ID="{07F215A1-7040-471B-9FF8-5B7BA6A860E0}" WorkUnitID="{2949B062-6EE6-4570-85ED-F95646EBC3D5}" Filter="7" Origin="Manual"/>
+						<ObjectRef Name="music" ID="{FEEC5C1A-A44D-4755-97F6-D0E3E729C186}" WorkUnitID="{5A365A61-537C-4508-B85B-A286FF3F7D14}" Filter="7" Origin="Manual"/>
+						<ObjectRef Name="Stop_Music" ID="{0D169092-7B5D-4A9A-B09B-87488846A269}" WorkUnitID="{2949B062-6EE6-4570-85ED-F95646EBC3D5}" Filter="7" Origin="Manual"/>
+						<ObjectRef Name="Play_Footsteps" ID="{D19A2FEE-CC79-4B17-9613-41A6D5C11D19}" WorkUnitID="{2949B062-6EE6-4570-85ED-F95646EBC3D5}" Filter="7" Origin="Manual"/>
+						<ObjectRef Name="Play_Music" ID="{D5F8B72A-A354-4CDE-87BA-16F218082350}" WorkUnitID="{2949B062-6EE6-4570-85ED-F95646EBC3D5}" Filter="7" Origin="Manual"/>
 					</ObjectInclusionList>
 					<ObjectExclusionList/>
 					<GameSyncExclusionList/>

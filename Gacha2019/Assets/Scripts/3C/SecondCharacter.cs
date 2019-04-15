@@ -8,6 +8,7 @@ public class SecondCharacter : MonoBehaviour
     [SerializeField] private GameObject m_PrefabOrbital = null;
     [SerializeField] private Transform m_AnchorDrone = null;
     [SerializeField] private Bullet m_PrefabBullet = null;
+    [SerializeField] private Bullet m_SecondaryBulletPrefab = null;
     [SerializeField] private float m_BulletSpawnOffset = 2;
 	[SerializeField] private float timeBtwAttack;
 	[SerializeField] private float reloadTime = 1f;
@@ -28,6 +29,12 @@ public class SecondCharacter : MonoBehaviour
     {
         Shoot(m_OffsetVector);
     }
+
+    public void SecondaryShootCall()
+    {
+        SecondaryShoot(m_OffsetVector);
+    }
+
 
     // Start is called before the first frame update
     void Start()
@@ -111,6 +118,15 @@ public class SecondCharacter : MonoBehaviour
 
         pos += _ShootDirection * m_BulletSpawnOffset;
         GameObject bulletClone = Instantiate(m_PrefabBullet.gameObject, pos, Quaternion.identity);
+        bulletClone.GetComponent<Rigidbody>().velocity = _ShootDirection * bulletClone.GetComponent<Bullet>().Speed;
+    }
+
+    private void SecondaryShoot(Vector3 _ShootDirection)
+    {
+        Vector3 pos = m_Orbital.transform.position;
+
+        pos += _ShootDirection * m_BulletSpawnOffset;
+        GameObject bulletClone = Instantiate(m_SecondaryBulletPrefab.gameObject, pos, Quaternion.identity);
         bulletClone.GetComponent<Rigidbody>().velocity = _ShootDirection * bulletClone.GetComponent<Bullet>().Speed;
     }
 }
