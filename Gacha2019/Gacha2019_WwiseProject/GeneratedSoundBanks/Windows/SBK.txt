@@ -2,6 +2,8 @@ Event	ID	Name			Wwise Object Path	Notes
 	137489100	Play_Player_Drone_Aim			\Default Work Unit\Play_Player_Drone_Aim	
 	686654861	Play_Portal_Idle			\Default Work Unit\Play_Portal_Idle	
 	1136450133	Play_Enemies_Fusion			\Default Work Unit\Play_Enemies_Fusion	
+	1187918102	Play_Teleportation			\Default Work Unit\Play_Teleportation	
+	1864892471	Play_Player_Hit			\Default Work Unit\Play_Player_Hit	
 	1893986092	Play_Enemies_Shots			\Default Work Unit\Play_Enemies_Shots	
 	2354172050	Play_Enemies_Movement			\Default Work Unit\Play_Enemies_Movement	
 	2745347784	Play_Impact_Laser			\Default Work Unit\Play_Impact_Laser	
@@ -54,6 +56,7 @@ In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
 	277074367	GA_Ennemi_Mouv_05	C:\Users\The Feathered Eye\Documents\GitHub\GaCha2019\Gacha2019\Gacha2019_WwiseProject\.cache\Windows\SFX\SFX\GA_Ennemi_Mouv_05_56D34C19.wem		\Actor-Mixer Hierarchy\SFX\SFX_AM\Enemies_AM\Enemies_Movement_RD\GA_Ennemi_Mouv_05		50626
 	298659708	Laser_IA__04	C:\Users\The Feathered Eye\Documents\GitHub\GaCha2019\Gacha2019\Gacha2019_WwiseProject\.cache\Windows\SFX\SFX\Laser_IA__04_56D34C19.wem		\Actor-Mixer Hierarchy\SFX\SFX_AM\Enemies_AM\Enemies_Shots_RD\Laser_IA__04		131784
 	310962088	GA_Finish_C_02	C:\Users\The Feathered Eye\Documents\GitHub\GaCha2019\Gacha2019\Gacha2019_WwiseProject\.cache\Windows\SFX\SFX\GA_Finish_C_02_56D34C19.wem		\Actor-Mixer Hierarchy\SFX\SFX_AM\Player_Actions_AM\Player_Stomp_BL\Stomp_Layer_02\GA_Finish_C_02		172064
+	361826899	Player_Hit	C:\Users\The Feathered Eye\Documents\GitHub\GaCha2019\Gacha2019\Gacha2019_WwiseProject\.cache\Windows\SFX\SFX\GA_Hit_Character_56D34C19.wem		\Actor-Mixer Hierarchy\SFX\SFX_AM\Player_Actions_AM\Player_Hit		227072
 	381630716	GA_Ennemi_Mouv_06	C:\Users\The Feathered Eye\Documents\GitHub\GaCha2019\Gacha2019\Gacha2019_WwiseProject\.cache\Windows\SFX\SFX\GA_Ennemi_Mouv_06_56D34C19.wem		\Actor-Mixer Hierarchy\SFX\SFX_AM\Enemies_AM\Enemies_Movement_RD\GA_Ennemi_Mouv_06		56646
 	383312528	GA_Finish_D_04	C:\Users\The Feathered Eye\Documents\GitHub\GaCha2019\Gacha2019\Gacha2019_WwiseProject\.cache\Windows\SFX\SFX\GA_Finish_D_04_56D34C19.wem		\Actor-Mixer Hierarchy\SFX\SFX_AM\Player_Actions_AM\Player_Stomp_BL\Stomp_Layer_03\GA_Finish_D_04		160848
 	398115596	GA_finish_A_02	C:\Users\The Feathered Eye\Documents\GitHub\GaCha2019\Gacha2019\Gacha2019_WwiseProject\.cache\Windows\SFX\SFX\GA_finish_A_02_56D34C19.wem		\Actor-Mixer Hierarchy\SFX\SFX_AM\Player_Actions_AM\Player_Stomp_BL\Stomp_Layer_01\GA_finish_A_02		172064
@@ -98,6 +101,7 @@ In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
 	837960172	GA_Ftps_C_04	C:\Users\The Feathered Eye\Documents\GitHub\GaCha2019\Gacha2019\Gacha2019_WwiseProject\.cache\Windows\SFX\SFX\GA_Ftps_C_04_56D34C19.wem		\Actor-Mixer Hierarchy\SFX\SFX_AM\Player_Actions_AM\Player_Footsteps_BL\Footsteps_Layer_03\GA_Ftps_C_04		45088
 	838670489	GA_Ftps_C_06	C:\Users\The Feathered Eye\Documents\GitHub\GaCha2019\Gacha2019\Gacha2019_WwiseProject\.cache\Windows\SFX\SFX\GA_Ftps_C_06_56D34C19.wem		\Actor-Mixer Hierarchy\SFX\SFX_AM\Player_Actions_AM\Player_Footsteps_BL\Footsteps_Layer_03\GA_Ftps_C_06		46810
 	838926269	Portal_Idle_LP	C:\Users\The Feathered Eye\Documents\GitHub\GaCha2019\Gacha2019\Gacha2019_WwiseProject\.cache\Windows\SFX\Portal_01_8956FC97.wem		\Actor-Mixer Hierarchy\SFX\SFX_AM\Others_AM\Portal_Idle_LP		759902
+	839003762	Teleportation	C:\Users\The Feathered Eye\Documents\GitHub\GaCha2019\Gacha2019\Gacha2019_WwiseProject\.cache\Windows\SFX\SFX\Portal_Activ_01_56D34C19.wem		\Actor-Mixer Hierarchy\SFX\SFX_AM\Others_AM\Teleportation		164088
 	847693493	GA_Finish_G_04	C:\Users\The Feathered Eye\Documents\GitHub\GaCha2019\Gacha2019\Gacha2019_WwiseProject\.cache\Windows\SFX\SFX\GA_Finish_G_04_56D34C19.wem		\Actor-Mixer Hierarchy\SFX\SFX_AM\Player_Actions_AM\Player_Stomp_BL\Stomp_Layer_06\GA_Finish_G_04		160848
 	861756135	GA_Ftps_D_06	C:\Users\The Feathered Eye\Documents\GitHub\GaCha2019\Gacha2019\Gacha2019_WwiseProject\.cache\Windows\SFX\SFX\GA_Ftps_D_06_56D34C19.wem		\Actor-Mixer Hierarchy\SFX\SFX_AM\Player_Actions_AM\Player_Footsteps_BL\Footsteps_Layer_04\GA_Ftps_D_06		46810
 	864123572	Laser_IA__01	C:\Users\The Feathered Eye\Documents\GitHub\GaCha2019\Gacha2019\Gacha2019_WwiseProject\.cache\Windows\SFX\SFX\Laser_IA__01_56D34C19.wem		\Actor-Mixer Hierarchy\SFX\SFX_AM\Enemies_AM\Enemies_Shots_RD\Laser_IA__01		125328
