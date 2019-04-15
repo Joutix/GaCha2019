@@ -128,11 +128,11 @@ public class Character : Entity
 
     private GridCell m_CurrentCell = null;
 
-<<<<<<< HEAD
+
     [SerializeField] private VFX_Manager m_VfxManager = null;
-=======
+
     [SerializeField] private GameObject panelGameOver;
->>>>>>> 4e7f58c58d322d46f450eb6ba976d1f7fe37a1da
+
 
     //private int m_CurrentRow = 0;
     //private int m_CurrentColumn = 0;
