@@ -46,6 +46,7 @@ public class Bullet : MonoBehaviour
     private void Start()
     {
         Destroy(gameObject, m_LifeTime);
+        AkSoundEngine.PostEvent("Play_Impact_Laser", gameObject);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -53,6 +54,7 @@ public class Bullet : MonoBehaviour
         if (other.CompareTag("Wall"))
         {
             Destroy(gameObject);
+            AkSoundEngine.PostEvent("Play_Impact_Laser", gameObject);
         }
     }
 }
