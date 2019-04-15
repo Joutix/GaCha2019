@@ -626,6 +626,11 @@ public class Enemy : Entity
         }
 
         ManageMergeCoolDown();
+
+        if (m_Animator != null)
+        {
+            m_Animator.SetBool("Stun", m_IsStunned);
+        }
     }
 
     #endregion
