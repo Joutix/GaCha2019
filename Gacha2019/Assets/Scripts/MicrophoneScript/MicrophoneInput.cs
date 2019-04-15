@@ -24,9 +24,6 @@ public class MicrophoneInput : MonoBehaviour
 	private List<string> options = new List<string>();
 	private int samples = 8192;
 
-	public float m_thresholdWeak;
-	public float m_thresholdStrong;
-
 	private float timer = 0; 
 
 	private static MicrophoneInput s_Instance;
