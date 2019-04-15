@@ -99,8 +99,8 @@ TextureImporter:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 126
-        height: 150
+        width: 138
+        height: 162
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -108,7 +108,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7581433a67b9a1a47b7880b2665c22a8
+      spriteID: 0f55bb60e86116e41affa8ec2f39247d
       vertices: []
       indices: 
       edges: []
@@ -117,10 +117,10 @@ TextureImporter:
       name: Ennemis01_Idle_1
       rect:
         serializedVersion: 2
-        x: 126
+        x: 138
         y: 0
-        width: 126
-        height: 150
+        width: 138
+        height: 162
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,7 +128,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 14196c6a794de194f854236a4fce68c4
+      spriteID: 398202cc9cc6dac4db7755c00e8825b6
       vertices: []
       indices: 
       edges: []
@@ -137,10 +137,10 @@ TextureImporter:
       name: Ennemis01_Idle_2
       rect:
         serializedVersion: 2
-        x: 252
+        x: 276
         y: 0
-        width: 126
-        height: 150
+        width: 138
+        height: 162
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -148,7 +148,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: cb86b6ed20dc57a4d93398c4836fdaaa
+      spriteID: 68065cd6c8eb9ef40979f14b49e3c439
       vertices: []
       indices: 
       edges: []
@@ -157,10 +157,10 @@ TextureImporter:
       name: Ennemis01_Idle_3
       rect:
         serializedVersion: 2
-        x: 378
+        x: 414
         y: 0
-        width: 126
-        height: 150
+        width: 138
+        height: 162
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -168,7 +168,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b1d0315b92eee1b4882ae4986dbecefe
+      spriteID: cdebcb66987c38440885e8d85ab0c748
       vertices: []
       indices: 
       edges: []
@@ -177,10 +177,10 @@ TextureImporter:
       name: Ennemis01_Idle_4
       rect:
         serializedVersion: 2
-        x: 504
+        x: 552
         y: 0
-        width: 126
-        height: 150
+        width: 138
+        height: 162
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -188,7 +188,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d63705ab8aa50134e88e64e4268fa56d
+      spriteID: a3751844f7ed851478af4a4a65b50861
       vertices: []
       indices: 
       edges: []
@@ -197,10 +197,10 @@ TextureImporter:
       name: Ennemis01_Idle_5
       rect:
         serializedVersion: 2
-        x: 630
+        x: 690
         y: 0
-        width: 126
-        height: 150
+        width: 138
+        height: 162
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -208,7 +208,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 75eeb8258122e0644bc2eb2a065d2462
+      spriteID: 9d321fbfae2f3fd48bec3896c4c93059
       vertices: []
       indices: 
       edges: []
@@ -217,10 +217,10 @@ TextureImporter:
       name: Ennemis01_Idle_6
       rect:
         serializedVersion: 2
-        x: 756
+        x: 828
         y: 0
-        width: 126
-        height: 150
+        width: 138
+        height: 162
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -228,7 +228,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: dbf6c33f2cf7b9349bed6ad8e89e8eb1
+      spriteID: ce12b9a7d90e0de4eadc42f05d7a7fb9
       vertices: []
       indices: 
       edges: []
@@ -237,10 +237,10 @@ TextureImporter:
       name: Ennemis01_Idle_7
       rect:
         serializedVersion: 2
-        x: 882
+        x: 966
         y: 0
-        width: 126
-        height: 150
+        width: 138
+        height: 162
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -248,7 +248,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 00c7425d4f1089f47b22f9e7b34436bc
+      spriteID: d411f30eb6be07b448f68bb3741bacf3
       vertices: []
       indices: 
       edges: []
@@ -257,10 +257,10 @@ TextureImporter:
       name: Ennemis01_Idle_8
       rect:
         serializedVersion: 2
-        x: 1008
+        x: 1104
         y: 0
-        width: 126
-        height: 150
+        width: 138
+        height: 162
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -268,7 +268,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 67cee4816f7abcb4f94faf49808d5438
+      spriteID: 123da9d2d7c987744bff87732aebbc38
       vertices: []
       indices: 
       edges: []
@@ -277,10 +277,10 @@ TextureImporter:
       name: Ennemis01_Idle_9
       rect:
         serializedVersion: 2
-        x: 1134
+        x: 1242
         y: 0
-        width: 126
-        height: 150
+        width: 138
+        height: 162
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -288,7 +288,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d946746c997152c45bee968922523eaa
+      spriteID: 188b70a43b738ec40b6071d77db44f06
       vertices: []
       indices: 
       edges: []
