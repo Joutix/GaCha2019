@@ -32,6 +32,9 @@ public class MenuUIManager : MonoBehaviour
 
     private Page e_Page;
 
+    // The value with which we detect a joystick movement
+    private float m_JoystickValue = 0.9f;
+
     #region Private Methods
     void Start()
     {
@@ -126,10 +129,10 @@ public class MenuUIManager : MonoBehaviour
         if (/*Time.timeScale == 0 && */m_Timer >= 0.2f)
         {
             // If the user has his left stick in the up or down position
-            if (m_CurrentState.ThumbSticks.Left.Y > 0.8f || m_CurrentState.ThumbSticks.Left.Y < -0.8f)
+            if (m_CurrentState.ThumbSticks.Left.Y > m_JoystickValue || m_CurrentState.ThumbSticks.Left.Y < -m_JoystickValue)
             {
                 // Up position
-                if (m_CurrentState.ThumbSticks.Left.Y > 0.8f)
+                if (m_CurrentState.ThumbSticks.Left.Y > m_JoystickValue)
                 {
                     m_MenuButtonIndex -= 1;
                     if (m_MenuButtonIndex < 0)
@@ -173,12 +176,12 @@ public class MenuUIManager : MonoBehaviour
         if (m_Timer >= 0.2f)
         {
             int previousIndex = m_MenuButtonIndex;
-            if (m_CurrentState.ThumbSticks.Left.Y > 0.8f)
+            if (m_CurrentState.ThumbSticks.Left.Y > m_JoystickValue)
             {
                 m_MenuButtonIndex = Mathf.Clamp(m_MenuButtonIndex - 1, 0, m_MenuButtons.Length - 1);
                 m_Timer = 0f;
             }
-            else if (m_CurrentState.ThumbSticks.Left.Y < -0.8f)
+            else if (m_CurrentState.ThumbSticks.Left.Y < -m_JoystickValue)
             {
                 m_MenuButtonIndex = Mathf.Clamp(m_MenuButtonIndex + 1, 0, m_MenuButtons.Length - 1);
                 m_Timer = 0f;
@@ -198,10 +201,10 @@ public class MenuUIManager : MonoBehaviour
         if (Time.timeScale == 0 && m_Timer > 0.2f)
         {
             // If the user has his left stick in the up or down position
-            if (m_CurrentState.ThumbSticks.Left.Y > 0.8f || m_CurrentState.ThumbSticks.Left.Y < -0.8f)
+            if (m_CurrentState.ThumbSticks.Left.Y > m_JoystickValue || m_CurrentState.ThumbSticks.Left.Y < -m_JoystickValue)
             {
                 // Up position
-                if (m_CurrentState.ThumbSticks.Left.Y > 0.8f)
+                if (m_CurrentState.ThumbSticks.Left.Y > m_JoystickValue)
                 {
                     m_OptionSelectableIndex -= 1;
                     if (m_OptionSelectableIndex < 0)
@@ -263,12 +266,12 @@ public class MenuUIManager : MonoBehaviour
         if (m_Timer >= 0.2f)
         {
             int previousIndex = m_OptionSelectableIndex;
-            if (m_CurrentState.ThumbSticks.Left.Y > 0.8f)
+            if (m_CurrentState.ThumbSticks.Left.Y > m_JoystickValue)
             {
                 m_OptionSelectableIndex = Mathf.Clamp(m_OptionSelectableIndex - 1, 0, m_OptionsMenuSelectables.Length - 1);
                 m_Timer = 0f;
             }
-            else if (m_CurrentState.ThumbSticks.Left.Y < -0.8f)
+            else if (m_CurrentState.ThumbSticks.Left.Y < -m_JoystickValue)
             {
                 m_OptionSelectableIndex = Mathf.Clamp(m_OptionSelectableIndex + 1, 0, m_OptionsMenuSelectables.Length - 1);
                 m_Timer = 0f;

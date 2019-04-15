@@ -25,16 +25,19 @@ public class GaugeHandler : MonoBehaviour
     private bool m_IsSelected = false;
     private float m_Timer = 0f;
 
+    // The value with which we detect a joystick movement
+    private float m_JoystickValue = 0.9f;
+
     void Update()
     {
         if (m_IsSelected)
         {
             m_Timer += Time.unscaledDeltaTime;
             UpdateControllerState();
-            if (m_Timer >= 0.2f && (m_CurrentState.ThumbSticks.Left.X > 0.8f || m_CurrentState.ThumbSticks.Left.X < -0.8f))
+            if (m_Timer >= 0.2f && (m_CurrentState.ThumbSticks.Left.X > m_JoystickValue || m_CurrentState.ThumbSticks.Left.X < -m_JoystickValue))
             {
                 // Right
-                if (m_CurrentState.ThumbSticks.Left.X > 0.8f)
+                if (m_CurrentState.ThumbSticks.Left.X > m_JoystickValue)
                 {
                     m_CurrentIndex += 1;
                     if (m_CurrentIndex >= m_Boxes.Count)
@@ -47,6 +50,7 @@ public class GaugeHandler : MonoBehaviour
                     if (m_CurrentIndex < 0)
                     {
                         Mute();
+                        m_Timer = 0f;
                         return;
                     }
                 }
@@ -56,14 +60,10 @@ public class GaugeHandler : MonoBehaviour
                 switch (e_Type)
                 {
                     case Name.SFX:
-                        AudioManager.Instance.s_SFXVolume = (m_CurrentIndex + 1) * 10;
-                        AkSoundEngine.SetRTPCValue("SFX_Volume", AudioManager.Instance.s_SFXVolume);
-                        Debug.Log("Changed SFX volume to " + AudioManager.Instance.s_SFXVolume);
+                        AudioManager.Instance.UpdateSFXVolume((m_CurrentIndex + 1) * 10);
                         break;
                     case Name.MUSIC:
-                        AudioManager.Instance.s_MusicVolume = (m_CurrentIndex + 1) * 10;
-                        AkSoundEngine.SetRTPCValue("Music_Volume", AudioManager.Instance.s_MusicVolume);
-                        Debug.Log("Changed Music volume to " + AudioManager.Instance.s_MusicVolume);
+                        AudioManager.Instance.UpdateMusicVolume((m_CurrentIndex + 1) * 10);
                         break;
                 }
             }
@@ -144,12 +144,10 @@ public class GaugeHandler : MonoBehaviour
         switch (e_Type)
         {
             case Name.SFX:
-                AudioManager.Instance.s_SFXVolume = (m_CurrentIndex + 1) * 10;
-                Debug.Log("Changed SFX volume to " + AudioManager.Instance.s_SFXVolume);
+                AudioManager.Instance.UpdateSFXVolume((m_CurrentIndex + 1) * 10);
                 break;
             case Name.MUSIC:
-                AudioManager.Instance.s_MusicVolume = (m_CurrentIndex + 1) * 10;
-                Debug.Log("Changed Music volume to " + AudioManager.Instance.s_MusicVolume);
+                AudioManager.Instance.UpdateMusicVolume((m_CurrentIndex + 1) * 10);
                 break;
         }
     }
@@ -182,10 +180,10 @@ public class GaugeHandler : MonoBehaviour
         switch (e_Type)
         {
             case Name.SFX:
-                AudioManager.Instance.s_SFXVolume = 0;
+                AudioManager.Instance.UpdateSFXVolume(0);
                 break;
             case Name.MUSIC:
-                AudioManager.Instance.s_MusicVolume = 0;
+                AudioManager.Instance.UpdateMusicVolume(0);
                 break;
         }
     }

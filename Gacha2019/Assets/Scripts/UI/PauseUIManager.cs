@@ -26,6 +26,9 @@ public class PauseUIManager : MonoBehaviour
 
     private Page e_Page;
 
+    // The value with which we detect a joystick movement
+    private float m_JoystickValue = 0.9f;
+
     private float m_Timer;
     private int m_MenuButtonIndex;
     private int m_OptionSelectableIndex;
@@ -42,6 +45,11 @@ public class PauseUIManager : MonoBehaviour
         m_OptionSelectableIndex = 0;
 
         m_PauseMenuButtons[m_MenuButtonIndex].GetComponent<Image>().color = Color.red;
+
+        // MOVE THAT TO THE CORRECT SCRIPT LATER
+        // By default the SFX and Music volume is to the max;
+        AudioManager.Instance.UpdateSFXVolume(100);
+        AudioManager.Instance.UpdateMusicVolume(100);
     }
 
     void Update()
@@ -130,10 +138,10 @@ public class PauseUIManager : MonoBehaviour
         if (Time.timeScale == 0 && m_Timer >= 0.2f)
         {
             // If the user has his left stick in the up or down position
-            if (m_CurrentState.ThumbSticks.Left.Y > 0.8f || m_CurrentState.ThumbSticks.Left.Y < -0.8f)
+            if (m_CurrentState.ThumbSticks.Left.Y > m_JoystickValue || m_CurrentState.ThumbSticks.Left.Y < -m_JoystickValue)
             {
                 // Up position
-                if (m_CurrentState.ThumbSticks.Left.Y > 0.8f)
+                if (m_CurrentState.ThumbSticks.Left.Y > m_JoystickValue)
                 {
                     m_MenuButtonIndex -= 1;
                     if (m_MenuButtonIndex < 0)
@@ -179,10 +187,10 @@ public class PauseUIManager : MonoBehaviour
         if (Time.timeScale == 0 && m_Timer > 0.2f)
         {
             // If the user has his left stick in the up or down position
-            if (m_CurrentState.ThumbSticks.Left.Y > 0.8f || m_CurrentState.ThumbSticks.Left.Y < -0.8f)
+            if (m_CurrentState.ThumbSticks.Left.Y > m_JoystickValue || m_CurrentState.ThumbSticks.Left.Y < -m_JoystickValue)
             {
                 // Up position
-                if (m_CurrentState.ThumbSticks.Left.Y > 0.8f)
+                if (m_CurrentState.ThumbSticks.Left.Y > m_JoystickValue)
                 {
                     m_OptionSelectableIndex -= 1;
                     if (m_OptionSelectableIndex < 0)
@@ -244,12 +252,12 @@ public class PauseUIManager : MonoBehaviour
         if (m_Timer >= 0.2f)
         {
             int previousIndex = m_OptionSelectableIndex;
-            if (m_CurrentState.ThumbSticks.Left.Y > 0.8f)
+            if (m_CurrentState.ThumbSticks.Left.Y > m_JoystickValue)
             {
                 m_OptionSelectableIndex = Mathf.Clamp(m_OptionSelectableIndex - 1, 0, m_OptionsMenuSelectables.Length - 1);
                 m_Timer = 0f;
             }
-            else if (m_CurrentState.ThumbSticks.Left.Y < -0.8f)
+            else if (m_CurrentState.ThumbSticks.Left.Y < -m_JoystickValue)
             {
                 m_OptionSelectableIndex = Mathf.Clamp(m_OptionSelectableIndex + 1, 0, m_OptionsMenuSelectables.Length - 1);
                 m_Timer = 0f;
