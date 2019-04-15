@@ -29,7 +29,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Enemy2_Idle
+  m_Name: Enemy2_Blue_Idle
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -42,7 +42,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: bf86d240cac1b8e418f77a084a1cc594, type: 2}
+  m_Motion: {fileID: 7400000, guid: 7f263de0280033d46a4216d3799da210, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
