@@ -9,10 +9,12 @@ public class SecondCharacter : MonoBehaviour
     [SerializeField] private Transform m_AnchorDrone = null;
     [SerializeField] private Bullet m_PrefabBullet = null;
     [SerializeField] private float m_BulletSpawnOffset = 2;
-	[SerializeField] private float timeBtwAttack;
-	[SerializeField] private float reloadTime = 1f;
+    [SerializeField] private float timeBtwAttack;
+    [SerializeField] private float reloadTime = 1f;
 
-	private GameObject m_Orbital = null;
+    [SerializeField] private VFX_Manager m_VfxManager = null;
+
+    private GameObject m_Orbital = null;
 
     [SerializeField]
     private Vector3 m_OffsetVector = new Vector3(1, 0, 0);
@@ -35,6 +37,7 @@ public class SecondCharacter : MonoBehaviour
         m_Orbital = Instantiate<GameObject>(m_PrefabOrbital.gameObject);
         //m_Orbital.transform.position = transform.position + m_OffsetVector * m_DistanceToBody;
         m_Orbital.transform.position = m_AnchorDrone.position + m_OffsetVector * m_DistanceToBody;
+        m_VfxManager = GameObject.Find("VFX_Manager").GetComponent<VFX_Manager>();
     }
 
     private void ManageInputs()
@@ -50,7 +53,9 @@ public class SecondCharacter : MonoBehaviour
                 TurnAroundRoot(1, 1);
             }
             else
+            {
                 TurnAroundRoot(0, 1);
+            }
         }
         else if (Input.GetKey(KeyCode.L))
         {
@@ -63,7 +68,9 @@ public class SecondCharacter : MonoBehaviour
                 TurnAroundRoot(1, -1);
             }
             else
+            {
                 TurnAroundRoot(0, -1);
+            }
         }
         else if (Input.GetKey(KeyCode.K))
         {
@@ -79,18 +86,16 @@ public class SecondCharacter : MonoBehaviour
             Shoot(m_OffsetVector);
         }
 
-        /*
-		if(timeBtwAttack <= 0 && (MicrophoneLevel.getInstance().getMicLoudness() > MicrophoneLevel.getInstance().m_thresholdWeak))
-		{
-			Shoot(m_OffsetVector);
-			timeBtwAttack = reloadTime;
-		}
-		else
-		{
-			timeBtwAttack -= Time.deltaTime;
-		}
-        */
-	}
+        //if(timeBtwAttack <= 0 && (MicrophoneLevel.getInstance().getMicLoudness() > MicrophoneLevel.getInstance().m_thresholdWeak))
+        //{
+        //	Shoot(m_OffsetVector);
+        //	timeBtwAttack = reloadTime;
+        //}
+        //else
+        //{
+        //	timeBtwAttack -= Time.deltaTime;
+        //}
+    }
 
     // Update is called once per frame
     void Update()
@@ -101,7 +106,7 @@ public class SecondCharacter : MonoBehaviour
 
         ManageInputs();
     }
-   
+
 
     private void Shoot(Vector3 _ShootDirection)
     {
@@ -111,6 +116,9 @@ public class SecondCharacter : MonoBehaviour
 
         pos += _ShootDirection * m_BulletSpawnOffset;
         GameObject bulletClone = Instantiate(m_PrefabBullet.gameObject, pos, Quaternion.identity);
+        bulletClone.transform.forward = _ShootDirection;
         bulletClone.GetComponent<Rigidbody>().velocity = _ShootDirection * bulletClone.GetComponent<Bullet>().Speed;
+
+        m_VfxManager.StartCoroutine(m_VfxManager.PlayShoot(bulletClone.transform.rotation));
     }
 }
