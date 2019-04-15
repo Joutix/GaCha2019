@@ -117,6 +117,7 @@ public class MicrophoneInput : MonoBehaviour
 		minThreshold = thresholdSlider.value;
 	}
 
+
 	/*public float GetAveragedVolume()
 	{
 		float[] data = new float[256];
