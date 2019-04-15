@@ -5,7 +5,7 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     [SerializeField]
-    private float m_Speed;
+    private float m_Speed = 5;
 
     [SerializeField]
     private EEntityColor m_Color = EEntityColor.Red;
@@ -26,6 +26,9 @@ public class Bullet : MonoBehaviour
     public int Damage { get => m_Damage; }
 
     public Entity Shooter { get => m_Shooter; set => m_Shooter = value; }
+
+    [SerializeField]
+    private SpriteRenderer m_SpriteRenderer = null;
 
     #endregion
 

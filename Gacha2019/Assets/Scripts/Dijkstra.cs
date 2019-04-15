@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 public static class Dijkstra
 {
@@ -14,6 +15,11 @@ public static class Dijkstra
         {
             m_Path.AddRange(_ToCopy.m_Path);
             m_Path.Add(_ToAdd);
+        }
+
+        public bool Contains(GridCell _ToFind)
+        {
+            return m_Path.Contains(_ToFind);
         }
 
         public GridCell GetLast()
@@ -38,10 +44,9 @@ public static class Dijkstra
         List<Path> pathsToExpand = new List<Path>();
         List<Path> pathsAlreadyExpanded = new List<Path>();
         Enemy enemyRequest = _Grid.GetGridCellAt(_RowStart, _ColumnStart).Entity as Enemy;
-
+        if (enemyRequest == null) { Debug.LogError("dsvfsd"); }
         Path firstPath = new Path(_Grid.GetGridCellAt(_RowStart, _ColumnStart));
         pathsToExpand.Add(firstPath);
-
 
         while (pathsToExpand.Count > 0)
         {
@@ -52,19 +57,75 @@ public static class Dijkstra
             List<GridCell> neighbors = GetNeighborsOfLast(toExpand, _Grid, enemyRequest);
             foreach (GridCell cell in neighbors)
             {
-                Path toAdd = new Path(toExpand, cell);
-                if (cell.Row == _RowDest && cell.Column == _ColumnDest)
+                if (!toExpand.Contains(cell))
                 {
-                    return toAdd.CellsPath;
-                }
-                else if (IsNotVisited(cell, pathsAlreadyExpanded))
-                {
-                    pathsToExpand.Add(toAdd);
+                    Path toAdd = new Path(toExpand, cell);
+                    if (cell.Row == _RowDest && cell.Column == _ColumnDest)
+                    {
+                        return toAdd.CellsPath;
+                    }
+                    else if (IsNotVisited(cell, pathsAlreadyExpanded))
+                    {
+                        pathsToExpand.Add(toAdd);
+                    }
                 }
             }
         }
         return null;
     }
+
+    public static List<GridCell> ComputeEnemyDijkstraPath(GameGrid _Grid, GridCell _StartingCell, GridCell _EndCell)
+    {
+        List<Path> openList = new List<Path>();
+        List<GridCell> closedList = new List<GridCell>();
+
+        Enemy enemyRequest = _StartingCell.Entity as Enemy;
+
+        Path startPath = new Path(_StartingCell);
+
+        openList.Add(startPath);
+
+        while (openList.Count > 0 && !(openList[0].GetLast() == _EndCell))
+        {
+            Path currentShortest = openList[0];
+
+            openList.RemoveAt(0);
+
+            GridCell pathEndNode = currentShortest.GetLast();
+
+            if (!closedList.Contains(pathEndNode))
+            {
+                List<GridCell> neighbors = GetNeighborsOfLast(currentShortest, _Grid, enemyRequest);
+
+                List<Path> extandedPath = new List<Path>();
+
+                for (int i = 0; i < neighbors.Count; i++)
+                {
+                    if (!closedList.Contains(neighbors[i]))
+                    {
+                        extandedPath.Add(new Path(currentShortest, neighbors[i]));
+                    }
+                }
+
+                for (int i = 0; i < extandedPath.Count; i++)
+                {
+                    openList.Add(extandedPath[i]);
+                }
+
+                closedList.Add(pathEndNode);
+            }
+        }
+
+        if (openList.Count <= 0)
+        {
+            return null;
+        }
+
+        return openList[0].CellsPath;
+    }
+
+
+
     #endregion
 
     #region Private Methods
@@ -101,17 +162,36 @@ public static class Dijkstra
 
     private static bool IsValidCellToEnemy(GameGrid _GameGrid, int _Row, int _Column, Enemy _EnemyRequest)
     {
-        bool isValidToEnemy = _GameGrid.IsValidDestination(_Row, _Column);
-        isValidToEnemy = isValidToEnemy && _GameGrid.GetGridCellAt(_Row, _Column).IsEnemyCrossable;
-
-        if (isValidToEnemy)
+        if (_GameGrid.IsValidDestination(_Row, _Column))
         {
-            bool cellAllowed = _GameGrid.IsEmptyAt(_Row, _Column);
-            cellAllowed = cellAllowed || _GameGrid.GetGridCellAt(_Row, _Column).Entity is Character;
-            cellAllowed = cellAllowed || (_GameGrid.GetGridCellAt(_Row, _Column).Entity as Enemy).CanMerge(_EnemyRequest);
-            isValidToEnemy = isValidToEnemy && cellAllowed;
+            GridCell currentCell = _GameGrid.GetGridCellAt(_Row, _Column);
+
+            if (currentCell.IsEnemyCrossable)
+            {
+                if (_GameGrid.IsEmptyAt(_Row, _Column)) // Is empty
+                {
+                    return true;
+                }
+
+                if (currentCell.Entity is Character)
+                {
+                    return true;
+                }
+
+                Enemy enemyOnCell = currentCell.Entity as Enemy;
+
+                if (enemyOnCell != null)
+                {
+                    if (enemyOnCell.CanMerge(_EnemyRequest))
+                    {
+                        return true;
+                    }
+                }
+
+            }
         }
-        return isValidToEnemy;
+
+        return false;
     }
 
     private static bool IsNotVisited(GridCell _Cell, List<Path> _PathsToTest)
