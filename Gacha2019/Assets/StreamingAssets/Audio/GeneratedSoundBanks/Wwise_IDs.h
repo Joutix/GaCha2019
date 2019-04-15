@@ -20,9 +20,11 @@ namespace AK
         static const AkUniqueID PLAY_IMPACT_LASER = 2745347784U;
         static const AkUniqueID PLAY_MUSIC = 2932040671U;
         static const AkUniqueID PLAY_PLAYER_DRONE_AIM = 137489100U;
+        static const AkUniqueID PLAY_PLAYER_HIT = 1864892471U;
         static const AkUniqueID PLAY_PLAYER_SHOTS = 3890461907U;
         static const AkUniqueID PLAY_PORTAL_IDLE = 686654861U;
         static const AkUniqueID PLAY_STOMP = 2753042117U;
+        static const AkUniqueID PLAY_TELEPORTATION = 1187918102U;
         static const AkUniqueID PLAY_TORCH_IDLE = 2909239993U;
         static const AkUniqueID STOP_MUSIC = 2837384057U;
         static const AkUniqueID STOP_PORTAL_IDLE = 3724992451U;

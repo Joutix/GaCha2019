@@ -227,6 +227,34 @@
 						</Action>
 					</ChildrenList>
 				</Event>
+				<Event Name="Play_Player_Hit" ID="{B2DA95D5-ED77-4C6E-85D3-D967D916400F}">
+					<ChildrenList>
+						<Action Name="" ID="{013ECBE2-ED1E-40EC-BEE7-DE05DCBCDCE4}" ShortID="753346645">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Player_Hit" ID="{04AA4B27-BE94-4542-AD26-E64D5925702E}" WorkUnitID="{5F58F663-DB14-4057-9E23-D39594FF3081}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Teleportation" ID="{52E2D49A-CF6D-4EE7-8422-91DEE6CAE7A5}">
+					<ChildrenList>
+						<Action Name="" ID="{CC1620F2-A555-41C0-88DC-39B443460EDC}" ShortID="660770404">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Teleportation" ID="{4C068DFF-2720-4CB2-893A-A7887E13B003}" WorkUnitID="{5F58F663-DB14-4057-9E23-D39594FF3081}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
 			</ChildrenList>
 		</WorkUnit>
 	</Events>

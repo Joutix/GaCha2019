@@ -23,9 +23,11 @@
 				<Event Id="2745347784" Name="Play_Impact_Laser" ObjectPath="\Events\Default Work Unit\Play_Impact_Laser" MaxAttenuation="10.000000"/>
 				<Event Id="2932040671" Name="Play_Music" ObjectPath="\Events\Default Work Unit\Play_Music"/>
 				<Event Id="137489100" Name="Play_Player_Drone_Aim" ObjectPath="\Events\Default Work Unit\Play_Player_Drone_Aim"/>
+				<Event Id="1864892471" Name="Play_Player_Hit" ObjectPath="\Events\Default Work Unit\Play_Player_Hit"/>
 				<Event Id="3890461907" Name="Play_Player_Shots" ObjectPath="\Events\Default Work Unit\Play_Player_Shots"/>
-				<Event Id="686654861" Name="Play_Portal_Idle" ObjectPath="\Events\Default Work Unit\Play_Portal_Idle" MaxAttenuation="10.000000"/>
+				<Event Id="686654861" Name="Play_Portal_Idle" ObjectPath="\Events\Default Work Unit\Play_Portal_Idle" MaxAttenuation="12.000000"/>
 				<Event Id="2753042117" Name="Play_Stomp" ObjectPath="\Events\Default Work Unit\Play_Stomp"/>
+				<Event Id="1187918102" Name="Play_Teleportation" ObjectPath="\Events\Default Work Unit\Play_Teleportation"/>
 				<Event Id="2909239993" Name="Play_Torch_Idle" ObjectPath="\Events\Default Work Unit\Play_Torch_Idle" MaxAttenuation="4.000000"/>
 				<Event Id="2837384057" Name="Stop_Music" ObjectPath="\Events\Default Work Unit\Stop_Music" MaxAttenuation="0.000000"/>
 				<Event Id="3724992451" Name="Stop_Portal_Idle" ObjectPath="\Events\Default Work Unit\Stop_Portal_Idle" MaxAttenuation="0.000000"/>
@@ -151,6 +153,10 @@
 				<File Id="310962088" Language="SFX">
 					<ShortName>SFX\GA_Finish_C_02.wav</ShortName>
 					<Path>SFX\SFX\GA_Finish_C_02_56D34C19.wem</Path>
+				</File>
+				<File Id="361826899" Language="SFX">
+					<ShortName>SFX\GA_Hit_Character.wav</ShortName>
+					<Path>SFX\SFX\GA_Hit_Character_56D34C19.wem</Path>
 				</File>
 				<File Id="381630716" Language="SFX">
 					<ShortName>SFX\GA_Ennemi_Mouv_06.wav</ShortName>
@@ -327,6 +333,10 @@
 				<File Id="838926269" Language="SFX">
 					<ShortName>Portal_01.wav</ShortName>
 					<Path>SFX\Portal_01_8956FC97.wem</Path>
+				</File>
+				<File Id="839003762" Language="SFX">
+					<ShortName>SFX\Portal_Activ_01.wav</ShortName>
+					<Path>SFX\SFX\Portal_Activ_01_56D34C19.wem</Path>
 				</File>
 				<File Id="847693493" Language="SFX">
 					<ShortName>SFX\GA_Finish_G_04.wav</ShortName>

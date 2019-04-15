@@ -1831,6 +1831,25 @@
 										</Sound>
 									</ChildrenList>
 								</RandomSequenceContainer>
+								<Sound Name="Player_Hit" ID="{04AA4B27-BE94-4542-AD26-E64D5925702E}" ShortID="835259396">
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{9CFD7F95-E301-4D90-8542-8291B8A2F326}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{5A365A61-537C-4508-B85B-A286FF3F7D14}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="GA_Hit_Character" ID="{F0DC3FD3-FEF2-49B4-9665-E7714C18B497}" ShortID="361826899">
+											<Language>SFX</Language>
+											<AudioFile>SFX\GA_Hit_Character.wav</AudioFile>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="GA_Hit_Character" ID="{F0DC3FD3-FEF2-49B4-9665-E7714C18B497}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
 							</ChildrenList>
 						</ActorMixer>
 						<ActorMixer Name="Enemies_AM" ID="{F6AE8960-1E0F-4FC1-998D-CF3BB86557CC}" ShortID="493589791">
@@ -2415,7 +2434,7 @@
 									</PropertyList>
 									<ReferenceList>
 										<Reference Name="Attenuation">
-											<ObjectRef Name="Ambient_Attenuation" ID="{EA4E38EA-8408-4742-BBB1-AC049734F573}" WorkUnitID="{51C199F3-E431-4114-8089-11F74CF9480B}"/>
+											<ObjectRef Name="Portal_Attenuation" ID="{F7151391-7F70-4C74-A619-807C86037BE0}" WorkUnitID="{51C199F3-E431-4114-8089-11F74CF9480B}"/>
 										</Reference>
 										<Reference Name="Conversion">
 											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{9CFD7F95-E301-4D90-8542-8291B8A2F326}"/>
@@ -2478,6 +2497,25 @@
 									</ChildrenList>
 									<ActiveSourceList>
 										<ActiveSource Name="Torche_01" ID="{F3FFE56F-94B6-4509-89DF-C9274F74525E}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
+								<Sound Name="Teleportation" ID="{4C068DFF-2720-4CB2-893A-A7887E13B003}" ShortID="17159407">
+									<ReferenceList>
+										<Reference Name="Conversion">
+											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{9CFD7F95-E301-4D90-8542-8291B8A2F326}"/>
+										</Reference>
+										<Reference Name="OutputBus">
+											<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{5A365A61-537C-4508-B85B-A286FF3F7D14}"/>
+										</Reference>
+									</ReferenceList>
+									<ChildrenList>
+										<AudioFileSource Name="Portal_Activ_01" ID="{765B8757-7636-4367-91F5-A8E5A8F52E1F}" ShortID="839003762">
+											<Language>SFX</Language>
+											<AudioFile>SFX\Portal_Activ_01.wav</AudioFile>
+										</AudioFileSource>
+									</ChildrenList>
+									<ActiveSourceList>
+										<ActiveSource Name="Portal_Activ_01" ID="{765B8757-7636-4367-91F5-A8E5A8F52E1F}" Platform="Linked"/>
 									</ActiveSourceList>
 								</Sound>
 							</ChildrenList>
