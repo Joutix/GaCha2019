@@ -95,8 +95,6 @@ public class MicrophoneLevel : MonoBehaviour
 		//Debug.Log(Microphone.IsRecording(m_device1).ToString());
 		s_MicLoudness1 = LevelMax(m_device1, m_clipRecord1);
 		m_testSound1 = s_MicLoudness1;
-
-
 	}
 
 	public float getMicLoudness()

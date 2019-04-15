@@ -123,6 +123,7 @@ public class Enemy : Entity
     public GridCell CurrentCell { get => m_CurrentCell; }
     public List<GridCell> CurrentPath { get => m_CurrentPath; }
     public Enemy MergeTarget { get => m_MergeTarget; }
+    public int FusionDetectionDist { get => m_FusionDetectionDist; }
 
     #endregion
 
@@ -236,6 +237,7 @@ public class Enemy : Entity
         }
 
         Vector3 toPlayer = GameManager.Instance.Character.transform.position - transform.position;
+        toPlayer.y = 0;
         toPlayer.Normalize();
 
         Bullet bullet = Instantiate<GameObject>(m_CurrentBulletPrefab).GetComponent<Bullet>();
@@ -246,13 +248,14 @@ public class Enemy : Entity
         }
         else
         {
+            bullet.transform.position = transform.position;
             bullet.Shoot(toPlayer, this);
         }
     }
 
     public bool CanMerge(Enemy _enemy)
     {
-        return m_EnemySize != EEnemySize.Large && m_EnemySize == _enemy.m_EnemySize && m_CurrentMergeCooldown <= 0;
+        return m_EnemySize != EEnemySize.Large && m_EnemySize == _enemy.m_EnemySize && m_CurrentMergeCooldown <= 0 && _enemy.m_CurrentMergeCooldown <= 0;
     }
 
     #endregion
@@ -357,13 +360,15 @@ public class Enemy : Entity
         return m_CurrentMergeCooldown > 0;
     }
 
-    protected bool CanMergeWithNearTarget()
+    public bool CanMergeWithNearTarget()
     {
         List<GridCell> pathToNearest = GameManager.Instance.ReturnClosestEnemyPath(this, m_FusionDetectionDist);
 
         if (pathToNearest.Count > 0)
         {
             m_MergeTarget = pathToNearest[pathToNearest.Count - 1].Entity as Enemy;
+
+            m_CurrentPath = pathToNearest;
 
             return true;
         }
@@ -450,6 +455,7 @@ public class Enemy : Entity
         m_ShootState.SetShootCooldown(m_CurrentShootCooldown);
         m_WanderState.SetTimeBetweeMovement(m_CurrentMovementSpeed);
         m_ChaseState.SetTimeBetweeMovement(m_CurrentMovementSpeed);
+        m_FusionState.SetTimeBetweeMovement(m_CurrentMovementSpeed);
     }
 
     protected void SetMaterialAccordingToColor(PhaseInfo _PhaseInfo)
@@ -525,15 +531,35 @@ public class Enemy : Entity
 
     private void OnDestroy()
     {
-        m_CurrentCell.OnCellExited(this);
-
         GameManager.Instance.RemoveEnemyFromManager(this, m_Grid);
+
+        m_CurrentCell.OnCellExited(this);
     }
 
     // Start is called before the first frame update
     override protected void Start()
     {
         base.Start();
+        
+        m_Player = GameManager.Instance.Character;
+
+        if (m_CurrentCell == null)
+        {
+            Debug.LogError("The enemy didn't have a cell assigned to spawn on");
+        }
+        else
+        {
+            m_Grid = m_CurrentCell.GameGrid;
+
+            if (m_Grid == null)
+            {
+                Debug.LogError("Couldn't get Grid on enemy make sure the game has one");
+            }
+
+            GameManager.Instance.AddEnemyToManager(this, m_Grid);
+
+            MoveTo(m_CurrentCell.Row, m_CurrentCell.Column);
+        }
 
         m_FSM = new FiniteStateMachine(null);
 
@@ -560,28 +586,7 @@ public class Enemy : Entity
         m_FusionState.AddTransition(new Transition(() => HasFinishedMerged(), typeof(WanderState)));
         m_FSM.AddState(m_FusionState);
 
-        m_Player = GameManager.Instance.Character;
-
-        if (m_CurrentCell == null)
-        {
-            Debug.LogError("The enemy didn't have a cell assigned to spawn on");
-        }
-        else
-        {
-            m_Grid = m_CurrentCell.GameGrid;
-
-            if (m_Grid == null)
-            {
-                Debug.LogError("Couldn't get Grid on enemy make sure the game has one");
-
-                GameManager.Instance.AddEnemyToManager(this, m_Grid);
-            }
-
-            MoveTo(m_CurrentCell.Row, m_CurrentCell.Column);
-        }
-
         SetVariablesForCurrentState();
-
     }
 
     // Update is called once per frame
