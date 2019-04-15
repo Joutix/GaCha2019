@@ -128,7 +128,11 @@ public class Character : Entity
 
     private GridCell m_CurrentCell = null;
 
+
+    [SerializeField] private VFX_Manager m_VfxManager = null;
+
     [SerializeField] private GameObject panelGameOver;
+
 
     //private int m_CurrentRow = 0;
     //private int m_CurrentColumn = 0;
@@ -173,6 +177,7 @@ public class Character : Entity
         base.Start();
         AkSoundEngine.SetState("Player_Lives", "FullLife");
         m_MovementTimer = m_TimeNeededToMoveAgain;
+        m_VfxManager = GameObject.Find("VFX_Manager").GetComponent<VFX_Manager>();
     }
 
     protected override void Update()
@@ -186,18 +191,26 @@ public class Character : Entity
         {
             if (Input.GetKeyDown(KeyCode.Z))
             {
+                //m_VfxManager.PlayWalk(true);
+                m_VfxManager.StartCoroutine("PlayWalk");
                 TryMove(1, 0);
             }
             else if (Input.GetKeyDown(KeyCode.S))
             {
+                //m_VfxManager.PlayWalk(true);
+                m_VfxManager.StartCoroutine("PlayWalk");
                 TryMove(-1, 0);
             }
             else if (Input.GetKeyDown(KeyCode.Q))
             {
+                //m_VfxManager.PlayWalk(true);
+                m_VfxManager.StartCoroutine("PlayWalk");
                 TryMove(0, -1);
             }
             else if (Input.GetKeyDown(KeyCode.D))
             {
+                //m_VfxManager.PlayWalk(true);
+                m_VfxManager.StartCoroutine("PlayWalk");
                 TryMove(0, 1);
             }
         }
