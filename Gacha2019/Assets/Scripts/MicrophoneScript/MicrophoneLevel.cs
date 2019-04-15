@@ -57,18 +57,6 @@ public class MicrophoneLevel : MonoBehaviour
 		{
 			return 0;
 		}
-		/*while (!(Microphone.GetPosition(_device) > 0) && timer < 1000)
-		{
-			//timer += Time.deltaTime;
-		} // Wait until the recording has started. 
-		
-	
-	*/
-
-		if (timer >= 1000)
-		{
-			Debug.LogError("Failed to play from mic....");
-		}
 		int micPosition1 = Microphone.GetPosition(_device) - (m_sampleWindow + 1);
 		if (micPosition1 < 0)
 		{
@@ -92,7 +80,7 @@ public class MicrophoneLevel : MonoBehaviour
 
 	void Update()
 	{
-		Debug.Log(Microphone.IsRecording(m_device1).ToString());
+		//Debug.Log(Microphone.IsRecording(m_device1).ToString());
 		s_MicLoudness1 = LevelMax(m_device1, m_clipRecord1);
 		m_testSound1 = s_MicLoudness1;
 

@@ -312,7 +312,7 @@ public class MenuUIManager : MonoBehaviour
     public void Play()
     {
         Debug.Log("Play");
-        SceneManager.LoadScene("LevelScene");
+        SceneManager.LoadScene("CtrlZGame");
     }
 
     public void Options()

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 public class Character : Entity
 {
@@ -115,12 +116,50 @@ public class Character : Entity
         {
             previousGridCell.OnCellExited(this);
         }
+
         AkSoundEngine.PostEvent("Play_Footsteps", gameObject);
     }
-    #endregion
 
-    #region Attributes
-    [SerializeField] private float m_TimeNeededToMoveAgain = 1.0f;
+	private void ResetWallOcclusion()
+	{
+		foreach (GridCell cell in m_OccludingWalls)
+		{
+			Color color = cell.GetComponent<MeshRenderer>().material.color;
+			color.a = 1f;
+			cell.GetComponent<MeshRenderer>().material.color = color;
+		}
+		m_OccludingWalls.Clear();
+	}
+
+	private void CheckForWallOcclusion()
+	{
+		//Debug.Log("Current cell: " + m_CurrentCell + " Game grid: " + m_CurrentCell.GameGrid);
+		if ((m_CurrentCell.GameGrid.IsValidDestination(m_CurrentCell.Row - 1, m_CurrentCell.Column)
+			&& m_CurrentCell.GameGrid.GetGridCellAt(m_CurrentCell.Row - 1, m_CurrentCell.Column).CompareTag("Wall"))
+			|| (m_CurrentCell.GameGrid.IsValidDestination(m_CurrentCell.Row - 2, m_CurrentCell.Column)
+				&& m_CurrentCell.GameGrid.GetGridCellAt(m_CurrentCell.Row - 2, m_CurrentCell.Column).CompareTag("Wall")))
+		{
+			for (int r = -3; r < 0; r++)
+			{
+				for (int c = -1; c < 2; c++)
+				{
+					if (m_CurrentCell.GameGrid.IsValidDestination(m_CurrentCell.Row + r, m_CurrentCell.Column + c)
+						&& m_CurrentCell.GameGrid.GetGridCellAt(m_CurrentCell.Row + r, m_CurrentCell.Column + c).CompareTag("Wall"))
+					{
+						GridCell cell = m_CurrentCell.GameGrid.GetGridCellAt(m_CurrentCell.Row + r, m_CurrentCell.Column + c);
+						Color color = cell.GetComponent<MeshRenderer>().material.color;
+						color.a = 0.5f;
+						cell.GetComponent<MeshRenderer>().material.color = color;
+						m_OccludingWalls.Add(cell);
+					}
+				}
+			}
+		}
+	}
+	#endregion
+
+	#region Attributes
+	[SerializeField] private float m_TimeNeededToMoveAgain = 1.0f;
     private float m_MovementTimer = 0f;
 
     [SerializeField] private bool m_DebugInputsKeyboard = false;
@@ -133,13 +172,15 @@ public class Character : Entity
 
     [SerializeField] private GameObject panelGameOver;
 
+	private List<GridCell> m_OccludingWalls;
 
-    //private int m_CurrentRow = 0;
-    //private int m_CurrentColumn = 0;
-    #endregion
 
-    #region accessors
-    public int Row
+	//private int m_CurrentRow = 0;
+	//private int m_CurrentColumn = 0;
+	#endregion
+
+	#region accessors
+	public int Row
     {
         get
         {
@@ -175,7 +216,8 @@ public class Character : Entity
     protected override void Start()
     {
         base.Start();
-        AkSoundEngine.SetState("Player_Lives", "FullLife");
+		m_OccludingWalls = new List<GridCell>();
+		AkSoundEngine.SetState("Player_Lives", "FullLife");
         m_MovementTimer = m_TimeNeededToMoveAgain;
         m_VfxManager = GameObject.Find("VFX_Manager").GetComponent<VFX_Manager>();
     }
@@ -185,9 +227,11 @@ public class Character : Entity
         UpdateTimer();
 
 
+		ResetWallOcclusion();
+		CheckForWallOcclusion();
 
 
-        if (m_DebugInputsKeyboard)
+		if (m_DebugInputsKeyboard)
         {
             if (Input.GetKeyDown(KeyCode.Z))
             {

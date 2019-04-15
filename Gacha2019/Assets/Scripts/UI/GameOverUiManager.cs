@@ -45,41 +45,15 @@ public class GameOverUiManager : MonoBehaviour
 	}
 
 
-	private void ManageMenuNavigation_V2()
-	{
-		if (m_Timer >= 0.2f)
-		{
-			int previousIndex = m_MenuButtonIndex;
-			if (m_CurrentState.ThumbSticks.Left.Y > 0.8f)
-			{
-				m_MenuButtonIndex = 0;
-				m_Timer = 0f;
-			}
-			else if (m_CurrentState.ThumbSticks.Left.Y < -0.8f)
-			{
-				m_MenuButtonIndex = 1;
-				m_Timer = 0f;
-			}
-			if (previousIndex != m_MenuButtonIndex)
-			{
-				m_MenuButtons[previousIndex].GetComponent<Image>().color = Color.white;
-				m_MenuButtons[m_MenuButtonIndex].GetComponent<Image>().color = Color.red;
-			}
-		}
-	}
+	
 
 	private void Update()
 	{
 		m_Timer += Time.deltaTime;
 
 		UpdateControllerState();
-
-		ManageMenuNavigation_V2();
-		if(IsAPressed() && m_MenuButtonIndex == 0)
-		{
-			Again();
-		}
-		if (IsAPressed() && m_MenuButtonIndex == 1)
+		
+		if (IsAPressed() && m_MenuButtonIndex == 0)
 		{
 			Quit();
 		}
@@ -89,10 +63,5 @@ public class GameOverUiManager : MonoBehaviour
 	{
 		Debug.Log("Quitting...");
 		SceneManager.LoadScene("MenuScene");
-	}
-
-	public void Again()
-	{
-		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 	}
 }
