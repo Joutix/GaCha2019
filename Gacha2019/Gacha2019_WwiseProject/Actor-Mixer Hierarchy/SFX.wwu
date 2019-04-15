@@ -764,6 +764,13 @@
 									</ChildrenList>
 								</BlendContainer>
 								<BlendContainer Name="Player_Footsteps_BL" ID="{DCD06EB9-0747-4A28-BE18-321915FDF1C1}" ShortID="188672459">
+									<PropertyList>
+										<Property Name="Volume" Type="Real64">
+											<ValueList>
+												<Value>-6</Value>
+											</ValueList>
+										</Property>
+									</PropertyList>
 									<ReferenceList>
 										<Reference Name="Conversion">
 											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{9CFD7F95-E301-4D90-8542-8291B8A2F326}"/>
@@ -1855,6 +1862,11 @@
 										</Property>
 										<Property Name="RandomAvoidRepeatingCount" Type="int32" Value="2"/>
 										<Property Name="SpeakerPanning3DSpatializationMix" Type="int32" Value="85"/>
+										<Property Name="Volume" Type="Real64">
+											<ValueList>
+												<Value>-6</Value>
+											</ValueList>
+										</Property>
 									</PropertyList>
 									<ReferenceList>
 										<Reference Name="Attenuation">
@@ -2427,11 +2439,29 @@
 										<Property Name="3DSpatialization" Type="int16" Value="1"/>
 										<Property Name="IsLoopingEnabled" Type="bool" Value="True"/>
 										<Property Name="OverridePositioning" Type="bool" Value="True"/>
+										<Property Name="Pitch" Type="int32">
+											<ModifierList>
+												<ModifierInfo>
+													<Modifier Name="" ID="{F4692462-B120-4BE0-ABE7-BD989F616744}">
+														<PropertyList>
+															<Property Name="Enabled" Type="bool" Value="True"/>
+															<Property Name="Max" Type="Real64" Value="152"/>
+															<Property Name="Min" Type="Real64" Value="-152"/>
+														</PropertyList>
+													</Modifier>
+												</ModifierInfo>
+											</ModifierList>
+										</Property>
 										<Property Name="SpeakerPanning3DSpatializationMix" Type="int32" Value="80"/>
+										<Property Name="Volume" Type="Real64">
+											<ValueList>
+												<Value>9</Value>
+											</ValueList>
+										</Property>
 									</PropertyList>
 									<ReferenceList>
 										<Reference Name="Attenuation">
-											<ObjectRef Name="Ambient_Attenuation" ID="{EA4E38EA-8408-4742-BBB1-AC049734F573}" WorkUnitID="{51C199F3-E431-4114-8089-11F74CF9480B}"/>
+											<ObjectRef Name="Torch_Attenuation" ID="{74551FEA-C81E-4B42-A120-ACDF3C13E555}" WorkUnitID="{51C199F3-E431-4114-8089-11F74CF9480B}"/>
 										</Reference>
 										<Reference Name="Conversion">
 											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{9CFD7F95-E301-4D90-8542-8291B8A2F326}"/>

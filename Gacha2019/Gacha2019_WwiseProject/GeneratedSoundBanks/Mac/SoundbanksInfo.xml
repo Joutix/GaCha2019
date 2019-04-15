@@ -26,7 +26,7 @@
 				<Event Id="3890461907" Name="Play_Player_Shots" ObjectPath="\Events\Default Work Unit\Play_Player_Shots"/>
 				<Event Id="686654861" Name="Play_Portal_Idle" ObjectPath="\Events\Default Work Unit\Play_Portal_Idle" MaxAttenuation="10.000000"/>
 				<Event Id="2753042117" Name="Play_Stomp" ObjectPath="\Events\Default Work Unit\Play_Stomp"/>
-				<Event Id="2909239993" Name="Play_Torch_Idle" ObjectPath="\Events\Default Work Unit\Play_Torch_Idle" MaxAttenuation="10.000000"/>
+				<Event Id="2909239993" Name="Play_Torch_Idle" ObjectPath="\Events\Default Work Unit\Play_Torch_Idle" MaxAttenuation="4.000000"/>
 				<Event Id="2837384057" Name="Stop_Music" ObjectPath="\Events\Default Work Unit\Stop_Music" MaxAttenuation="0.000000"/>
 				<Event Id="3724992451" Name="Stop_Portal_Idle" ObjectPath="\Events\Default Work Unit\Stop_Portal_Idle" MaxAttenuation="0.000000"/>
 				<Event Id="3950460727" Name="Stop_Torch_Idle" ObjectPath="\Events\Default Work Unit\Stop_Torch_Idle" MaxAttenuation="0.000000"/>
