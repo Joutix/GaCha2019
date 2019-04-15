@@ -1,9 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
-using XInputDotNetPure;
 using UnityEngine.UI;
+using XInputDotNetPure;
 
 public class PauseUIManager : MonoBehaviour
 {
@@ -32,6 +30,7 @@ public class PauseUIManager : MonoBehaviour
     private int m_MenuButtonIndex;
     private int m_OptionSelectableIndex;
 
+    #region Private Methods
     void Start()
     {
         m_PreviousState = GamePad.GetState(m_ControllerInpause);
@@ -82,9 +81,14 @@ public class PauseUIManager : MonoBehaviour
                 Pause();
         }
         if (e_Page.Equals(Page.Pause))
+        {
             ManageMenuNavigation();
+        }
         else if (e_Page.Equals(Page.Options))
-            ManageOptionNavigation();
+        {
+            //ManageOptionNavigation();
+            ManageOptionNavigation_V2();
+        }
     }
 
     private void Pause()
@@ -165,7 +169,7 @@ public class PauseUIManager : MonoBehaviour
                 m_Timer = 0f;
                 m_PauseMenuButtons[m_MenuButtonIndex].GetComponent<Image>().color = Color.red;
             }
-        }        
+        }
     }
 
     private void ManageOptionNavigation()
@@ -195,7 +199,7 @@ public class PauseUIManager : MonoBehaviour
                 }
                 m_Timer = 0f;
                 // Back button selected
-                if(m_OptionsMenuSelectables[m_OptionSelectableIndex].GetComponent<Button>() != null)
+                if (m_OptionsMenuSelectables[m_OptionSelectableIndex].GetComponent<Button>() != null)
                 {
                     m_OptionsMenuSelectables[m_OptionSelectableIndex].GetComponent<Image>().color = Color.red;
                     // THIS IS DISGUSTING BUT OH WELL... CHANGE THAT LATER IF WE HAVE TIME!!!
@@ -205,7 +209,7 @@ public class PauseUIManager : MonoBehaviour
                         Debug.LogError("Codé en dur, faite gaffe hihi x) MUSIC GAUGE NOT FOUND");
                 }
                 // One of the two gauges
-                else if(m_OptionsMenuSelectables[m_OptionSelectableIndex].GetComponent<GaugeHandler>() != null)
+                else if (m_OptionsMenuSelectables[m_OptionSelectableIndex].GetComponent<GaugeHandler>() != null)
                 {
                     m_OptionsMenuSelectables[m_OptionSelectableIndex].GetComponent<GaugeHandler>().Select(true);
 
@@ -234,7 +238,58 @@ public class PauseUIManager : MonoBehaviour
             Back();
         }
     }
-    
+
+    private void ManageOptionNavigation_V2()
+    {
+        if (m_Timer >= 0.2f)
+        {
+            int previousIndex = m_OptionSelectableIndex;
+            if (m_CurrentState.ThumbSticks.Left.Y > 0.8f)
+            {
+                m_OptionSelectableIndex = Mathf.Clamp(m_OptionSelectableIndex - 1, 0, m_OptionsMenuSelectables.Length - 1);
+                m_Timer = 0f;
+            }
+            else if (m_CurrentState.ThumbSticks.Left.Y < -0.8f)
+            {
+                m_OptionSelectableIndex = Mathf.Clamp(m_OptionSelectableIndex + 1, 0, m_OptionsMenuSelectables.Length - 1);
+                m_Timer = 0f;
+            }
+            DeselectOption(previousIndex);
+            SelectOption(m_OptionSelectableIndex);
+        }
+
+        if (IsAPressed() && m_OptionsMenuSelectables[m_OptionSelectableIndex].GetComponent<Button>() != null)
+        {
+            Back();
+        }
+    }
+
+    private void DeselectOption(int _Index)
+    {
+        if (m_OptionsMenuSelectables[_Index].GetComponent<Button>())
+        {
+            m_OptionsMenuSelectables[_Index].GetComponent<Image>().color = Color.white;
+        }
+        else if (m_OptionsMenuSelectables[_Index].GetComponent<GaugeHandler>())
+        {
+            m_OptionsMenuSelectables[_Index].GetComponent<GaugeHandler>().Select(false);
+        }
+    }
+
+    private void SelectOption(int _Index)
+    {
+        if (m_OptionsMenuSelectables[_Index].GetComponent<Button>())
+        {
+            m_OptionsMenuSelectables[_Index].GetComponent<Image>().color = Color.red;
+        }
+        else if (m_OptionsMenuSelectables[_Index].GetComponent<GaugeHandler>())
+        {
+            m_OptionsMenuSelectables[_Index].GetComponent<GaugeHandler>().Select(true);
+        }
+    } 
+    #endregion
+
+    #region Public Methods
     public void Resume()
     {
         Debug.Log("Resuming...");
@@ -269,5 +324,7 @@ public class PauseUIManager : MonoBehaviour
     {
         Debug.Log("Quitting...");
         SceneManager.LoadScene("MenuScene");
-    }
+        Time.timeScale = 1;
+    } 
+    #endregion
 }
