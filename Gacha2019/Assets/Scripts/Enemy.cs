@@ -20,6 +20,8 @@ public enum EEnemySize
 [System.Serializable]
 public struct PhaseInfo
 {
+    public Sprite BlueSprite;
+    public Sprite RedSprite;
     public Mesh PhaseMesh;
     public GameObject BulletPrefab;
     public Material PhaseMaterialRed;
@@ -65,6 +67,12 @@ public class Enemy : Entity
 
     private MeshFilter m_MeshFilter = null;
     private MeshRenderer m_MeshRender = null;
+
+    [SerializeField]
+    private SpriteRenderer m_SpriteRenderer = null;
+
+    [SerializeField]
+    private Animator m_Animator = null;
 
     [SerializeField]
     private GridCell m_CurrentCell = null;
@@ -123,6 +131,8 @@ public class Enemy : Entity
     public GridCell CurrentCell { get => m_CurrentCell; }
     public List<GridCell> CurrentPath { get => m_CurrentPath; }
     public Enemy MergeTarget { get => m_MergeTarget; }
+    public int FusionDetectionDist { get => m_FusionDetectionDist; }
+    public bool IsStunned { get => m_IsStunned; }
 
     #endregion
 
@@ -185,7 +195,7 @@ public class Enemy : Entity
         {
             cells.Add(m_Grid.GetGridCellAt(m_CurrentCell.Row - 1, m_CurrentCell.Column));
         }
-        if (m_Grid.IsValidDestination(m_CurrentCell.Row , m_CurrentCell.Column + 1))
+        if (m_Grid.IsValidDestination(m_CurrentCell.Row, m_CurrentCell.Column + 1))
         {
             cells.Add(m_Grid.GetGridCellAt(m_CurrentCell.Row, m_CurrentCell.Column + 1));
         }
@@ -200,7 +210,7 @@ public class Enemy : Entity
 
         do
         {
-            if(cells.Count ==0)
+            if (cells.Count == 0)
             {
                 Debug.Log("DIV 0");
                 return null;
@@ -236,6 +246,7 @@ public class Enemy : Entity
         }
 
         Vector3 toPlayer = GameManager.Instance.Character.transform.position - transform.position;
+        toPlayer.y = 0;
         toPlayer.Normalize();
 
         Bullet bullet = Instantiate<GameObject>(m_CurrentBulletPrefab).GetComponent<Bullet>();
@@ -246,13 +257,14 @@ public class Enemy : Entity
         }
         else
         {
+            bullet.transform.position = transform.position;
             bullet.Shoot(toPlayer, this);
         }
     }
 
     public bool CanMerge(Enemy _enemy)
     {
-        return m_EnemySize != EEnemySize.Large && m_EnemySize == _enemy.m_EnemySize && m_CurrentMergeCooldown <= 0;
+        return m_EnemySize != EEnemySize.Large && m_EnemySize == _enemy.m_EnemySize && m_CurrentMergeCooldown <= 0 && _enemy.m_CurrentMergeCooldown <= 0;
     }
 
     #endregion
@@ -262,7 +274,7 @@ public class Enemy : Entity
     protected bool IsValidDestination(int _RowDestination, int _ColumnDestination)
     {
         //check if the destination isn't out of grid
-        if(m_Grid)
+        if (m_Grid)
         {
             bool cellExists = m_Grid.IsValidDestination(_RowDestination, _ColumnDestination);
 
@@ -357,13 +369,15 @@ public class Enemy : Entity
         return m_CurrentMergeCooldown > 0;
     }
 
-    protected bool CanMergeWithNearTarget()
+    public bool CanMergeWithNearTarget()
     {
         List<GridCell> pathToNearest = GameManager.Instance.ReturnClosestEnemyPath(this, m_FusionDetectionDist);
 
         if (pathToNearest.Count > 0)
         {
             m_MergeTarget = pathToNearest[pathToNearest.Count - 1].Entity as Enemy;
+
+            m_CurrentPath = pathToNearest;
 
             return true;
         }
@@ -421,24 +435,27 @@ public class Enemy : Entity
         {
             case EEnemySize.Little:
                 m_CurrentBulletPrefab = m_PhaseLittleInfo.BulletPrefab;
-                m_MeshFilter.mesh = m_PhaseLittleInfo.PhaseMesh;
-                SetMaterialAccordingToColor(m_PhaseLittleInfo);
+                SetSpriteAccordingToColor(m_PhaseLittleInfo);
+                //m_MeshFilter.mesh = m_PhaseLittleInfo.PhaseMesh;
+                //SetMaterialAccordingToColor(m_PhaseLittleInfo);
                 m_MaxLifePoint = m_PhaseLittleInfo.PhaseMaxHealth;
                 m_CurrentShootCooldown = m_PhaseLittleInfo.ShootCooldown;
                 m_CurrentMovementSpeed = m_PhaseLittleInfo.MovementCoolDown;
                 break;
             case EEnemySize.Medium:
                 m_CurrentBulletPrefab = m_PhaseMediumInfo.BulletPrefab;
-                m_MeshFilter.mesh = m_PhaseMediumInfo.PhaseMesh;
-                SetMaterialAccordingToColor(m_PhaseMediumInfo);
+                SetSpriteAccordingToColor(m_PhaseMediumInfo);
+                //m_MeshFilter.mesh = m_PhaseMediumInfo.PhaseMesh;
+                //SetMaterialAccordingToColor(m_PhaseMediumInfo);
                 m_MaxLifePoint = m_PhaseMediumInfo.PhaseMaxHealth;
                 m_CurrentShootCooldown = m_PhaseMediumInfo.ShootCooldown;
                 m_CurrentMovementSpeed = m_PhaseMediumInfo.MovementCoolDown;
                 break;
             case EEnemySize.Large:
                 m_CurrentBulletPrefab = m_PhaseLargeInfo.BulletPrefab;
-                m_MeshFilter.mesh = m_PhaseLargeInfo.PhaseMesh;
-                SetMaterialAccordingToColor(m_PhaseLargeInfo);
+                SetSpriteAccordingToColor(m_PhaseLargeInfo);
+                //m_MeshFilter.mesh = m_PhaseLargeInfo.PhaseMesh;
+                //SetMaterialAccordingToColor(m_PhaseLargeInfo);
                 m_MaxLifePoint = m_PhaseLargeInfo.PhaseMaxHealth;
                 m_CurrentShootCooldown = m_PhaseLargeInfo.ShootCooldown;
                 m_CurrentMovementSpeed = m_PhaseLargeInfo.MovementCoolDown;
@@ -450,6 +467,19 @@ public class Enemy : Entity
         m_ShootState.SetShootCooldown(m_CurrentShootCooldown);
         m_WanderState.SetTimeBetweeMovement(m_CurrentMovementSpeed);
         m_ChaseState.SetTimeBetweeMovement(m_CurrentMovementSpeed);
+        m_FusionState.SetTimeBetweeMovement(m_CurrentMovementSpeed);
+    }
+
+    protected void SetSpriteAccordingToColor(PhaseInfo _PhaseInfo)
+    {
+        if (m_EnemyColor == EEntityColor.Red)
+        {
+            m_SpriteRenderer.sprite = _PhaseInfo.RedSprite;
+        }
+        else if (m_EnemyColor == EEntityColor.Blue)
+        {
+            m_SpriteRenderer.sprite = _PhaseInfo.BlueSprite;
+        }
     }
 
     protected void SetMaterialAccordingToColor(PhaseInfo _PhaseInfo)
@@ -525,15 +555,35 @@ public class Enemy : Entity
 
     private void OnDestroy()
     {
-        m_CurrentCell.OnCellExited(this);
-
         GameManager.Instance.RemoveEnemyFromManager(this, m_Grid);
+
+        m_CurrentCell.OnCellExited(this);
     }
 
     // Start is called before the first frame update
     override protected void Start()
     {
         base.Start();
+
+        m_Player = GameManager.Instance.Character;
+
+        if (m_CurrentCell == null)
+        {
+            Debug.LogError("The enemy didn't have a cell assigned to spawn on");
+        }
+        else
+        {
+            m_Grid = m_CurrentCell.GameGrid;
+
+            if (m_Grid == null)
+            {
+                Debug.LogError("Couldn't get Grid on enemy make sure the game has one");
+            }
+
+            GameManager.Instance.AddEnemyToManager(this, m_Grid);
+
+            MoveTo(m_CurrentCell.Row, m_CurrentCell.Column);
+        }
 
         m_FSM = new FiniteStateMachine(null);
 
@@ -560,28 +610,7 @@ public class Enemy : Entity
         m_FusionState.AddTransition(new Transition(() => HasFinishedMerged(), typeof(WanderState)));
         m_FSM.AddState(m_FusionState);
 
-        m_Player = GameManager.Instance.Character;
-
-        if (m_CurrentCell == null)
-        {
-            Debug.LogError("The enemy didn't have a cell assigned to spawn on");
-        }
-        else
-        {
-            m_Grid = m_CurrentCell.GameGrid;
-
-            if (m_Grid == null)
-            {
-                Debug.LogError("Couldn't get Grid on enemy make sure the game has one");
-
-                GameManager.Instance.AddEnemyToManager(this, m_Grid);
-            }
-
-            MoveTo(m_CurrentCell.Row, m_CurrentCell.Column);
-        }
-
         SetVariablesForCurrentState();
-
     }
 
     // Update is called once per frame
@@ -597,16 +626,6 @@ public class Enemy : Entity
         }
 
         ManageMergeCoolDown();
-
-        if (Input.GetKeyDown(KeyCode.KeypadEnter))
-        {
-            TryMove(1, 0);
-        }
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            TakeDamage(20);
-        }
     }
 
     #endregion

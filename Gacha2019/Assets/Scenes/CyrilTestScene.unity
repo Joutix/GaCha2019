@@ -442,7 +442,7 @@ MonoBehaviour:
   - {fileID: 352574689}
   - {fileID: 921543304}
   - {fileID: 1503860423}
-  - {fileID: 316899543}
+  - {fileID: 0}
   - {fileID: 5350689}
   - {fileID: 4396708}
   - {fileID: 1050354471}
@@ -2503,147 +2503,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 33dbcf6336a200f4d8a138a42ddcc91f, type: 3}
---- !u!1 &236673757
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 236673762}
-  - component: {fileID: 236673761}
-  - component: {fileID: 236673760}
-  - component: {fileID: 236673759}
-  - component: {fileID: 236673758}
-  m_Layer: 0
-  m_Name: EnemyTest (1)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &236673758
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 236673757}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 39daa92fef6a34743b80fac68ea25451, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_MaxLifePoint: 3
-  m_EnemyColor: 0
-  m_EnemySize: 0
-  m_StunTime: 5
-  m_MergeCooldown: 3
-  m_PhaseLittleInfo:
-    PhaseMesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
-    BulletPrefab: {fileID: 1401521423952505645, guid: 1c7da2a1131b01744aa513f0d1375343,
-      type: 3}
-    PhaseMaterialRed: {fileID: 2100000, guid: 382b3c775dea411409cd13e25ba2fb3f, type: 2}
-    PhaseMaterialBlue: {fileID: 0}
-    PhaseMaxHealth: 2
-    ShootCooldown: 2
-    MovementCoolDown: 1
-  m_PhaseMediumInfo:
-    PhaseMesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
-    BulletPrefab: {fileID: 1401521423952505645, guid: 1c7da2a1131b01744aa513f0d1375343,
-      type: 3}
-    PhaseMaterialRed: {fileID: 2100000, guid: f12ebfd2ed49bbb48a7743094c3b19fc, type: 2}
-    PhaseMaterialBlue: {fileID: 0}
-    PhaseMaxHealth: 5
-    ShootCooldown: 2
-    MovementCoolDown: 2
-  m_PhaseLargeInfo:
-    PhaseMesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
-    BulletPrefab: {fileID: 1401521423952505645, guid: 1c7da2a1131b01744aa513f0d1375343,
-      type: 3}
-    PhaseMaterialRed: {fileID: 2100000, guid: 261a2e4172059334790fb935c3376aa3, type: 2}
-    PhaseMaterialBlue: {fileID: 0}
-    PhaseMaxHealth: 11
-    ShootCooldown: 2
-    MovementCoolDown: 2
-  m_CurrentCell: {fileID: 15915651}
-  m_AttackDetectionRange: 10
-  m_AttackMaxRange: 15
-  m_Speed: 0.5
-  m_FusionDetectionDist: 4
---- !u!65 &236673759
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 236673757}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!23 &236673760
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 236673757}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
---- !u!33 &236673761
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 236673757}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!4 &236673762
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 236673757}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 11.32, y: 1.83, z: 4.97}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &237821046 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1307654584897028194, guid: 33dbcf6336a200f4d8a138a42ddcc91f,
@@ -3855,18 +3714,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 33dbcf6336a200f4d8a138a42ddcc91f, type: 3}
---- !u!114 &316899543 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1307654584897028194, guid: 33dbcf6336a200f4d8a138a42ddcc91f,
-    type: 3}
-  m_PrefabInstance: {fileID: 812400441}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 723f5a109fcc83c4c9f701247840e847, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &316899546 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1307654584897028195, guid: 33dbcf6336a200f4d8a138a42ddcc91f,
@@ -17994,6 +17841,8 @@ MonoBehaviour:
   m_StunTime: 5
   m_MergeCooldown: 3
   m_PhaseLittleInfo:
+    BlueSprite: {fileID: 0}
+    RedSprite: {fileID: 0}
     PhaseMesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
     BulletPrefab: {fileID: 1401521423952505645, guid: 1c7da2a1131b01744aa513f0d1375343,
       type: 3}
@@ -18003,6 +17852,8 @@ MonoBehaviour:
     ShootCooldown: 2
     MovementCoolDown: 1
   m_PhaseMediumInfo:
+    BlueSprite: {fileID: 0}
+    RedSprite: {fileID: 0}
     PhaseMesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
     BulletPrefab: {fileID: 1401521423952505645, guid: 1c7da2a1131b01744aa513f0d1375343,
       type: 3}
@@ -18012,6 +17863,8 @@ MonoBehaviour:
     ShootCooldown: 2
     MovementCoolDown: 2
   m_PhaseLargeInfo:
+    BlueSprite: {fileID: 0}
+    RedSprite: {fileID: 0}
     PhaseMesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
     BulletPrefab: {fileID: 1401521423952505645, guid: 1c7da2a1131b01744aa513f0d1375343,
       type: 3}
@@ -18020,6 +17873,8 @@ MonoBehaviour:
     PhaseMaxHealth: 11
     ShootCooldown: 2
     MovementCoolDown: 2
+  m_SpriteRenderer: {fileID: 0}
+  m_Animator: {fileID: 0}
   m_CurrentCell: {fileID: 1893625084}
   m_AttackDetectionRange: 10
   m_AttackMaxRange: 15
