@@ -12,13 +12,17 @@ public class MicrophoneInput : MonoBehaviour
 	public int audioSampleRate = 4400;
 	private int m_sampleWindow = 128;
 	public string microphone;
+	private AudioClip m_clipRecord1 = null;
 	public FFTWindow fftWindow;
 	public Dropdown micDropdown;
 	public Slider thresholdSlider;
 
+	public bool flapped;
+
+	public Slider m_volumeMicrophone;
+
 	private List<string> options = new List<string>();
 	private int samples = 8192;
-	private AudioSource audioSource;
 
 	public float m_thresholdWeak;
 	public float m_thresholdStrong;
@@ -38,11 +42,6 @@ public class MicrophoneInput : MonoBehaviour
 
 	void Start()
 	{
-
-
-		//get components you'll need
-		audioSource = GetComponent<AudioSource>();
-
 		// get all available microphones
 		foreach (string device in Microphone.devices)
 		{
@@ -65,50 +64,55 @@ public class MicrophoneInput : MonoBehaviour
 		thresholdSlider.onValueChanged.AddListener(delegate {
 			thresholdValueChangedHandler(thresholdSlider);
 		});
-		//initialize input with default mic
-		UpdateMicrophone();
+
+		m_clipRecord1 = Microphone.Start(microphone, true, 1, audioSampleRate);
 	}
 
-	void UpdateMicrophone()
+	private void Update()
 	{
-		audioSource.Stop();
-		//Start recording to audioclip from the mic
-		audioSource.clip = Microphone.Start(microphone, true, 1, audioSampleRate);
-		audioSource.loop = true;
-		// Mute the sound with an Audio Mixer group becuase we don't want the player to hear it
-		Debug.Log(Microphone.IsRecording(microphone).ToString());
+		s_MicLoudness1 = LevelMax(microphone, m_clipRecord1);
+		if (s_MicLoudness1 > minThreshold)
+		{
+			m_volumeMicrophone.value = s_MicLoudness1;
+		}
+		if (s_MicLoudness1 < minThreshold) {
+			m_volumeMicrophone.value = 0;
+		}
+	}
 
-		if (Microphone.IsRecording(microphone))
-		{ //check that the mic is recording, otherwise you'll get stuck in an infinite loop waiting for it to start
-			while (!(Microphone.GetPosition(microphone) > 0) && timer < 1000)
-			{
-				timer += Time.deltaTime;
-			} // Wait until the recording has started. 
-
-			if (timer >= 1000)
-			{
-				Debug.Log("Failed to play from mic....");
-			}
-
-			Debug.Log("s_MicLoudness1 : " + s_MicLoudness1);
-			Debug.Log("recording started with " + microphone);
-
-			// Start playing the audio source
-			audioSource.Play();
+	float LevelMax(string _device, AudioClip _clipRecord)
+	{
+		float levelMax1 = 0;
+		float[] waveData1 = new float[m_sampleWindow];
+		if (!(Microphone.GetPosition(_device) > 0))
+		{
+			return 0;
+		}
+		int micPosition1 = Microphone.GetPosition(_device) - (m_sampleWindow + 1);
+		if (micPosition1 < 0)
+		{
+			return 0;
 		}
 		else
 		{
-			//microphone doesn't work for some reason
+			_clipRecord.GetData(waveData1, micPosition1);
+			for (int i = 0; i < m_sampleWindow; ++i)
+			{
+				float wavePeak1 = waveData1[i] * waveData1[i];
+				if (levelMax1 < wavePeak1)
+				{
+					levelMax1 = wavePeak1;
+				}
 
-			Debug.Log(microphone + " doesn't work!");
+			}
 		}
+		return levelMax1*100;
 	}
 
 
 	public void micDropdownValueChangedHandler(Dropdown mic)
 	{
 		microphone = options[mic.value];
-		UpdateMicrophone();
 	}
 
 	public void thresholdValueChangedHandler(Slider thresholdSlider)
@@ -116,11 +120,11 @@ public class MicrophoneInput : MonoBehaviour
 		minThreshold = thresholdSlider.value;
 	}
 
-	public float GetAveragedVolume()
+	/*public float GetAveragedVolume()
 	{
 		float[] data = new float[256];
 		float a = 0;
-		audioSource.GetOutputData(data, 0);
+		m_clipRecord1.GetOutputData(data, 0);
 		foreach (float s in data)
 		{
 			a += Mathf.Abs(s);
@@ -132,7 +136,7 @@ public class MicrophoneInput : MonoBehaviour
 	{
 		float fundamentalFrequency = 0.0f;
 		float[] data = new float[samples];
-		audioSource.GetSpectrumData(data, 0, fftWindow);
+		m_clipRecord1.GetSpectrumData(data, 0, fftWindow);
 		float s = 0.0f;
 		int i = 0;
 		for (int j = 1; j < samples; j++)
@@ -150,4 +154,5 @@ public class MicrophoneInput : MonoBehaviour
 		frequency = fundamentalFrequency;
 		return fundamentalFrequency;
 	}
+	*/
 }

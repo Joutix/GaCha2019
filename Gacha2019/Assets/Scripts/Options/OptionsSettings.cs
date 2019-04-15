@@ -7,7 +7,7 @@ public class OptionsSettings : MonoBehaviour
 {
 
 	public Dropdown microphone;
-	public Slider sensitivitySlider, thresholdSlider;
+	public Slider thresholdSlider;
 	public GameObject settingsPanel;
 	public GameObject menuPanel;
 
@@ -16,14 +16,12 @@ public class OptionsSettings : MonoBehaviour
 	void Start()
 	{
 		microphone.value = PlayerPrefsManager.GetMicrophone();
-		sensitivitySlider.value = PlayerPrefsManager.GetSensitivity();
 		thresholdSlider.value = PlayerPrefsManager.GetThreshold();
 	}
 
 	public void SaveAndExit()
 	{
 		PlayerPrefsManager.SetMicrophone(microphone.value);
-		PlayerPrefsManager.SetSensitivity(sensitivitySlider.value);
 		PlayerPrefsManager.SetThreshold(thresholdSlider.value);
 
 		settingsPanel.SetActive(false);
