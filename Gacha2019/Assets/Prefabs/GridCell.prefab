@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5624473154564701989}
   - component: {fileID: 360529454096882343}
   - component: {fileID: 1307654584897028194}
+  - component: {fileID: 6265137475239030114}
   m_Layer: 0
   m_Name: GridCell
   m_TagString: Untagged
@@ -118,3 +119,16 @@ MonoBehaviour:
   m_CurrentEntity: {fileID: 0}
   m_RowPos: 0
   m_ColumnPos: 0
+--- !u!65 &6265137475239030114
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1307654584897028193}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.0000004, y: 0.20000017, z: 1.0000004}
+  m_Center: {x: 0.000000059604645, y: 0.10000019, z: -0.0000001937151}
