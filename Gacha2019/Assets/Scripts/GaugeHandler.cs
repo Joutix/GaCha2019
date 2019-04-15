@@ -23,19 +23,7 @@ public class GaugeHandler : MonoBehaviour
 
     private Color m_UnselectedColor;
     private bool m_IsSelected = false;
-    private float m_Timer;
-
-    void Start()
-    {
-        m_Timer = 0f;
-        if (m_FillColor == default)
-        {
-            Debug.Log(e_Type.ToString() + " has default fill color");
-        }
-        Debug.Log(e_Type.ToString() + " fill color: " + m_FillColor);
-        //m_UnselectedColor = m_FillColor;
-        Debug.Log(e_Type.ToString() + " unselected color: " + m_UnselectedColor);
-    }
+    private float m_Timer = 0f;
 
     void Update()
     {
@@ -68,12 +56,14 @@ public class GaugeHandler : MonoBehaviour
                 switch (e_Type)
                 {
                     case Name.SFX:
-                        AudioManager.Instance.s_playSFX = (m_CurrentIndex + 1) / 10f;
-                        Debug.Log("Changed SFX volume to " + AudioManager.Instance.s_playSFX);
+                        AudioManager.Instance.s_SFXVolume = (m_CurrentIndex + 1) * 10;
+                        AkSoundEngine.SetRTPCValue("SFX_Volume", AudioManager.Instance.s_SFXVolume);
+                        Debug.Log("Changed SFX volume to " + AudioManager.Instance.s_SFXVolume);
                         break;
                     case Name.MUSIC:
-                        AudioManager.Instance.s_playMusic = (m_CurrentIndex + 1) / 10f;
-                        Debug.Log("Changed Music volume to " + AudioManager.Instance.s_playMusic);
+                        AudioManager.Instance.s_MusicVolume = (m_CurrentIndex + 1) * 10;
+                        AkSoundEngine.SetRTPCValue("Music_Volume", AudioManager.Instance.s_MusicVolume);
+                        Debug.Log("Changed Music volume to " + AudioManager.Instance.s_MusicVolume);
                         break;
                 }
             }
@@ -85,19 +75,19 @@ public class GaugeHandler : MonoBehaviour
     {
         if (e_Type.Equals(Name.SFX))
         {
-            if (AudioManager.Instance.s_playSFX < 1f)
-                m_CurrentIndex = (int)(AudioManager.Instance.s_playSFX * 10);
+            if (AudioManager.Instance.s_SFXVolume < 100)
+                m_CurrentIndex = (int)(AudioManager.Instance.s_SFXVolume / 10) - 1;
             else
                 m_CurrentIndex = 9;
         }
         else if (e_Type.Equals(Name.MUSIC))
         {
-            if (AudioManager.Instance.s_playMusic < 1f)
-                m_CurrentIndex = (int)(AudioManager.Instance.s_playMusic * 10);
+            if (AudioManager.Instance.s_MusicVolume < 100)
+                m_CurrentIndex = (int)(AudioManager.Instance.s_MusicVolume / 10) - 1;
             else
                 m_CurrentIndex = 9;
         }
-        Debug.Log(e_Type.ToString() + " gauge with index at " + m_CurrentIndex);
+        //Debug.Log(e_Type.ToString() + " gauge init with index at " + m_CurrentIndex);
     }
 
     public void Select(bool _IsSelected)
@@ -154,12 +144,12 @@ public class GaugeHandler : MonoBehaviour
         switch (e_Type)
         {
             case Name.SFX:
-                AudioManager.Instance.s_playSFX = (m_CurrentIndex + 1) / 10f;
-                Debug.Log("Changed SFX volume to " + AudioManager.Instance.s_playSFX);
+                AudioManager.Instance.s_SFXVolume = (m_CurrentIndex + 1) * 10;
+                Debug.Log("Changed SFX volume to " + AudioManager.Instance.s_SFXVolume);
                 break;
             case Name.MUSIC:
-                AudioManager.Instance.s_playMusic = (m_CurrentIndex + 1) / 10f;
-                Debug.Log("Changed Music volume to " + AudioManager.Instance.s_playMusic);
+                AudioManager.Instance.s_MusicVolume = (m_CurrentIndex + 1) * 10;
+                Debug.Log("Changed Music volume to " + AudioManager.Instance.s_MusicVolume);
                 break;
         }
     }
@@ -192,10 +182,10 @@ public class GaugeHandler : MonoBehaviour
         switch (e_Type)
         {
             case Name.SFX:
-                AudioManager.Instance.s_playSFX = 0f;
+                AudioManager.Instance.s_SFXVolume = 0;
                 break;
             case Name.MUSIC:
-                AudioManager.Instance.s_playMusic = 0f;
+                AudioManager.Instance.s_MusicVolume = 0;
                 break;
         }
     }
