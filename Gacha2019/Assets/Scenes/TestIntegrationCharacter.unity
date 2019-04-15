@@ -8631,6 +8631,51 @@ MonoBehaviour:
   m_device1: 
   m_thresholdWeak: 0.2
   m_thresholdStrong: 0.8
+--- !u!114 &1360460379
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1360460371}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9753f43f248a10949bb8a80744926c9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  triggerList: f7e1664c
+  useOtherObject: 0
+  actionOnEventType: 0
+  curveInterpolation: 4
+  enableActionOnEvent: 0
+  eventID: -1362926625
+  m_callbackData: {fileID: 0}
+  playingId: 0
+  soundEmitterObject: {fileID: 0}
+  transitionDuration: 0
+  valueGuid: 2ab7f8d554a3de4c87ba16f218082350
+--- !u!114 &1360460380
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1360460371}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a1bc54874e39404f90a92a8d89d514e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_listeners:
+    initialListenerList: []
+    useDefaultListeners: 1
+  isEnvironmentAware: 1
+  isStaticObject: 0
+  m_positionOffsetData:
+    KeepMe: 0
+    positionOffset: {x: 0, y: 0, z: 0}
+  m_posOffsetData: {fileID: 0}
+  listenerMask: 1
 --- !u!1 &1364465029 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1307654584897028193, guid: 33dbcf6336a200f4d8a138a42ddcc91f,
@@ -13164,7 +13209,8 @@ PrefabInstance:
       propertyPath: Player1
       value: 
       objectReference: {fileID: 1360460371}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3563688089765973649, guid: 06be3720903f28a41ad4b620f069f61f, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 06be3720903f28a41ad4b620f069f61f, type: 3}
 --- !u!1 &2025711411
 GameObject:
@@ -14419,5 +14465,10 @@ PrefabInstance:
       propertyPath: panelGameOver
       value: 
       objectReference: {fileID: 2025711411}
+    - target: {fileID: 4747745795576207581, guid: 6c4e4684ccb97b640b60525317bae4dd,
+        type: 3}
+      propertyPath: m_MaxLifePoint
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6c4e4684ccb97b640b60525317bae4dd, type: 3}
