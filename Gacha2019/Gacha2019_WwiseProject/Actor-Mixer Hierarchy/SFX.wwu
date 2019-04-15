@@ -1553,7 +1553,7 @@
 										</Property>
 										<Property Name="Volume" Type="Real64">
 											<ValueList>
-												<Value>-10</Value>
+												<Value>-17</Value>
 											</ValueList>
 										</Property>
 									</PropertyList>
@@ -2295,6 +2295,9 @@
 							<ChildrenList>
 								<RandomSequenceContainer Name="Impact_Laser_RD" ID="{902E470A-E149-4DF4-A440-6F504EC9E78D}" ShortID="245771961">
 									<PropertyList>
+										<Property Name="3DSpatialization" Type="int16" Value="1"/>
+										<Property Name="OverridePositioning" Type="bool" Value="True"/>
+										<Property Name="SpeakerPanning3DSpatializationMix" Type="int32" Value="97"/>
 										<Property Name="Volume" Type="Real64">
 											<ValueList>
 												<Value>-7</Value>
@@ -2302,6 +2305,9 @@
 										</Property>
 									</PropertyList>
 									<ReferenceList>
+										<Reference Name="Attenuation">
+											<ObjectRef Name="Ambient_Attenuation" ID="{EA4E38EA-8408-4742-BBB1-AC049734F573}" WorkUnitID="{51C199F3-E431-4114-8089-11F74CF9480B}"/>
+										</Reference>
 										<Reference Name="Conversion">
 											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{9CFD7F95-E301-4D90-8542-8291B8A2F326}"/>
 										</Reference>

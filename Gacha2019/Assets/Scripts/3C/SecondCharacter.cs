@@ -51,34 +51,48 @@ public class SecondCharacter : MonoBehaviour
             if (Input.GetKey(KeyCode.K))
             {
                 TurnAroundRoot(-1, 1);
+                AkSoundEngine.PostEvent("Play_Player_Drone_Aim", gameObject);
             }
             else if (Input.GetKey(KeyCode.M))
             {
                 TurnAroundRoot(1, 1);
+                AkSoundEngine.PostEvent("Play_Player_Drone_Aim", gameObject);
             }
             else
+            {
                 TurnAroundRoot(0, 1);
+                AkSoundEngine.PostEvent("Play_Player_Drone_Aim", gameObject);
+            }
+
         }
         else if (Input.GetKey(KeyCode.L))
         {
             if (Input.GetKey(KeyCode.K))
             {
                 TurnAroundRoot(-1, -1);
+                AkSoundEngine.PostEvent("Play_Player_Drone_Aim", gameObject);
             }
             else if (Input.GetKey(KeyCode.M))
             {
                 TurnAroundRoot(1, -1);
+                AkSoundEngine.PostEvent("Play_Player_Drone_Aim", gameObject);
             }
             else
+            {
                 TurnAroundRoot(0, -1);
+                AkSoundEngine.PostEvent("Play_Player_Drone_Aim", gameObject);
+            }
+
         }
         else if (Input.GetKey(KeyCode.K))
         {
             TurnAroundRoot(-1, 0);
+            AkSoundEngine.PostEvent("Play_Player_Drone_Aim", gameObject);
         }
         else if (Input.GetKey(KeyCode.M))
         {
             TurnAroundRoot(1, 0);
+            AkSoundEngine.PostEvent("Play_Player_Drone_Aim", gameObject);
         }
 
         if (Input.GetKeyDown(KeyCode.Return))
@@ -119,6 +133,7 @@ public class SecondCharacter : MonoBehaviour
         pos += _ShootDirection * m_BulletSpawnOffset;
         GameObject bulletClone = Instantiate(m_PrefabBullet.gameObject, pos, Quaternion.identity);
         bulletClone.GetComponent<Rigidbody>().velocity = _ShootDirection * bulletClone.GetComponent<Bullet>().Speed;
+        AkSoundEngine.PostEvent("Play_Player_Shots", gameObject);
     }
 
     private void SecondaryShoot(Vector3 _ShootDirection)
