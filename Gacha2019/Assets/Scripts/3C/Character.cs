@@ -16,10 +16,33 @@ public class Character : Entity
             MoveTo(m_CurrentCell.GameGrid, rowDest, columnDest);
         }
     }
+    public override void TakeDamage(int _Amount)
+    {
+        base.TakeDamage(_Amount);
+
+        if (m_CurrentLifePoint == 2)
+        {
+            AkSoundEngine.SetState("Player_Lives", "MidLife");
+        }
+
+        if (m_CurrentLifePoint == 1)
+        {
+            AkSoundEngine.SetState("Player_Lives", "LowLife");
+        }
+
+
+    }
 
     public void Teleport(GameGrid grid, int _DeltaRow, int _DeltaColumn)
     {
         MoveTo(grid, _DeltaRow, _DeltaColumn);
+    }
+
+    public override void Die()
+    {
+        base.Die();
+        AkSoundEngine.PostEvent("Stop_Music", gameObject);
+        panelGameOver.SetActive(true);
     }
 
     #endregion
@@ -92,6 +115,7 @@ public class Character : Entity
         {
             previousGridCell.OnCellExited(this);
         }
+        AkSoundEngine.PostEvent("Play_Footsteps", gameObject);
     }
     #endregion
 
@@ -104,7 +128,11 @@ public class Character : Entity
 
     private GridCell m_CurrentCell = null;
 
+<<<<<<< HEAD
     [SerializeField] private VFX_Manager m_VfxManager = null;
+=======
+    [SerializeField] private GameObject panelGameOver;
+>>>>>>> 4e7f58c58d322d46f450eb6ba976d1f7fe37a1da
 
     //private int m_CurrentRow = 0;
     //private int m_CurrentColumn = 0;
@@ -147,6 +175,7 @@ public class Character : Entity
     protected override void Start()
     {
         base.Start();
+        AkSoundEngine.SetState("Player_Lives", "FullLife");
         m_MovementTimer = m_TimeNeededToMoveAgain;
         m_VfxManager = GameObject.Find("VFX_Manager").GetComponent<VFX_Manager>();
     }
@@ -154,6 +183,9 @@ public class Character : Entity
     protected override void Update()
     {
         UpdateTimer();
+
+
+
 
         if (m_DebugInputsKeyboard)
         {
@@ -181,6 +213,10 @@ public class Character : Entity
                 m_VfxManager.StartCoroutine("PlayWalk");
                 TryMove(0, 1);
             }
+        }
+        if (Input.GetKeyDown(KeyCode.KeypadEnter))
+        {
+            TakeDamage(1);
         }
     }
 

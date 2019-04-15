@@ -43,6 +43,11 @@ public class Enemy : Entity
     [SerializeField]
     private float m_StunTime = 5;
 
+    [SerializeField]
+    private float m_MergeCooldown = 3;
+
+    private float m_CurrentMergeCooldown = 0;
+
     private float m_CurrentStunTime = 0;
 
     [SerializeField]
@@ -64,12 +69,6 @@ public class Enemy : Entity
     [SerializeField]
     private GridCell m_CurrentCell = null;
 
-    [SerializeField]
-    private int m_CurrentColumn = -1;
-
-    [SerializeField]
-    private int m_CurrentRow = -1;
-
     private GameGrid m_Grid = null;
 
     [Header("AI")]
@@ -85,6 +84,10 @@ public class Enemy : Entity
     [Tooltip("The time between the AI movement")]
     private float m_Speed = 0.2f;
 
+    [SerializeField]
+    [Tooltip("Max distance for fusion")]
+    private int m_FusionDetectionDist = 4;
+
     private float m_CurrentShootCooldown = 0;
     private float m_CurrentMovementSpeed = 0;
 
@@ -95,6 +98,13 @@ public class Enemy : Entity
     private FusionState m_FusionState = null;
 
     private bool m_HasBeenMovedOnce = false;
+
+    private Character m_Player = null;
+
+    private Enemy m_MergeTarget = null;
+
+    private List<GridCell> m_CurrentPath = new List<GridCell>();
+
     #endregion
 
     #region Public Methods
@@ -111,6 +121,9 @@ public class Enemy : Entity
     public int Row { get => m_CurrentCell.Row; }
     public int Column { get => m_CurrentCell.Row; }
     public GridCell CurrentCell { get => m_CurrentCell; }
+    public List<GridCell> CurrentPath { get => m_CurrentPath; }
+    public Enemy MergeTarget { get => m_MergeTarget; }
+
     #endregion
 
     #region Public Methods
@@ -139,7 +152,7 @@ public class Enemy : Entity
                 return;
             }
 
-            m_HasBeenMovedOnce = false;
+            m_HasBeenMovedOnce = true;
 
             transform.position = currentGrid.GetGridCellAt(_RowDestination, _ColumnDestination).transform.position + new Vector3(0, 1, 0);
 
@@ -239,7 +252,7 @@ public class Enemy : Entity
 
     public bool CanMerge(Enemy _enemy)
     {
-        return m_EnemySize != EEnemySize.Large && m_EnemySize == _enemy.m_EnemySize;
+        return m_EnemySize != EEnemySize.Large && m_EnemySize == _enemy.m_EnemySize && m_CurrentMergeCooldown <= 0;
     }
 
     #endregion
@@ -310,90 +323,52 @@ public class Enemy : Entity
             {
                 case EEnemySize.Little:
                     m_EnemySize = EEnemySize.Medium;
-                    SetVariablesForCurrentState();
-                    m_CurrentLifePoint = m_MaxLifePoint; //heal
-                    Destroy(_enemy.gameObject);
                     break;
                 case EEnemySize.Medium:
                     m_EnemySize = EEnemySize.Large;
-                    m_CurrentLifePoint = m_MaxLifePoint; //heal
-                    SetVariablesForCurrentState();
-                    Destroy(_enemy.gameObject);
                     break;
                 case EEnemySize.Large:
                     break;
                 default:
                     break;
             }
+
+            SetVariablesForCurrentState();
+            m_CurrentLifePoint = m_MaxLifePoint; // heal
+            Destroy(_enemy.gameObject);
+            m_CurrentMergeCooldown = m_MergeCooldown;
+
         }
 
     }
 
-
-    // Start is called before the first frame update
-    override protected void Start()
+    protected bool IsPlayerInShootRange()
     {
-        base.Start();
-
-        m_FSM = new FiniteStateMachine(null);
-
-        // Wander state
-        m_WanderState = new WanderState(this, m_CurrentMovementSpeed);
-        m_FSM.AddState(m_WanderState);
-
-        // Shoot state
-        m_ShootState = new ShootState(this, m_CurrentShootCooldown);
-        m_FSM.AddState(m_ShootState);
-
-        // Chase state
-        m_ChaseState = new ChaseState(this, m_CurrentMovementSpeed);
-        m_FSM.AddState(m_ChaseState);
-
-        // Fusion state
-        m_FusionState = new FusionState(this, m_CurrentMovementSpeed);
-        m_FSM.AddState(m_FusionState);
-
-        if (m_CurrentCell == null)
-        {
-            Debug.LogError("The enemy didn't have a cell assigned to spawn on");
-        }
-        else
-        {
-            m_Grid = m_CurrentCell.GameGrid;
-
-            if (m_Grid == null)
-            {
-                Debug.LogError("Couldn't get Grid on enemy make sure the game has one");
-            }
-
-            MoveTo(m_CurrentCell.Row, m_CurrentCell.Column);
-        }
-
-        SetVariablesForCurrentState();
-
+        return GameManager.Instance.ManhattanDistance(m_CurrentCell.Row, m_CurrentCell.Column, m_Player.Row, m_Player.Column) <= m_AttackDetectionRange;
     }
 
-    // Update is called once per frame
-    override protected void Update()
+    protected bool IsPlayerInShootMaxRange()
     {
-        base.Update();
+        return GameManager.Instance.ManhattanDistance(m_CurrentCell.Row, m_CurrentCell.Column, m_Player.Row, m_Player.Column) <= m_AttackMaxRange;
+    }
 
-        ManageStunTimer();
+    protected bool HasFinishedMerged()
+    {
+        return m_CurrentMergeCooldown > 0;
+    }
 
-        //if (!m_IsStunned)
-        //{
-        //    m_FSM.UpdateStep();
-        //}
+    protected bool CanMergeWithNearTarget()
+    {
+        List<GridCell> pathToNearest = GameManager.Instance.ReturnClosestEnemyPath(this, m_FusionDetectionDist);
 
-        if (Input.GetKeyDown(KeyCode.KeypadEnter))
+        if (pathToNearest.Count > 0)
         {
-            TryMove(1, 0);
+            m_MergeTarget = pathToNearest[pathToNearest.Count - 1].Entity as Enemy;
+
+            return true;
         }
 
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            TakeDamage(20);
-        }
+        return false;
     }
 
     override public void TakeDamage(int _Amount)
@@ -429,6 +404,14 @@ public class Enemy : Entity
 
                 m_CurrentLifePoint = m_MaxLifePoint;
             }
+        }
+    }
+
+    protected void ManageMergeCoolDown()
+    {
+        if (m_CurrentMergeCooldown > 0)
+        {
+            m_CurrentMergeCooldown -= Time.deltaTime;
         }
     }
 
@@ -525,8 +508,6 @@ public class Enemy : Entity
 
     private void Awake()
     {
-      
-
         m_MeshFilter = GetComponent<MeshFilter>();
 
         if (m_MeshFilter == null)
@@ -545,6 +526,87 @@ public class Enemy : Entity
     private void OnDestroy()
     {
         m_CurrentCell.OnCellExited(this);
+
+        GameManager.Instance.RemoveEnemyFromManager(this, m_Grid);
+    }
+
+    // Start is called before the first frame update
+    override protected void Start()
+    {
+        base.Start();
+
+        m_FSM = new FiniteStateMachine(null);
+
+        // Wander state
+        m_WanderState = new WanderState(this, m_CurrentMovementSpeed);
+        m_WanderState.AddTransition(new Transition(() => CanMergeWithNearTarget(), typeof(FusionState)));
+        m_WanderState.AddTransition(new Transition(() => IsPlayerInShootRange(), typeof(ShootState)));
+        m_FSM.AddState(m_WanderState);
+
+        // Shoot state
+        m_ShootState = new ShootState(this, m_CurrentShootCooldown);
+        m_ShootState.AddTransition(new Transition(() => CanMergeWithNearTarget(), typeof(FusionState)));
+        m_ShootState.AddTransition(new Transition(() => !IsPlayerInShootMaxRange(), typeof(ChaseState)));
+        m_FSM.AddState(m_ShootState);
+
+        // Chase state
+        m_ChaseState = new ChaseState(this, m_CurrentMovementSpeed);
+        m_ChaseState.AddTransition(new Transition(() => CanMergeWithNearTarget(), typeof(FusionState)));
+        m_ChaseState.AddTransition(new Transition(() => IsPlayerInShootRange(), typeof(ShootState)));
+        m_FSM.AddState(m_ChaseState);
+
+        // Fusion state
+        m_FusionState = new FusionState(this, m_CurrentMovementSpeed);
+        m_FusionState.AddTransition(new Transition(() => HasFinishedMerged(), typeof(WanderState)));
+        m_FSM.AddState(m_FusionState);
+
+        m_Player = GameManager.Instance.Character;
+
+        if (m_CurrentCell == null)
+        {
+            Debug.LogError("The enemy didn't have a cell assigned to spawn on");
+        }
+        else
+        {
+            m_Grid = m_CurrentCell.GameGrid;
+
+            if (m_Grid == null)
+            {
+                Debug.LogError("Couldn't get Grid on enemy make sure the game has one");
+
+                GameManager.Instance.AddEnemyToManager(this, m_Grid);
+            }
+
+            MoveTo(m_CurrentCell.Row, m_CurrentCell.Column);
+        }
+
+        SetVariablesForCurrentState();
+
+    }
+
+    // Update is called once per frame
+    override protected void Update()
+    {
+        base.Update();
+
+        ManageStunTimer();
+
+        if (!m_IsStunned)
+        {
+            m_FSM.UpdateStep();
+        }
+
+        ManageMergeCoolDown();
+
+        if (Input.GetKeyDown(KeyCode.KeypadEnter))
+        {
+            TryMove(1, 0);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            TakeDamage(20);
+        }
     }
 
     #endregion

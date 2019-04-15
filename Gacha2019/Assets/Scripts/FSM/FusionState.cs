@@ -51,7 +51,7 @@ public class FusionState : State
 
     protected override void OnFirstEnter()
     {
-        m_Grid = GameManager.Instance.GameGrid;
+        m_Grid = m_ControlledEnemy.CurrentCell.GameGrid;
     }
 
     protected override void OnEnter()
@@ -65,17 +65,15 @@ public class FusionState : State
         
         if (m_TimeTillNextMovement <= 0)
         {
-            if (m_FusionTarget == null)
+            if (m_ControlledEnemy.MergeTarget == null)
             {
                 Debug.LogError("Fusion target was null for fusion state");
                 return;
             }
 
-            List<GridCell> path = Dijkstra.ComputeEnemyDijkstraPath(m_Grid, m_ControlledEnemy.Row, m_ControlledEnemy.Column, m_FusionTarget.Row, m_FusionTarget.Column);
-
-            if (path != null && path.Count > 1)
+            if (m_ControlledEnemy.CurrentPath.Count > 1)
             {
-                m_ControlledEnemy.MoveTo(path[1].Row, path[1].Column);
+                m_ControlledEnemy.MoveTo(m_ControlledEnemy.CurrentPath[1].Row, m_ControlledEnemy.CurrentPath[1].Column);
             }
 
             m_TimeTillNextMovement = m_MovementCooldown;

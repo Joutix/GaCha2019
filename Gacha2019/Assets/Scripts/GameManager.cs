@@ -8,7 +8,10 @@ public class GameManager : Singleton<GameManager>
     #region Public Methods
     public void RegisterGrid(GameGrid _GameGrid)
     {
-        m_GameGrid = _GameGrid;
+        if (!m_DictionnaryOfEnemies.ContainsKey(_GameGrid))
+        {
+            m_DictionnaryOfEnemies.Add(_GameGrid, new List<Enemy>());
+        }
     }
 
     public void RegisterCharacter(Character _Character)
@@ -41,21 +44,44 @@ public class GameManager : Singleton<GameManager>
             else { Debug.LogWarning("enemy to remove isn't in the list yet"); }
         }
     }
-    
-    public GridCell ReturnClosestEnemy(Enemy _enemyToIgnore, int _maxManhattanDist, bool _careAboutWalls)
+
+    //returns the path of the closest enemy present in a range calculated with manhattan distance
+    public List<GridCell> ReturnClosestEnemyPath(Enemy _enemyToIgnore, int _maxManhattanDist/*, bool _careAboutWalls*/)
     {
-        //GridCell cell = _enemyToIgnore.GetCell();
-        //GameGrid grid = cell.GameGrid;
+        GridCell startCell = _enemyToIgnore.CurrentCell;
+        GameGrid grid = startCell.GameGrid;
+        List<GridCell> bestPath = new List<GridCell>();
 
+        List<Enemy> enemiesInManDist = new List<Enemy>();
 
+        foreach (Enemy enemy in m_DictionnaryOfEnemies[grid])
+        {
+            int dist = ManhattanDistance(startCell.Row, enemy.CurrentCell.Row, startCell.Column, enemy.CurrentCell.Column);
+            //if enemy in the grid is close enough add them at the key where they belong
+            if ((enemy && dist < _maxManhattanDist))
+            {
+                enemiesInManDist.Add(enemy);
+            }
+        }
 
-        //foreach (Enemy enemy in m_DictionnaryOfEnemies[grid])
-        //{
+        if (enemiesInManDist.Count == 0)
+        {
+            return bestPath; // empty
+        }
 
-        //}
+        bestPath = Dijkstra.ComputeEnemyDijkstraPath(startCell.GameGrid, startCell.Row, startCell.Column, enemiesInManDist[0].Row, enemiesInManDist[0].Column);
 
+        for (int i = 1; i < enemiesInManDist.Count; i++)
+        {
+            List<GridCell> currentDijkstra = Dijkstra.ComputeEnemyDijkstraPath(startCell.GameGrid, startCell.Row, startCell.Column, enemiesInManDist[i].Row, enemiesInManDist[i].Column);
 
-        return null;
+            if (currentDijkstra != null && currentDijkstra.Count < bestPath.Count)
+            {
+                bestPath = currentDijkstra;
+            }
+        }
+
+        return bestPath;
     }
 
     public int ManhattanDistance(int _x1, int _y1, int _x2, int _y2)
@@ -66,13 +92,6 @@ public class GameManager : Singleton<GameManager>
     #endregion
 
     #region Getters / Setters
-    public GameGrid GameGrid
-    {
-        get
-        {
-            return m_GameGrid;
-        }
-    }
 
     public Character Character
     {
@@ -84,7 +103,6 @@ public class GameManager : Singleton<GameManager>
     #endregion
 
     #region Attributes
-    private GameGrid m_GameGrid = null;
     private Character m_Character = null;
 
     //private List<Enemy> m_ListOfEnemies = new List<Enemy>();
