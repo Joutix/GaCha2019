@@ -26,13 +26,10 @@ public class GameManager : Singleton<GameManager>
         {
 
             if (!m_DictionnaryOfEnemies[_grid].Contains(_enemyToAdd))
-            {
                 m_DictionnaryOfEnemies[_grid].Add(_enemyToAdd);
-            }
-            else
-            {
-                Debug.LogWarning("enemy to add is already in the list");
-            }
+            //if (!m_ListOfEnemies.Contains(_enemyToAdd))
+            //    m_ListOfEnemies.Add(_enemyToAdd);
+            else { Debug.LogWarning("enemy to add is already in the list"); }
         }
     }
 
@@ -42,13 +39,9 @@ public class GameManager : Singleton<GameManager>
         if (_grid && _enemyToRemove)
         {
             if (m_DictionnaryOfEnemies[_grid].Contains(_enemyToRemove))
-            {
-                m_DictionnaryOfEnemies[_grid].Remove(_enemyToRemove);
-            }
-            else
-            {
-                Debug.LogWarning("enemy to remove isn't in the list yet");
-            }
+                // if (m_ListOfEnemies.Contains(_enemyToAdd))
+                m_DictionnaryOfEnemies[_grid].Add(_enemyToRemove);
+            else { Debug.LogWarning("enemy to remove isn't in the list yet"); }
         }
     }
 
@@ -63,14 +56,11 @@ public class GameManager : Singleton<GameManager>
 
         foreach (Enemy enemy in m_DictionnaryOfEnemies[grid])
         {
-            if (enemy != _enemyToIgnore)
+            int dist = ManhattanDistance(startCell.Row, enemy.CurrentCell.Row, startCell.Column, enemy.CurrentCell.Column);
+            //if enemy in the grid is close enough add them at the key where they belong
+            if ((enemy && dist < _maxManhattanDist))
             {
-                int dist = ManhattanDistance(startCell.Row, startCell.Column, enemy.CurrentCell.Row, enemy.CurrentCell.Column);
-                //if enemy in the grid is close enough add them at the key where they belong
-                if ((enemy && dist <= _maxManhattanDist))
-                {
-                    enemiesInManDist.Add(enemy);
-                }
+                enemiesInManDist.Add(enemy);
             }
         }
 
@@ -79,16 +69,13 @@ public class GameManager : Singleton<GameManager>
             return bestPath; // empty
         }
 
-        for (int i = 0; i < enemiesInManDist.Count; i++)
+        bestPath = Dijkstra.ComputeEnemyDijkstraPath(startCell.GameGrid, startCell.Row, startCell.Column, enemiesInManDist[0].Row, enemiesInManDist[0].Column);
+
+        for (int i = 1; i < enemiesInManDist.Count; i++)
         {
-            List<GridCell> currentDijkstra = Dijkstra.ComputeEnemyDijkstraPath(startCell.GameGrid, startCell, enemiesInManDist[i].CurrentCell);
+            List<GridCell> currentDijkstra = Dijkstra.ComputeEnemyDijkstraPath(startCell.GameGrid, startCell.Row, startCell.Column, enemiesInManDist[i].Row, enemiesInManDist[i].Column);
 
-            if (bestPath.Count == 0 && currentDijkstra != null)
-            {
-                bestPath = currentDijkstra;
-            }
-
-            if (bestPath != null && currentDijkstra != null && currentDijkstra.Count < bestPath.Count)
+            if (currentDijkstra != null && currentDijkstra.Count < bestPath.Count)
             {
                 bestPath = currentDijkstra;
             }

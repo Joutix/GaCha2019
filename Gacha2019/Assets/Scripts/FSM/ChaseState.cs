@@ -62,7 +62,7 @@ public class ChaseState : State
 
             if (player != null)
             {
-                List<GridCell> path = Dijkstra.ComputeEnemyDijkstraPath(m_Grid, m_ControlledEnemy.CurrentCell, player.CurrentCell);
+                List<GridCell> path = Dijkstra.ComputeEnemyDijkstraPath(m_Grid, m_ControlledEnemy.Row, m_ControlledEnemy.Column, player.Row, player.Column);
 
                 if (path != null && path.Count > 1)
                 {

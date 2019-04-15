@@ -74,8 +74,6 @@ public class FusionState : State
             if (m_ControlledEnemy.CurrentPath.Count > 1)
             {
                 m_ControlledEnemy.MoveTo(m_ControlledEnemy.CurrentPath[1].Row, m_ControlledEnemy.CurrentPath[1].Column);
-
-                m_ControlledEnemy.CanMergeWithNearTarget();
             }
 
             m_TimeTillNextMovement = m_MovementCooldown;
