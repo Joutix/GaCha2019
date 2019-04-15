@@ -25,15 +25,15 @@ MonoBehaviour:
     List: []
   AuxBusWwu:
   - Guid: '{5A365A61-537C-4508-B85B-A286FF3F7D14}'
-    m_lastTimePart2: -1999192018
-    m_lastTimePsrt1: -728913201
+    m_lastTimePart2: -1999191761
+    m_lastTimePsrt1: 359658678
     ParentPhysicalPath: 
     PhysicalPath: Master-Mixer Hierarchy\Default Work Unit.wwu
     List: []
   BankWwu:
   - Guid: '{44FBF719-14C9-4635-B1B7-CBAE9E1D46A1}'
-    m_lastTimePart2: -1999191989
-    m_lastTimePsrt1: -1658283112
+    m_lastTimePart2: -1999191761
+    m_lastTimePsrt1: 681085771
     ParentPhysicalPath: 
     PhysicalPath: SoundBanks\Default Work Unit.wwu
     List:
@@ -48,8 +48,8 @@ MonoBehaviour:
         ObjectType: 7
   EventWwu:
   - Guid: '{2949B062-6EE6-4570-85ED-F95646EBC3D5}'
-    m_lastTimePart2: -1999191989
-    m_lastTimePsrt1: -1854374728
+    m_lastTimePart2: -1999191764
+    m_lastTimePsrt1: -264593273
     ParentPhysicalPath: 
     PhysicalPath: Events\Default Work Unit.wwu
     List:
@@ -65,14 +65,89 @@ MonoBehaviour:
       maxAttenuation: 0
       maxDuration: 0
       minDuration: 0
+    - Guid: ee2f9ad179cc174b961341a6d5c11d19
+      ID: -440811497
+      Name: Play_Footsteps
+      Path: Default Work Unit\Play_Footsteps
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: Play_Footsteps
+        ObjectType: 3
+      maxAttenuation: 0
+      maxDuration: 0
+      minDuration: 0
+    - Guid: 2ab7f8d554a3de4c87ba16f218082350
+      ID: -1362926625
+      Name: Play_Music
+      Path: Default Work Unit\Play_Music
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: Play_Music
+        ObjectType: 3
+      maxAttenuation: 0
+      maxDuration: 0
+      minDuration: 0
+    - Guid: 36628bf92583ea43966550f114293a2f
+      ID: -1541925179
+      Name: Play_Stomp
+      Path: Default Work Unit\Play_Stomp
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: Play_Stomp
+        ObjectType: 3
+      maxAttenuation: 0
+      maxDuration: 0
+      minDuration: 0
+    - Guid: 9290160d5d7b9a4ab09b87488846a269
+      ID: -1457583239
+      Name: Stop_Music
+      Path: Default Work Unit\Stop_Music
+      PathAndIcons:
+      - ElementName: Default Work Unit
+        ObjectType: 12
+      - ElementName: Stop_Music
+        ObjectType: 3
+      maxAttenuation: 0
+      maxDuration: 0
+      minDuration: 0
   ExpandedItems:
   - /Gacha2019_WwiseProject
   - /Gacha2019_WwiseProject/Events
   - /Gacha2019_WwiseProject/Events/Default Work Unit
+  - /Gacha2019_WwiseProject/States
+  - /Gacha2019_WwiseProject/States/GACHA_STATES
+  - /Gacha2019_WwiseProject/States/GACHA_STATES/Player_Lives
   RtpcWwu:
+  - Guid: '{D6564FB2-67D8-4549-859C-3AEDDF81B35C}'
+    m_lastTimePart2: -1999191761
+    m_lastTimePsrt1: 359807905
+    ParentPhysicalPath: 
+    PhysicalPath: Game Parameters\BUS_VOLUMES.wwu
+    List:
+    - Guid: b038417375c60e4c95fec9c195409f56
+      ID: 1006694123
+      Name: Music_Volume
+      Path: BUS_VOLUMES\Music_Volume
+      PathAndIcons:
+      - ElementName: BUS_VOLUMES
+        ObjectType: 12
+      - ElementName: Music_Volume
+        ObjectType: 13
+    - Guid: eec297cc8ca74640a01d9cf1a156ba63
+      ID: 1564184899
+      Name: SFX_Volume
+      Path: BUS_VOLUMES\SFX_Volume
+      PathAndIcons:
+      - ElementName: BUS_VOLUMES
+        ObjectType: 12
+      - ElementName: SFX_Volume
+        ObjectType: 13
   - Guid: '{6DCC8D88-77E9-45F3-BE78-63CA5729AC4C}'
-    m_lastTimePart2: -1999192018
-    m_lastTimePsrt1: -728344740
+    m_lastTimePart2: -1999191761
+    m_lastTimePsrt1: 359728552
     ParentPhysicalPath: 
     PhysicalPath: Game Parameters\Default Work Unit.wwu
     List: []
@@ -83,6 +158,45 @@ MonoBehaviour:
     ParentPhysicalPath: 
     PhysicalPath: States\Default Work Unit.wwu
     List: []
+  - Guid: '{5A48B6CB-FB69-484B-9201-E8CAFDF4E763}'
+    m_lastTimePart2: -1999191776
+    m_lastTimePsrt1: 2022329510
+    ParentPhysicalPath: 
+    PhysicalPath: States\GACHA_STATES.wwu
+    List:
+    - Guid: 77fca89dd60c2d479b9870f75d02d5dd
+      ID: -1673776126
+      Name: Player_Lives
+      Path: GACHA_STATES\Player_Lives
+      PathAndIcons:
+      - ElementName: GACHA_STATES
+        ObjectType: 12
+      - ElementName: Player_Lives
+        ObjectType: 9
+      ValueGuids:
+      - bytes: 0d2ade01c4b62d43a4c26f46ceacdb7d
+      - bytes: c363f38abb1b094b91a2d1adee95745a
+      - bytes: f7ed45dd535d914ba249a50f79ffcd9b
+      - bytes: 46b360f1578ea2439a9cf2d694d585a6
+      - bytes: bdddb43b5d4e554d8b024a7f9cba0dad
+      ValueIcons:
+      - ElementName: End
+        ObjectType: 8
+      - ElementName: FullLife
+        ObjectType: 8
+      - ElementName: LowLife
+        ObjectType: 8
+      - ElementName: MidLife
+        ObjectType: 8
+      - ElementName: None
+        ObjectType: 8
+      valueIDs: 44fc921fd062a42c7726260103e44050db3ba32c
+      values:
+      - End
+      - FullLife
+      - LowLife
+      - MidLife
+      - None
   SwitchWwu:
   - Guid: '{AF347523-7056-4555-AD19-D30B42BFEDB9}'
     m_lastTimePart2: -1999192018
