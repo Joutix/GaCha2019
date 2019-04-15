@@ -20,12 +20,7 @@ public enum EEnemySize
 [System.Serializable]
 public struct PhaseInfo
 {
-    public Sprite BlueSprite;
-    public Sprite RedSprite;
-    public Mesh PhaseMesh;
     public GameObject BulletPrefab;
-    public Material PhaseMaterialRed;
-    public Material PhaseMaterialBlue;
     public int PhaseMaxHealth;
     public float ShootCooldown;
     public float MovementCoolDown;
@@ -69,10 +64,22 @@ public class Enemy : Entity
     private MeshRenderer m_MeshRender = null;
 
     [SerializeField]
-    private SpriteRenderer m_SpriteRenderer = null;
+    private Animator m_LittlePhaseAnimator = null;
 
     [SerializeField]
-    private Animator m_Animator = null;
+    private Transform m_LittlePhaseTransform;
+
+    [SerializeField]
+    private Animator m_MediumPhaseAnimator = null;
+
+    [SerializeField]
+    private Transform m_MediumPhaseTransform;
+
+    [SerializeField]
+    private Animator m_LargePhaseAnimator = null;
+
+    [SerializeField]
+    private Transform m_LargePhaseTransform;
 
     [SerializeField]
     private GridCell m_CurrentCell = null;
@@ -164,7 +171,7 @@ public class Enemy : Entity
 
             m_HasBeenMovedOnce = true;
 
-            transform.position = currentGrid.GetGridCellAt(_RowDestination, _ColumnDestination).transform.position + new Vector3(0, 1, 0);
+            transform.position = currentGrid.GetGridCellAt(_RowDestination, _ColumnDestination).transform.position + new Vector3(0, 0.1f, 0);
 
             m_CurrentCell.OnCellExited(this);
 
@@ -429,33 +436,34 @@ public class Enemy : Entity
         }
     }
 
+    protected void SetPhasesRenderers(bool _Little, bool _Medium, bool _Large)
+    {
+        m_LittlePhaseTransform.gameObject.SetActive(_Little);
+        m_MediumPhaseTransform.gameObject.SetActive(_Medium);
+        m_LargePhaseTransform.gameObject.SetActive(_Large);
+    }
+
     protected void SetVariablesForCurrentState()
     {
         switch (m_EnemySize)
         {
             case EEnemySize.Little:
                 m_CurrentBulletPrefab = m_PhaseLittleInfo.BulletPrefab;
-                SetSpriteAccordingToColor(m_PhaseLittleInfo);
-                //m_MeshFilter.mesh = m_PhaseLittleInfo.PhaseMesh;
-                //SetMaterialAccordingToColor(m_PhaseLittleInfo);
+                SetPhasesRenderers(true, false, false);
                 m_MaxLifePoint = m_PhaseLittleInfo.PhaseMaxHealth;
                 m_CurrentShootCooldown = m_PhaseLittleInfo.ShootCooldown;
                 m_CurrentMovementSpeed = m_PhaseLittleInfo.MovementCoolDown;
                 break;
             case EEnemySize.Medium:
                 m_CurrentBulletPrefab = m_PhaseMediumInfo.BulletPrefab;
-                SetSpriteAccordingToColor(m_PhaseMediumInfo);
-                //m_MeshFilter.mesh = m_PhaseMediumInfo.PhaseMesh;
-                //SetMaterialAccordingToColor(m_PhaseMediumInfo);
+                SetPhasesRenderers(false, true, false);
                 m_MaxLifePoint = m_PhaseMediumInfo.PhaseMaxHealth;
                 m_CurrentShootCooldown = m_PhaseMediumInfo.ShootCooldown;
                 m_CurrentMovementSpeed = m_PhaseMediumInfo.MovementCoolDown;
                 break;
             case EEnemySize.Large:
                 m_CurrentBulletPrefab = m_PhaseLargeInfo.BulletPrefab;
-                SetSpriteAccordingToColor(m_PhaseLargeInfo);
-                //m_MeshFilter.mesh = m_PhaseLargeInfo.PhaseMesh;
-                //SetMaterialAccordingToColor(m_PhaseLargeInfo);
+                SetPhasesRenderers(false, false, true);
                 m_MaxLifePoint = m_PhaseLargeInfo.PhaseMaxHealth;
                 m_CurrentShootCooldown = m_PhaseLargeInfo.ShootCooldown;
                 m_CurrentMovementSpeed = m_PhaseLargeInfo.MovementCoolDown;
@@ -468,30 +476,6 @@ public class Enemy : Entity
         m_WanderState.SetTimeBetweeMovement(m_CurrentMovementSpeed);
         m_ChaseState.SetTimeBetweeMovement(m_CurrentMovementSpeed);
         m_FusionState.SetTimeBetweeMovement(m_CurrentMovementSpeed);
-    }
-
-    protected void SetSpriteAccordingToColor(PhaseInfo _PhaseInfo)
-    {
-        if (m_EnemyColor == EEntityColor.Red)
-        {
-            m_SpriteRenderer.sprite = _PhaseInfo.RedSprite;
-        }
-        else if (m_EnemyColor == EEntityColor.Blue)
-        {
-            m_SpriteRenderer.sprite = _PhaseInfo.BlueSprite;
-        }
-    }
-
-    protected void SetMaterialAccordingToColor(PhaseInfo _PhaseInfo)
-    {
-        if (m_EnemyColor == EEntityColor.Red)
-        {
-            m_MeshRender.material = _PhaseInfo.PhaseMaterialRed;
-        }
-        else if (m_EnemyColor == EEntityColor.Blue)
-        {
-            m_MeshRender.material = _PhaseInfo.PhaseMaterialBlue;
-        }
     }
 
     protected bool SpawnEnemyOnAdjacentCell(EEnemySize _Size, EEntityColor _Color, int _CurrentX, int _CurrentY)
@@ -533,23 +517,6 @@ public class Enemy : Entity
             TakeDamage(bullet.Damage);
 
             Destroy(bullet.gameObject);
-        }
-    }
-
-    private void Awake()
-    {
-        m_MeshFilter = GetComponent<MeshFilter>();
-
-        if (m_MeshFilter == null)
-        {
-            Debug.LogError("Couldn't get mesh render on enemy make sure it has one");
-        }
-
-        m_MeshRender = GetComponent<MeshRenderer>();
-
-        if (m_MeshRender == null)
-        {
-            Debug.LogError("Couldn't get MeshRenderer on enemy make sure it has one");
         }
     }
 
@@ -610,6 +577,8 @@ public class Enemy : Entity
         m_FusionState.AddTransition(new Transition(() => HasFinishedMerged(), typeof(WanderState)));
         m_FSM.AddState(m_FusionState);
 
+        SetPhasesRenderers(false, false, false);
+
         SetVariablesForCurrentState();
     }
 
@@ -627,9 +596,9 @@ public class Enemy : Entity
 
         ManageMergeCoolDown();
 
-        if (m_Animator != null)
+        if (m_LittlePhaseAnimator != null)
         {
-            m_Animator.SetBool("Stun", m_IsStunned);
+            m_LittlePhaseAnimator.SetBool("Stun", m_IsStunned);
         }
     }
 

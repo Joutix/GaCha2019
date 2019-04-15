@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &3782113362254679418
 Transform:
   m_ObjectHideFlags: 0
@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3782113362254679421}
   m_LocalRotation: {x: 0.30070576, y: 0, z: 0, w: 0.953717}
-  m_LocalPosition: {x: 0, y: 0.851, z: 0}
+  m_LocalPosition: {x: 0, y: 0.822, z: 0.119}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children: []
   m_Father: {fileID: 3782113364235303241}
@@ -69,7 +69,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: d5ef10e5764818e4196fbbd4813f780f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d5f4c121a5f303644b20cedbfd9e45e5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -125,7 +125,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3782113362814938730}
   m_LocalRotation: {x: 0.30070576, y: 0, z: 0, w: 0.953717}
-  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalPosition: {x: 0, y: 0.458, z: -0.107}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children: []
   m_Father: {fileID: 3782113364235303241}
@@ -215,7 +215,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &3782113363277153771
 Transform:
   m_ObjectHideFlags: 0
@@ -267,7 +267,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 3a36206b1388abc4499f6a3a997322f2, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 8560b4bd26988444d8d54b879ef46c4f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -350,37 +350,26 @@ MonoBehaviour:
   m_StunTime: 5
   m_MergeCooldown: 3
   m_PhaseLittleInfo:
-    BlueSprite: {fileID: 0}
-    RedSprite: {fileID: 0}
-    PhaseMesh: {fileID: 0}
     BulletPrefab: {fileID: 0}
-    PhaseMaterialRed: {fileID: 0}
-    PhaseMaterialBlue: {fileID: 0}
-    PhaseMaxHealth: 0
-    ShootCooldown: 0
-    MovementCoolDown: 0
+    PhaseMaxHealth: 2
+    ShootCooldown: 1
+    MovementCoolDown: 1
   m_PhaseMediumInfo:
-    BlueSprite: {fileID: 0}
-    RedSprite: {fileID: 0}
-    PhaseMesh: {fileID: 0}
     BulletPrefab: {fileID: 0}
-    PhaseMaterialRed: {fileID: 0}
-    PhaseMaterialBlue: {fileID: 0}
-    PhaseMaxHealth: 0
-    ShootCooldown: 0
-    MovementCoolDown: 0
+    PhaseMaxHealth: 5
+    ShootCooldown: 1
+    MovementCoolDown: 1
   m_PhaseLargeInfo:
-    BlueSprite: {fileID: 0}
-    RedSprite: {fileID: 0}
-    PhaseMesh: {fileID: 0}
     BulletPrefab: {fileID: 0}
-    PhaseMaterialRed: {fileID: 0}
-    PhaseMaterialBlue: {fileID: 0}
-    PhaseMaxHealth: 0
-    ShootCooldown: 0
-    MovementCoolDown: 0
-  m_SpriteRenderer: {fileID: 0}
-  m_Animator: {fileID: 0}
+    PhaseMaxHealth: 11
+    ShootCooldown: 1
+    MovementCoolDown: 1
+  m_LittlePhaseAnimator: {fileID: 3782113362814938728}
+  m_LittlePhaseTransform: {fileID: 3782113362814938731}
+  m_MediumPhaseAnimator: {fileID: 3782113363277153768}
+  m_MediumPhaseTransform: {fileID: 3782113363277153771}
+  m_LargePhaseAnimator: {fileID: 3782113362254679419}
+  m_LargePhaseTransform: {fileID: 3782113362254679418}
   m_CurrentCell: {fileID: 0}
   m_AttackDetectionRange: 10
   m_AttackMaxRange: 15
